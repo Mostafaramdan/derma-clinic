@@ -2,15 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use Spatie\Permission\Middleware\RoleMiddleware;
+use Spatie\Permission\Middleware\PermissionMiddleware;
 /*
 |--------------------------------------------------------------------------
 | Public
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
-    // لو المستخدم مسجّل دخول ودّيه للداشبورد
-    return auth()->check() ? redirect()->route('dashboard') : view('welcome');
+    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
 })->name('home');
 
 /*
@@ -51,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['role:admin'])->group(function () {
+        // Super Admin: Admins Management
+        Route::prefix('admin')->name('admin.')->middleware(['role:super_admin'])->group(function () {
+            Route::resource('admins', App\Http\Controllers\Admin\AdminController::class)->except(['show']);
+        });
 
         // لوحة الأدمن
         Route::get('/admin', fn () => view('admin.dashboard'))->name('admin.dashboard');

@@ -1,3 +1,13 @@
+[
+    // ...existing menu items...
+    [
+        'label' => 'فريق العمل',
+        'icon' => '<i class="bi bi-people"></i>',
+        'route' => 'admin.admins.index',
+        'can' => 'manage-admins', // أو null إذا متاح للجميع
+        'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
+    ],
+]
 <?php
 // config/admin_menu.php
 return [
@@ -7,6 +17,13 @@ return [
         'route' => 'admin.dashboard',
         'can'   => null, // لأي مستخدم داخل جروب الأدمن
         'match' => ['admin.dashboard'],
+    ],
+    [
+        'label' => 'فريق العمل',
+        'icon'  => '<i class="bi bi-people"></i>',
+        'route' => 'admin.admins.index',
+        'can'   => 'super_admin',
+        'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
     ],
     [
         'label' => 'Patients',

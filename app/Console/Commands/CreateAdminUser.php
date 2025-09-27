@@ -19,7 +19,8 @@ class CreateAdminUser extends Command
         $locale  = $this->option('locale') ?? 'en';
 
         // تأكد الجارد "web"
-        $role = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+    $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+    $roleSuper = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
 
         $user = \App\Models\User::firstOrCreate(
             ['email' => $email],
@@ -28,7 +29,10 @@ class CreateAdminUser extends Command
 
         // لازم موديل User فيه use HasRoles; و protected $guard_name='web';
         if (! $user->hasRole('admin')) {
-            $user->assignRole($role);
+            $user->assignRole($roleAdmin);
+        }
+        if (! $user->hasRole('super_admin')) {
+            $user->assignRole($roleSuper);
         }
 
         $this->info("Admin created: {$email}");
