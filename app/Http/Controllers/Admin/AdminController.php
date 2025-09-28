@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $admins = User::role(['admin','super-admin'])->get();
+        $admins = User::role(['admin','super_admin'])->get();
         return view('admin.admins_index', compact('admins'));
     }
 
@@ -38,32 +38,32 @@ class AdminController extends Controller
         return redirect()->route('admin.admins.index')->with('success','Admin created successfully');
     }
 
-    public function edit(User $user)
+    public function edit(User $admin)
     {
         $roles = Role::all();
-        return view('admin.admins_edit', compact('user','roles'));
+        return view('admin.admins_edit', compact('admin','roles'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $admin)
     {
         $data = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,'.$admin->id,
             'password' => 'nullable|string|min:6',
             'roles' => 'required|array',
         ]);
-        $user->update([
+        $admin->update([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => $data['password'] ? Hash::make($data['password']) : $user->password,
+            'password' => $data['password'] ? Hash::make($data['password']) : $admin->password,
         ]);
-        $user->syncRoles($data['roles']);
+        $admin->syncRoles($data['roles']);
         return redirect()->route('admin.admins.index')->with('success','Admin updated successfully');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $admin)
     {
-        $user->delete();
+        $admin->delete();
         return redirect()->route('admin.admins.index')->with('success','Admin deleted successfully');
     }
 }

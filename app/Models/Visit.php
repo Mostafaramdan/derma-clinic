@@ -31,5 +31,7 @@ class Visit extends Model
     public function files(){ return $this->hasMany(VisitFile::class); }
     public function services(){ return $this->hasMany(VisitService::class); }
     public function invoice(){ return $this->hasOne(Invoice::class); }
+
+    public function photos(){ return $this->hasMany(VisitPhoto::class); }
 }
 

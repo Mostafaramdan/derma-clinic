@@ -10,7 +10,7 @@ use Spatie\Permission\Middleware\PermissionMiddleware;
 |--------------------------------------------------------------------------
 */
 Route::get('/', function () {
-    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
+    return \Illuminate\Support\Facades\Auth::check() ? redirect()->route('dashboard') : redirect()->route('login');
 })->name('home');
 
 /*
@@ -19,9 +19,14 @@ Route::get('/', function () {
 |--------------------------------------------------------------------------
 */
 Route::post('/locale', function (\Illuminate\Http\Request $r) {
-    $loc = in_array($r->locale, ['ar','en']) ? $r->locale : config('app.locale');
-    if (auth()->check()) {
-        auth()->user()->update(['locale' => $loc]);
+    $locale = $r->input('locale');
+    $loc = in_array($locale, ['ar','en']) ? $locale : config('app.locale');
+    if (\Illuminate\Support\Facades\Auth::check()) {
+        $user = \Illuminate\Support\Facades\Auth::user();
+        if ($user instanceof \Illuminate\Database\Eloquent\Model) {
+            $user->locale = $loc;
+            $user->save();
+        }
     } else {
         session(['locale' => $loc]);
     }
@@ -51,18 +56,31 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['role:admin'])->group(function () {
-        // Super Admin: Admins Management
+        // Super Admin: Admins & Roles Management
         Route::prefix('admin')->name('admin.')->middleware(['role:super_admin'])->group(function () {
             Route::resource('admins', App\Http\Controllers\Admin\AdminController::class)->except(['show']);
+            Route::resource('roles', App\Http\Controllers\Admin\RoleController::class)->except(['show']);
         });
 
         // لوحة الأدمن
         Route::get('/admin', fn () => view('admin.dashboard'))->name('admin.dashboard');
         Route::get('/admin/settings', fn () => view('admin.settings'))->name('admin.settings');
 
-        // قوائم أساسية (Placeholder لحد ما تعمل Controllers)
-        Route::get('/patients',        fn () => 'Patients')->name('patients.index')->middleware('permission:patients.view');
-        Route::get('/visits',          fn () => 'Visits')->name('visits.index')->middleware('permission:visits.view');
+        // إدارة الخدمات
+    Route::resource('services', App\Http\Controllers\ServiceController::class)->except(['show']);
+    Route::post('services/{service}/toggle', [App\Http\Controllers\ServiceController::class, 'toggle'])->name('services.toggle');
+
+        // إدارة المرضى
+        Route::resource('patients', App\Http\Controllers\PatientController::class)->except(['show']);
+
+        // إدارة الزيارات
+    Route::get('/visits/create', [App\Http\Controllers\VisitController::class, 'create'])->name('visits.create');
+    Route::post('/visits', [App\Http\Controllers\VisitController::class, 'store'])->name('visits.store');
+    Route::get('/visits/{visit}/edit', [App\Http\Controllers\VisitController::class, 'edit'])->name('visits.edit');
+    Route::put('/visits/{visit}', [App\Http\Controllers\VisitController::class, 'update'])->name('visits.update');
+
+        // باقي القوائم الأساسية
+    Route::get('/visits', [App\Http\Controllers\VisitController::class, 'index'])->name('visits.index')->middleware('permission:visits.view');
         Route::get('/prescriptions',   fn () => 'Prescriptions')->name('prescriptions.index')->middleware('permission:visits.view');
         Route::get('/labs',            fn () => 'Labs')->name('labs.index')->middleware('permission:labs.manage');
         Route::get('/files',           fn () => 'Files')->name('files.index')->middleware('permission:files.manage');

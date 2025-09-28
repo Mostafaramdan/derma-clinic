@@ -8,35 +8,52 @@ use Spatie\Permission\Models\Role;
 
 class CreateAdminUser extends Command
 {
-    protected $signature = 'clinic:create-admin {email} {--name=Clinic Admin} {--password=12345678} {--locale=en}';
+    protected $signature = 'clinic:create-admin {--email=root@admin.com} {--name=Clinic Admin} {--password=12345678} {--locale=en}';
     protected $description = 'Create an admin user and assign admin role';
 
     public function handle(): int
     {
-        $email   = $this->argument('email');
+        $email   = $this->option('email');
         $name    = $this->option('name') ?: 'Clinic Admin';
         $password= $this->option('password') ?: str()->random(12);
         $locale  = $this->option('locale') ?? 'en';
 
-        // تأكد الجارد "web"
-    $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
-    $roleSuper = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+        // جميع الصلاحيات من ملف config/permissions.php
+        $permissions = config('permissions');
 
-        $user = \App\Models\User::firstOrCreate(
-            ['email' => $email],
-            ['name' => $name, 'password' => Hash::make($password), 'locale' => $locale]
-        );
-
-        // لازم موديل User فيه use HasRoles; و protected $guard_name='web';
-        if (! $user->hasRole('admin')) {
-            $user->assignRole($roleAdmin);
+        // إنشاء الصلاحيات
+        foreach ($permissions as $perm) {
+            \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
         }
-        if (! $user->hasRole('super_admin')) {
+
+        // إنشاء الدور الموحد
+        $roleSuper = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
+        $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        $roleSuper->syncPermissions($permissions);
+        $roleAdmin->syncPermissions($permissions);
+
+        $user = \App\Models\User::where('email', $email)->first();
+        if ($user) {
+            // إذا كان موجود فقط أعطه الدور والصلاحيات
             $user->assignRole($roleSuper);
-        }
+            $user->assignRole($roleAdmin);
+            $user->syncPermissions($permissions);
 
-        $this->info("Admin created: {$email}");
-        $this->info("Password: {$password}");
-        return self::SUCCESS;
+            $this->info("User found. Super Admin role and all permissions assigned: {$email}");
+            return self::SUCCESS;
+        } else {
+            // إذا لم يكن موجود أنشئه ثم أعطه الدور والصلاحيات
+            $user = \App\Models\User::create([
+                'email' => $email,
+                'name' => $name,
+                'password' => Hash::make($password),
+                'locale' => $locale
+            ]);
+            $user->assignRole($roleSuper);
+            $user->syncPermissions($permissions);
+            $this->info("Super Admin created: {$email}");
+            $this->info("Password: {$password}");
+            return self::SUCCESS;
+        }
     }
 }

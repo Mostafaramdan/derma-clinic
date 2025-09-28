@@ -1,13 +1,3 @@
-[
-    // ...existing menu items...
-    [
-        'label' => 'فريق العمل',
-        'icon' => '<i class="bi bi-people"></i>',
-        'route' => 'admin.admins.index',
-        'can' => 'manage-admins', // أو null إذا متاح للجميع
-        'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
-    ],
-]
 <?php
 // config/admin_menu.php
 return [
@@ -19,10 +9,17 @@ return [
         'match' => ['admin.dashboard'],
     ],
     [
+        'label' => 'الخدمات',
+        'icon'  => '🛎️',
+        'route' => 'services.index',
+        'can'   => 'services.view',
+        'match' => ['services.*'],
+    ],
+    [
         'label' => 'فريق العمل',
-        'icon'  => '<i class="bi bi-people"></i>',
+        'icon'  => '👥',
         'route' => 'admin.admins.index',
-        'can'   => 'super_admin',
+        'can'   => 'manage-admins',
         'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
     ],
     [

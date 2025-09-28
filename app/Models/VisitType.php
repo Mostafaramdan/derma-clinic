@@ -23,7 +23,13 @@ class VisitType extends Model
   public function getNameLocalized($locale = null)
   {
     $data = $this->name ?? [];
-    $loc = $locale ?? app()->getLocale();
+    if ($locale) {
+      $loc = $locale;
+    } elseif (\Illuminate\Support\Facades\Auth::check() && \Illuminate\Support\Facades\Auth::user()->locale) {
+      $loc = \Illuminate\Support\Facades\Auth::user()->locale;
+    } else {
+      $loc = app()->getLocale();
+    }
     return $data[$loc] ?? $data['en'] ?? $data['ar'] ?? '';
   }
 }

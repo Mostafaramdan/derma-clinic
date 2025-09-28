@@ -12,13 +12,15 @@
 
   {{-- Bootstrap CSS (rtl/en) --}}
   @if(app()->getLocale()==='ar')
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="{{ url('css/bootstrap.rtl.min.css') }}">
   @else
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url('css/bootstrap.min.css') }}">
   @endif
 
   {{-- Bootstrap Icons --}}
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{{ url('css/bootstrap-icons.min.css') }}">
+
+  @stack('styles')
 
   <style>
     .sidebar {
@@ -65,7 +67,7 @@
     $localeAction = Route::has('locale.set') ? route('locale.set') : url('locale');
   @endphp
 
-  <aside class="sidebar bg-dark text-white p-3" style="{{ app()->getLocale()==='ar' ? 'right:0; left:auto;' : 'left:0; right:auto;' }}">
+  <aside class="sidebar bg-dark text-white p-3" @if(app()->getLocale()==='ar') style="right:0; left:auto;" @else style="left:0; right:auto;" @endif>
     <div class="d-flex align-items-center justify-content-between mb-4">
       <a class="navbar-brand text-white fw-bold text-decoration-none" href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : '#' }}">
         DermaClinic
@@ -118,12 +120,12 @@
   </aside>
 
   {{-- Main Content --}}
-  <div class="main-content" style="{{ app()->getLocale()==='ar' ? 'margin-right:240px' : 'margin-left:240px' }}">
+  <div class="main-content" @if(app()->getLocale()==='ar') style="margin-right:240px" @else style="margin-left:240px" @endif>
     @yield('content')
   </div>
 
   {{-- Bootstrap JS --}}
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url('js/bootstrap.bundle.min.js') }}"></script>
 
   @stack('scripts')
 </body>
