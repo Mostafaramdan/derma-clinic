@@ -1,3 +1,6 @@
+@if ($errors->has('photos'))
+  <div class="field-error">{{ $errors->first('photos') }}</div>
+@endif
 <div class="card">
   <div class="head"><h3>📸 صور الحالة</h3></div>
   <div class="body">

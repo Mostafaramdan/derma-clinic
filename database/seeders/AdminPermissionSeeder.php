@@ -21,7 +21,11 @@ class AdminPermissionSeeder extends Seeder
         // جلب كل الصلاحيات أو إنشائها
         $permissions = [
             'patients.view', 'visits.view', 'prescriptions.view', 'labs.manage', 'files.manage', 'admin.panel',
-            // أضف أي صلاحيات أخرى هنا حسب الحاجة
+            // صلاحيات الأمراض المزمنة
+            'chronic-diseases.view',
+            'chronic-diseases.create',
+            'chronic-diseases.update',
+            'chronic-diseases.delete',
         ];
         foreach($permissions as $perm){
             Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);

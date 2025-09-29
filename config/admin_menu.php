@@ -9,6 +9,13 @@ return [
         'match' => ['admin.dashboard'],
     ],
     [
+        'label' => 'الأمراض المزمنة',
+        'icon'  => '🩺',
+        'route' => 'chronic-diseases.index',
+        'can'   => 'chronic-diseases.view',
+        'match' => ['chronic-diseases.*'],
+    ],
+    [
         'label' => 'الخدمات',
         'icon'  => '🛎️',
         'route' => 'services.index',

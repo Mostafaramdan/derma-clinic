@@ -1,3 +1,9 @@
+@if ($errors->has('labs'))
+  <div class="field-error">{{ $errors->first('labs') }}</div>
+@endif
+@if ($errors->has('files'))
+  <div class="field-error">{{ $errors->first('files') }}</div>
+@endif
 <div class="grid">
   <div class="card">
     <div class="head"><h3>🧪 التحاليل</h3></div>

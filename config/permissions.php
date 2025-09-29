@@ -19,5 +19,9 @@ return [
     'visits.create',
     'visits.edit',
     'visits.delete',
+    'chronic-diseases.view',
+    'chronic-diseases.create',
+    'chronic-diseases.update',
+    'chronic-diseases.delete',
     // أضف أي صلاحية جديدة هنا عند إضافة موديول جديد
 ];

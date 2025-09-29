@@ -1,3 +1,9 @@
+@if ($errors->has('services'))
+  <div class="field-error">{{ $errors->first('services') }}</div>
+@endif
+@if ($errors->has('invoice'))
+  <div class="field-error">{{ $errors->first('invoice') }}</div>
+@endif
  <div class="grid">
           <div class="card">
             <div class="head"><h3>💳 الخدمات والإجراءات</h3></div>
@@ -22,7 +28,7 @@
                   </div>
                 </div>
               </div>
-              <button id="addSvc" class="btn" style="margin-top:8px">+ إضافة خدمة</button>
+              <button id="addSvc" class="btn" type="button" style="margin-top:8px">+ إضافة خدمة</button>
             </div>
           </div>
 
@@ -40,8 +46,8 @@
                 <div class="line grand"><span>الإجمالي</span><span id="totalVal">EGP 0.00</span></div>
               </div>
               <div class="row" style="margin-top:12px">
-                <div class="field third"><button class="btn">إصدار فاتورة</button></div>
-                <div class="field third"><button class="btn primary">تحصيل الآن</button></div>
+                <div class="field third"><button class="btn d-none">إصدار فاتورة</button></div>
+                <div class="field third"><button class="btn primary d-none">تحصيل الآن</button></div>
               </div>
             </div>
           </aside>

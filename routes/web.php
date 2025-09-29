@@ -56,6 +56,11 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['role:admin'])->group(function () {
+        // إدارة الأمراض المزمنة
+        Route::resource('chronic-diseases', App\Http\Controllers\ChronicDiseaseController::class)
+            ->middleware([
+                'permission:chronic-diseases.view|chronic-diseases.create|chronic-diseases.update|chronic-diseases.delete'
+            ]);
         // Super Admin: Admins & Roles Management
         Route::prefix('admin')->name('admin.')->middleware(['role:super_admin'])->group(function () {
             Route::resource('admins', App\Http\Controllers\Admin\AdminController::class)->except(['show']);

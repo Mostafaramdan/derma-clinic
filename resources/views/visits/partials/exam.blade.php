@@ -14,10 +14,16 @@
 
       <div class="field third"><label>شكوى رئيسية</label>
         <input name="exam[chief_complaint]" placeholder="حب شباب — حبوب تحت الجلد" value="{{ old('exam.chief_complaint', $visit->exam['chief_complaint'] ?? '') }}">
+@if ($errors->has('exam.chief_complaint'))
+  <div class="field-error">{{ $errors->first('exam.chief_complaint') }}</div>
+@endif
       </div>
 
       <div class="field third"><label>شدة الأعراض</label>
         <select name="exam[severity]">
+@if ($errors->has('exam.severity'))
+  <div class="field-error">{{ $errors->first('exam.severity') }}</div>
+@endif
           @foreach ([1=>'1 — بسيط',2=>'2 — متوسط',3=>'3 — شديد',4=>'4 — عنيف جدًا'] as $k=>$v)
             <option value="{{ $k }}" @selected(($visit->exam['severity'] ?? null)==$k)>{{ $v }}</option>
           @endforeach
@@ -26,6 +32,9 @@
 
       <div class="field third"><label>المدة</label>
         <select name="exam[duration]">
+@if ($errors->has('exam.duration'))
+  <div class="field-error">{{ $errors->first('exam.duration') }}</div>
+@endif
           @foreach (['<1m'=>'أقل من شهر','1-3m'=>'1–3 شهور','3-6m'=>'3–6 شهور','6-12m'=>'6–12 شهر','>12m'=>'أكثر من سنة'] as $k=>$v)
             <option value="{{ $k }}" @selected(($visit->exam['duration'] ?? null)==$k)>{{ $v }}</option>
           @endforeach
@@ -34,6 +43,9 @@
 
       <div class="field third"><label>الصورة المرضية (Clinical picture)</label>
         <textarea name="exam[clinical_picture]" placeholder="Clinical picture — Grade 2">{{ old('exam.clinical_picture', $visit->exam['clinical_picture'] ?? '') }}</textarea>
+@if ($errors->has('exam.clinical_picture'))
+  <div class="field-error">{{ $errors->first('exam.clinical_picture') }}</div>
+@endif
       </div>
     </div>
 
@@ -52,6 +64,12 @@
       </div>
     </div>
     <input type="hidden" id="locationsInput" name="exam[locations]" value='@json($visit->exam['locations'] ?? [])'>
+@if ($errors->has('exam.locations'))
+  <div class="field-error">{{ $errors->first('exam.locations') }}</div>
+@endif
+@if ($errors->has('exam.locations'))
+  <div class="field-error">{{ $errors->first('exam.locations') }}</div>
+@endif
 
     {{-- جدول التشخيص --}}
     <div class="row" style="margin-top:12px; margin-bottom: 12px;">

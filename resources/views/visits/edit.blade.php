@@ -1,10 +1,90 @@
 
 @extends('layouts.dashboard')
-@section('title', __('edit_visit'))
 
 @push('styles')
+<style>
+    .tab-btn { position:relative; }
+    .tab-btn .tab-dot {
+      display:none;
+      position:absolute;
+      top:6px;
+      right:10px;
+      width:7px;
+      height:7px;
+      background:#d32f2f;
+      border-radius:50%;
+      box-shadow:0 0 0 2px #fff;
+      z-index:2;
+    }
+    .tab-btn.tab-error .tab-dot { display:inline-block !important; }
+  </style>
+  <style>
+    .tabs {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 22px;
+      border-bottom: 1px solid #e2e8f0;
+      background: #f8fafc;
+      padding: 0 16px;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 2px 8px rgba(37,99,235,.04);
+    }
+    .tab-btn {
+      position: relative;
+      background: none;
+      padding: 13px 28px 11px 28px;
+      border-radius: 14px 14px 0 0;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      letter-spacing: 0.5px;
+      outline: none;
+    }
+    .tab-btn[aria-selected="true"] {
+      background: #fff;
+      color: #1e293b;
+      box-shadow: 0 2px 8px rgba(37,99,235,.08);
+      border-bottom: 2px solid #3b82f6;
+      z-index: 2;
+    }
+    .tab-btn .tab-dot {
+      display: none;
+      position: absolute;
+      top: 6px;
+      right: 14px;
+      width: 6px;
+      height: 6px;
+      background: #d32f2f;
+      border-radius: 50%;
+      box-shadow: 0 0 0 2px #fff;
+      z-index: 3;
+    }
+    .tab-btn.tab-error .tab-dot { display: inline-block !important; }
+    .tab-btn:focus { box-shadow: 0 0 0 2px #3b82f6; }
+    /* تلوين الحقل عند وجود خطأ */
+    .is-invalid { border-color: #d32f2f !important; background: #fff5f5 !important; }
+    .field-error { color:#d32f2f;font-size:13px;margin-top:4px;font-weight:600; }
+  </style>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url('css/visit.css') }}">
+  <style>
+    .tab-btn { position:relative; }
+    .tab-btn .tab-dot {
+      display:none;
+      position:absolute;
+      top:6px;
+      right:10px;
+      width:7px;
+      height:7px;
+      background:#d32f2f;
+      border-radius:50%;
+      box-shadow:0 0 0 2px #fff;
+      z-index:2;
+    }
+    .tab-btn.tab-error .tab-dot { display:inline-block !important; }
+    /* تلوين الحقل عند وجود خطأ */
+    .is-invalid { border-color: #d32f2f !important; background: #fff5f5 !important; }
+    .field-error { color:#d32f2f;font-size:13px;margin-top:4px;font-weight:600; }
+  </style>
 @endpush
 
 @push('scripts')
@@ -13,7 +93,62 @@
 
 @section('content')
 <div class="container">
-  <form method="POST" action="{{ route('visits.update', $visit->id) }}" enctype="multipart/form-data">
+  <form id="visitForm" method="POST" action="{{ route('visits.update', $visit->id) }}" enctype="multipart/form-data">
+  <div id="clientErrors" style="display:none;margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;"></div>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const form = document.getElementById('visitForm');
+  const clientErrors = document.getElementById('clientErrors');
+  // إزالة جميع النقاط الحمراء عند أول تحميل الصفحة
+  document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-error'));
+  form.addEventListener('submit', function(e){
+    let errors = [];
+    // مثال: تحقق من الاسم
+    const name = form.querySelector('[name="patient[name]"]');
+    if(!name || !name.value.trim()) errors.push('يجب إدخال اسم المريض');
+    // تحقق من العمر
+    const age = form.querySelector('[name="patient[age_years]"]');
+    if(age && (isNaN(age.value) || age.value<0 || age.value>150)) errors.push('العمر يجب أن يكون بين 0 و 150 سنة');
+    // exam.locations يجب أن تكون array
+    const locationsInput = form.querySelector('[name="exam[locations]"]');
+    if(locationsInput) {
+      try {
+        const val = locationsInput.value;
+        if(val && typeof val === 'string') {
+          const arr = JSON.parse(val);
+          if(!Array.isArray(arr)) errors.push('أماكن الإصابة يجب أن تكون قائمة (array)');
+          else locationsInput.value = JSON.stringify(arr); // تأكيد التحويل
+        }
+      } catch { errors.push('أماكن الإصابة يجب أن تكون قائمة (array)'); }
+    }
+    // يمكنك إضافة المزيد من الفحوصات هنا حسب الحاجة
+    // إزالة جميع النقاط الحمراء عند بداية submit
+    function clearTabErrors() {
+      const tabBtns = document.querySelectorAll('.tab-btn');
+      tabBtns.forEach(btn => btn.classList.remove('tab-error'));
+    }
+    clearTabErrors();
+    if(errors.length){
+      e.preventDefault();
+      clientErrors.innerHTML = '<div style="margin-bottom:8px;">حدثت أخطاء في البيانات المدخلة:</div><ul style="margin:0;padding:0 0 0 18px;">'+errors.map(e=>'<li>'+e+'</li>').join('')+'</ul>';
+      clientErrors.style.display = 'block';
+      window.scrollTo({top:form.offsetTop-60,behavior:'smooth'});
+    }else{
+      clientErrors.style.display = 'none';
+    }
+  });
+});
+</script>
+    @if ($errors->any())
+      <div class="alert alert-danger" style="margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;">
+        <div style="margin-bottom:8px;">حدثت أخطاء في البيانات المدخلة:</div>
+        <ul style="margin:0;padding:0 0 0 18px;">
+          @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+          @endforeach
+        </ul>
+      </div>
+    @endif
     @csrf
     @method('PUT')
     <!-- شريط معلومات أفقي جميل أسفل النافبار -->
@@ -29,13 +164,14 @@
       </div>
       <div style="display:flex;gap:10px;">
         <button type="submit" name="save_draft" class="btn" style="font-weight:800;padding:10px 18px;border-radius:12px;background:#fff;color:#2563eb;border:1px solid #e2e8f0;box-shadow:0 6px 14px rgba(15,23,42,.06);">{{ __('save') }} {{ __('draft') ?? 'Draft' }}</button>
-        <button type="submit" class="btn primary" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">{{ __('save') }}</button>
+  <button type="submit" class="btn primary" form="visitForm" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">{{ __('save') }}</button>
       </div>
     </div>
 
     <div class="tabs" id="visitTabs" role="tablist" aria-label="Visit Tabs">
-  <button type="button" class="tab-btn" role="tab" id="tab-basic-btn" aria-controls="tab-basic" aria-selected="true">{{ __('patient_basic') }}</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-exam-btn" aria-controls="tab-exam" aria-selected="false">{{ __('exam') }}</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-basic-btn" aria-controls="tab-basic" aria-selected="true"><span class="tab-dot"></span>{{ __('patient_basic') }}</button>
+  <button type="button" class="tab-btn @if($errors->has('exam.locations')) tab-error @endif" role="tab" id="tab-exam-btn" aria-controls="tab-exam" aria-selected="false"><span class="tab-dot"></span>{{ __('exam') }}</button>
+
   <button type="button" class="tab-btn" role="tab" id="tab-rx-btn" aria-controls="tab-rx" aria-selected="false">{{ __('rx_advices') }}</button>
   <button type="button" class="tab-btn" role="tab" id="tab-labs-btn" aria-controls="tab-labs" aria-selected="false">{{ __('labs_files') }}</button>
   <button type="button" class="tab-btn" role="tab" id="tab-photos-btn" aria-controls="tab-photos" aria-selected="false">{{ __('photos') }}</button>

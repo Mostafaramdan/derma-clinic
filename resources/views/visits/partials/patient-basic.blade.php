@@ -33,23 +33,38 @@
     <div class="head"><h3>⚕️ التاريخ المرضي</h3></div>
     <div class="body">
       <div class="row">
-        <div class="field quarter"><label>سكر</label>
-          <select name="history[dm]"><option value="0" @selected(($patient->history['dm'] ?? 0)==0)>لا</option><option value="1" @selected(($patient->history['dm'] ?? 0)==1)>نعم</option></select>
-        </div>
-        <div class="field quarter"><label>ضغط</label>
-          <select name="history[htn]"><option value="0" @selected(($patient->history['htn'] ?? 0)==0)>لا</option><option value="1" @selected(($patient->history['htn'] ?? 0)==1)>نعم</option></select>
-        </div>
-        <div class="field quarter"><label>حساسية أدوية</label>
-          <select name="history[drug_allergy]"><option value="0" @selected(($patient->history['drug_allergy'] ?? 0)==0)>لا</option><option value="1" @selected(($patient->history['drug_allergy'] ?? 0)==1)>نعم</option></select>
-        </div>
-        <div class="field quarter"><label>حمل</label>
-          <select name="history[pregnant]"><option value="0" @selected(($patient->history['pregnant'] ?? 0)==0)>لا</option><option value="1" @selected(($patient->history['pregnant'] ?? 0)==1)>نعم</option></select>
-        </div>
-        <div class="field quarter"><label>رضاعة</label>
-          <select name="history[lactation]"><option value="0" @selected(($patient->history['lactation'] ?? 0)==0)>لا</option><option value="1" @selected(($patient->history['lactation'] ?? 0)==1)>نعم</option></select>
-        </div>
+        @if(isset($chronicDiseases) && $chronicDiseases->count())
+          @foreach($chronicDiseases->take(5) as $cd)
+            <div class="field quarter">
+              <label>{{ $cd->name['ar'] ?? $cd->name['en'] ?? '—' }}</label>
+              <select name="history[chronic_{{ $cd->id }}]">
+                <option value="0" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==0)>لا</option>
+                <option value="1" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==1)>نعم</option>
+              </select>
+            </div>
+          @endforeach
+        @endif
         <div class="field full"><label>أمراض أخرى</label><input name="history[other_diseases]" placeholder="مثال: ربو، قلب…" value="{{ old('history.other_diseases', $patient->history['other_diseases'] ?? '') }}"></div>
         <div class="field full"><label>ملاحظات أخرى</label><input name="history[notes]" placeholder="تفاصيل إضافية…" value="{{ old('history.notes', $patient->history['notes'] ?? '') }}"></div>
+        </div>
+        @if($patient->chronicDiseases && $patient->chronicDiseases->count())
+        <div class="chronic-diseases-list" style="margin-top:22px;">
+          <label style="font-weight:700;font-size:15px;margin-bottom:8px;display:block;">الأمراض المزمنة المرتبطة بالمريض:</label>
+          <div style="display:flex;flex-wrap:wrap;gap:12px;">
+            @foreach($patient->chronicDiseases as $cd)
+              <div class="chronic-card" style="background:#f8fafc;border-radius:10px;padding:10px 18px;box-shadow:0 2px 8px rgba(37,99,235,.04);min-width:120px;">
+                <div style="font-weight:700;font-size:16px;">{{ $cd->name['ar'] ?? $cd->name['en'] ?? '—' }}</div>
+                @if($cd->pivot->since)
+                  <div style="font-size:13px;color:#555;margin-top:2px;">منذ: {{ $cd->pivot->since }}</div>
+                @endif
+                @if($cd->pivot->notes)
+                  <div style="font-size:13px;color:#888;margin-top:2px;">ملاحظات: {{ $cd->pivot->notes }}</div>
+                @endif
+              </div>
+            @endforeach
+          </div>
+        </div>
+        @endif
       </div>
     </div>
   </aside>

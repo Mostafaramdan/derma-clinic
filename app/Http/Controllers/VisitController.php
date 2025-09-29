@@ -13,6 +13,14 @@ class VisitController extends Controller
      */
     public function update(Request $request, Visit $visit)
     {
+        dd($request->all());
+        // تحويل locations إلى array إذا كانت JSON string
+        if ($request->has('exam.locations') && is_string($request->input('exam.locations'))) {
+            $decoded = json_decode($request->input('exam.locations'), true);
+            if (is_array($decoded)) {
+                $request->merge(['exam' => array_merge($request->input('exam', []), ['locations' => $decoded])]);
+            }
+        }
         // تحقق من صحة البيانات الأساسية
         $data = $request->validate([
             // بيانات المريض الأساسية

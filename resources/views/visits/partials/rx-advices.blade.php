@@ -1,3 +1,9 @@
+@if ($errors->has('medications'))
+  <div class="field-error">{{ $errors->first('medications') }}</div>
+@endif
+@if ($errors->has('advices'))
+  <div class="field-error">{{ $errors->first('advices') }}</div>
+@endif
 <div class="card">
   <div class="head"><h3>💊 الروشتة & 💡 الإرشادات</h3></div>
   <div class="body">
