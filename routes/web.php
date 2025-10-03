@@ -112,7 +112,6 @@ Route::middleware(['auth'])->group(function () {
             ->middleware([
                 'permission:view_prescriptions|create_prescriptions|update_prescriptions|delete_prescriptions'
             ]);
-    // ...existing code...
         Route::get('/files',           fn () => 'Files')->name('files.index')->middleware('permission:files.manage');
     });
 });
