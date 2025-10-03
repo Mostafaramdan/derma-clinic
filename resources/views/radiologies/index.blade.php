@@ -2,37 +2,37 @@
 @section('title','الأشعة والتحاليل')
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4 fw-bold text-primary">إدارة الأشعة والتحاليل</h1>
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <a href="{{ route('radiologies.create') }}" class="btn btn-success w-100">إضافة أشعة/تحليل جديد</a>
+    <h1 class="mb-4 fw-bold text-primary text-center">إدارة الأشعة والتحاليل</h1>
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-4">
+            <a href="{{ route('radiologies.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> إضافة أشعة/تحليل جديد</a>
         </div>
     </div>
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
-    <div class="bg-white shadow-sm rounded-3 p-4">
-        <table class="table table-bordered align-middle">
-            <thead>
-                <tr>
-                    <th style="width:60px">#</th>
+    <div class="bg-white shadow rounded-4 p-4 border border-2">
+        <table class="table table-hover align-middle text-center" style="font-size:1.13rem;">
+            <thead class="table-primary align-middle">
+                <tr style="font-size:1.15rem;">
+                    <th style="width:70px">#</th>
                     <th>اسم الأشعة/التحليل</th>
                     <th>ملاحظات</th>
-                    <th style="width:160px">إجراءات</th>
+                    <th style="width:180px">إجراءات</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($radiologies as $rad)
                 <tr>
-                    <td>{{ $rad->id }}</td>
+                    <td class="fw-bold">{{ $rad->id }}</td>
                     <td>{{ $rad->name }}</td>
                     <td>{{ $rad->notes }}</td>
                     <td>
-                        <a href="{{ route('radiologies.edit', $rad) }}" class="btn btn-sm btn-warning">تعديل</a>
+                        <a href="{{ route('radiologies.edit', $rad) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
                         <form action="{{ route('radiologies.destroy', $rad) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('تأكيد الحذف؟')">حذف</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('تأكيد الحذف؟')"><i class="bi bi-trash me-1"></i> حذف</button>
                         </form>
                     </td>
                 </tr>
