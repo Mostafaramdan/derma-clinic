@@ -2,7 +2,16 @@
 @section('title','الأشعة والتحاليل')
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4 fw-bold text-primary text-center">إدارة الأشعة والتحاليل</h1>
+    <div class="text-center mb-2">
+        <span class="d-inline-block mb-2" style="font-size:2.5rem;">
+            <!-- SVG أيقونة activity -->
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                <path d="M3 12h3.5l2.5 7 4-14 2.5 7H21" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="12" cy="12" r="11" stroke="#ffd600" stroke-width="2.2" fill="#fffbe6"/>
+            </svg>
+        </span>
+        <h1 class="fw-bold text-primary">إدارة الأشعة والتحاليل</h1>
+    </div>
     <div class="row mb-4 justify-content-center">
         <div class="col-md-4">
             <a href="{{ route('radiologies.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> إضافة أشعة/تحليل جديد</a>

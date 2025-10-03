@@ -2,35 +2,45 @@
 @section('title','الأدوية')
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4 fw-bold text-primary">إدارة الأدوية</h1>
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <a href="{{ route('medications.create') }}" class="btn btn-success w-100">إضافة دواء جديد</a>
+    <div class="text-center mb-2">
+        <span class="d-inline-block mb-2" style="font-size:2.5rem;">
+            <!-- SVG أيقونة كبسولة -->
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="11" width="18" height="8" rx="4" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
+                <rect x="3" y="5" width="18" height="8" rx="4" fill="#fff" stroke="#2563eb" stroke-width="2.2"/>
+                <rect x="3" y="5" width="18" height="14" rx="7" stroke="#2563eb" stroke-width="2.2"/>
+            </svg>
+        </span>
+        <h1 class="fw-bold text-primary">إدارة الأدوية</h1>
+    </div>
+    <div class="row mb-4 justify-content-center">
+        <div class="col-md-4">
+            <a href="{{ route('medications.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> إضافة دواء جديد</a>
         </div>
     </div>
     @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
+        <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
-    <div class="bg-white shadow-sm rounded-3 p-4">
-        <table class="table table-bordered align-middle">
-            <thead>
-                <tr>
-                    <th style="width:60px">#</th>
+    <div class="bg-white shadow rounded-4 p-4 border border-2">
+        <table class="table table-hover align-middle text-center" style="font-size:1.13rem;">
+            <thead class="table-primary align-middle">
+                <tr style="font-size:1.15rem;">
+                    <th style="width:70px">#</th>
                     <th>اسم الدواء</th>
-                    <th style="width:160px">إجراءات</th>
+                    <th style="width:180px">إجراءات</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($medications as $med)
                 <tr>
-                    <td>{{ $med->id }}</td>
+                    <td class="fw-bold">{{ $med->id }}</td>
                     <td>{{ $med->name }}</td>
                     <td>
-                        <a href="{{ route('medications.edit', $med) }}" class="btn btn-sm btn-warning">تعديل</a>
+                        <a href="{{ route('medications.edit', $med) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
                         <form action="{{ route('medications.destroy', $med) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('تأكيد الحذف؟')">حذف</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('تأكيد الحذف؟')"><i class="bi bi-trash me-1"></i> حذف</button>
                         </form>
                     </td>
                 </tr>
