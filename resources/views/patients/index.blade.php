@@ -21,7 +21,7 @@
         <button type="submit" class="btn btn-primary w-100">بحث</button>
       </div>
       <div class="col-md-2">
-        <a href="{{ route('patients.create') }}" class="btn btn-success w-100">إضافة مريض جديد</a>
+  <a href="{{ route('patients.create') }}" class="btn btn-success w-100"><i class="bi bi-plus-circle me-1"></i> إضافة مريض جديد</a>
       </div>
     </div>
   </form>
@@ -44,7 +44,7 @@
           <td>{{ $patient->phone }}</td>
           <td>{{ $patient->address }}</td>
           <td>
-            <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-warning">تعديل</a>
+            <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
             <a href="{{ route('visits.create', ['patient' => $patient->id]) }}" class="btn btn-sm btn-primary">زيارة جديدة</a>
           </td>
         </tr>

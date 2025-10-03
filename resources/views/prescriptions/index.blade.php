@@ -16,7 +16,7 @@
         </div>
     <div class="row mb-4">
         <div class="col-md-3">
-            <a href="{{ route('prescriptions.create') }}" class="btn btn-success w-100">إضافة روشتة جديدة</a>
+            <a href="{{ route('prescriptions.create') }}" class="btn btn-success w-100"><i class="bi bi-plus-circle me-1"></i> إضافة روشتة جديدة</a>
         </div>
     </div>
     @if(session('success'))
@@ -41,11 +41,11 @@
                     <td>{{ $prescription->medications->count() }}</td>
                     <td>{{ $prescription->advices->count() }}</td>
                     <td>
-                        <a href="{{ route('prescriptions.edit', $prescription) }}" class="btn btn-sm btn-warning">تعديل</a>
+                        <a href="{{ route('prescriptions.edit', $prescription) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
                         <form action="{{ route('prescriptions.destroy', $prescription) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('تأكيد الحذف؟')">حذف</button>
+                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('تأكيد الحذف؟')"><i class="bi bi-trash me-1"></i> حذف</button>
                         </form>
                     </td>
                 </tr>

@@ -6,7 +6,7 @@
     <span class="d-inline-block mb-2" style="font-size:2.5rem;">🔑</span>
     <h1 class="fw-bold text-primary">Admins List</h1>
   </div>
-  <a href="{{ route('admin.admins.create') }}" class="btn btn-success mb-3">Add Admin</a>
+  <a href="{{ route('admin.admins.create') }}" class="btn btn-success mb-3"><i class="bi bi-plus-circle me-1"></i> Add Admin</a>
   @if(session('success'))
     <div class="alert alert-success">{{ session('success') }}</div>
   @endif
@@ -29,11 +29,11 @@
             <td>{{ $admin->email }}</td>
             <td>{{ implode(', ', $admin->getRoleNames()->toArray()) }}</td>
             <td>
-              <a href="{{ route('admin.admins.edit', $admin) }}" class="btn btn-sm btn-primary">Edit</a>
+              <a href="{{ route('admin.admins.edit', $admin) }}" class="btn btn-sm btn-primary"><i class="bi bi-pencil-square me-1"></i> Edit</a>
               <form action="{{ route('admin.admins.destroy', $admin) }}" method="POST" style="display:inline-block">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')"><i class="bi bi-trash me-1"></i> Delete</button>
               </form>
             </td>
           </tr>
