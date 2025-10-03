@@ -1,61 +1,215 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Derma Clinic Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Overview
 
-## About Laravel
+Derma Clinic is a comprehensive web-based management system designed for dermatology clinics. Built with Laravel 12, it provides a modern, unified, and user-friendly interface for managing all aspects of clinic operations, including patients, visits, prescriptions, services, chronic diseases, and administrative users. The system is optimized for efficiency, security, and ease of use, with a focus on a visually consistent and professional admin experience.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Modules](#modules)
+- [UI/UX Design](#uiux-design)
+- [Installation & Setup](#installation--setup)
+- [Usage Guide](#usage-guide)
+- [Customization](#customization)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Features
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+- **Patient Management:** Register, edit, and track patients with detailed medical history and chronic diseases.
+- **Visit Management:** Schedule and record visits, including visit types, services, medications, labs, advices, and files.
+- **Prescription Module:** Create, edit, and print prescriptions with medication details.
+- **Service & Lab Modules:** Manage clinic services, lab tests, and results.
+- **Chronic Disease Tracking:** Assign and monitor chronic diseases for patients.
+- **Admin & User Roles:** Secure authentication and role-based access for admins and staff.
+- **Modern UI:** Unified, card-based design with colored icons and responsive layouts for all CRUD pages.
+- **Audit & History:** Track changes and maintain a history of patient visits and treatments.
+- **Localization Ready:** Easily adaptable for multiple languages.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+## Project Structure
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/         # All module controllers (Patients, Visits, Labs, etc.)
+│   │   ├── Middleware/          # Custom and default middleware
+│   │   └── Requests/            # Form request validation classes
+│   ├── Models/                  # Eloquent models for all entities
+│   ├── Providers/               # Service providers
+│   └── View/Components/         # Blade components for UI reuse
+├── bootstrap/                   # Laravel bootstrap files
+├── config/                      # Application and module configuration
+├── database/
+│   ├── factories/               # Model factories for testing
+│   ├── migrations/              # Database schema migrations
+│   └── seeders/                 # Database seeders
+├── public/                      # Public assets and entry point
+├── resources/
+│   ├── css/                     # Tailwind/Bootstrap CSS
+│   ├── js/                      # JavaScript assets
+│   ├── lang/                    # Localization files
+│   └── views/                   # Blade templates for all modules
+├── routes/                      # Route definitions (web, auth, console)
+├── storage/                     # Logs, cache, and file uploads
+├── tests/                       # Feature and unit tests
+├── vendor/                      # Composer dependencies
+├── artisan                      # Laravel CLI
+├── composer.json                # Composer dependencies
+├── package.json                 # NPM dependencies
+├── tailwind.config.js           # Tailwind CSS config
+├── vite.config.js               # Vite build config
+└── README.md                    # Project documentation
+```
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## Modules
+
+### 1. Patients
+- Register new patients with personal and contact information
+- Assign chronic diseases
+- View patient history and visits
+
+### 2. Visits
+- Schedule and manage patient visits
+- Select visit type (consultation, follow-up, etc.)
+- Attach services, medications, labs, advices, and files to each visit
+
+### 3. Prescriptions
+- Create and edit prescriptions for visits
+- Add medications, dosages, and instructions
+- Print or export prescriptions
+
+### 4. Services
+- Define and manage clinic services (procedures, consultations, etc.)
+- Assign services to visits
+
+### 5. Labs
+- Manage lab tests and results
+- Attach lab results to visits
+
+### 6. Medications
+- Manage medication inventory
+- Assign medications to prescriptions and visits
+
+### 7. Advices
+- Store and manage medical advices
+- Attach advices to visits
+
+### 8. Chronic Diseases
+- Define chronic diseases
+- Assign to patients for long-term tracking
+
+### 9. Admins
+- Manage administrative users
+- Assign roles and permissions
+
+---
+
+## UI/UX Design
+
+- **Unified Card Layout:** All index, create, and edit pages use a centered card layout for clarity and focus.
+- **Colored SVG Icons:** Each module features a unique, colored icon for quick visual identification (e.g., flask for labs, pill for medications, shield for admins).
+- **Consistent Tables:** Data tables are styled with modern colors, rounded corners, and hover effects.
+- **Action Buttons:** Edit, delete, and add buttons are color-coded and use Bootstrap icons for clarity.
+- **Responsive Design:** Layout adapts to all screen sizes for desktop and mobile use.
+- **No Duplicate Headings:** Page titles are clear and not repeated.
+
+---
+
+## Installation & Setup
+
+1. **Clone the Repository:**
+   ```
+   git clone https://github.com/Mostafaramdan/derma-clinic.git
+   cd derma-clinic
+   ```
+
+2. **Install Composer Dependencies:**
+   ```
+   composer install
+   ```
+
+3. **Install NPM Dependencies:**
+   ```
+   npm install
+   ```
+
+4. **Copy and Configure Environment File:**
+   ```
+   cp .env.example .env
+   # Edit .env with your database and mail settings
+   ```
+
+5. **Generate Application Key:**
+   ```
+   php artisan key:generate
+   ```
+
+6. **Run Migrations and Seeders:**
+   ```
+   php artisan migrate --seed
+   ```
+
+7. **Build Frontend Assets:**
+   ```
+   npm run build
+   ```
+
+8. **Start the Development Server:**
+   ```
+   php artisan serve
+   ```
+
+---
+
+## Usage Guide
+
+1. **Login:** Access the system via `/login` using admin credentials (default admin may be seeded).
+2. **Dashboard:** View statistics and quick links to all modules.
+3. **Patients:** Add, edit, or search for patients. View their visit and prescription history.
+4. **Visits:** Create new visits, attach services, medications, labs, advices, and files.
+5. **Prescriptions:** Generate and print prescriptions for each visit.
+6. **Admins:** Manage users and assign roles.
+7. **Settings:** Configure clinic information and preferences (if available).
+
+---
+
+## Customization
+
+- **Menus:** Edit `config/admin_menu.php` to customize the admin sidebar and navigation.
+- **Localization:** Add new languages in `resources/lang/`.
+- **UI Components:** Reuse or extend Blade components in `app/View/Components/` for custom UI elements.
+- **Add Modules:** Create new models, controllers, migrations, and Blade views following the existing structure.
+
+---
+
+## Testing
+
+- **Unit & Feature Tests:** Located in `tests/Unit/` and `tests/Feature/`.
+- **Run All Tests:**
+  ```
+  php artisan test
+  ```
+- **Factories & Seeders:** Use model factories and seeders for test data.
+
+---
 
 ## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Contributions are welcome! Please fork the repository, create a feature branch, and submit a pull request. For major changes, open an issue first to discuss your ideas.
 
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is open-sourced under the MIT license.
