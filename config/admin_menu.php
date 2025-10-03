@@ -63,6 +63,13 @@ return [
         'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
     ],
     [
+        'label' => 'الصلاحيات',
+        'icon'  => '🛡️',
+        'route' => 'admin.roles.index',
+        'can'   => 'manage-admins',
+        'match' => ['admin.roles.index', 'admin.roles.create', 'admin.roles.edit'],
+    ],
+    [
         'label' => 'Patients',
         'icon'  => '👤',
         'route' => 'patients.index',

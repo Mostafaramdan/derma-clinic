@@ -20,9 +20,50 @@
     @if(session('success'))
         <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
-    <div class="bg-white shadow rounded-4 p-4 border border-2">
-        <table class="table table-hover align-middle text-center" style="font-size:1.13rem;">
-            <thead class="table-primary align-middle">
+    <style>
+        .modern-table-container {
+            border-radius: 1.5rem;
+            box-shadow: 0 6px 32px 0 rgba(37,99,235,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+            border: 2.5px solid #e0e7ff;
+            background: #fff;
+            padding: 2rem 1.2rem;
+        }
+        .modern-table {
+            border-radius: 1.1rem;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+        .modern-table thead th {
+            background: linear-gradient(90deg, #2563eb 60%, #60a5fa 100%);
+            color: #fff;
+            font-weight: bold;
+            border: none;
+            font-size: 1.13rem;
+            letter-spacing: 0.5px;
+        }
+        .modern-table tbody tr:nth-child(even) {
+            background: #f6faff;
+        }
+        .modern-table tbody tr:nth-child(odd) {
+            background: #fff;
+        }
+        .modern-table tbody tr:hover {
+            background: #e0e7ff !important;
+            transition: background 0.18s;
+        }
+        .modern-table td, .modern-table th {
+            vertical-align: middle;
+            padding-top: 0.85rem;
+            padding-bottom: 0.85rem;
+        }
+        .modern-table .fw-bold {
+            color: #2563eb;
+        }
+    </style>
+    <div class="modern-table-container mt-2">
+        <div class="table-responsive">
+        <table class="table table-hover align-middle text-center modern-table" style="font-size:1.13rem;">
+            <thead class="align-middle">
                 <tr style="font-size:1.15rem;">
                     <th style="width:70px">#</th>
                     <th>{{ __('Name') }}</th>
@@ -50,6 +91,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 </div>
 @endsection
