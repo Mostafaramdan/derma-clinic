@@ -3,12 +3,7 @@
 @section('content')
 <div class="container py-4">
   <div class="text-center mb-2">
-    <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-      <!-- SVG أيقونة صحة/قلب -->
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-        <path d="M12 21s-6.5-4.35-9-7.5C1.5 10.5 3 7 6.5 7c2.04 0 3.04 1.5 5.5 4.5C14.46 8.5 15.46 7 17.5 7 21 7 22.5 10.5 21 13.5c-2.5 3.15-9 7.5-9 7.5Z" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
-      </svg>
-    </span>
+    <span class="d-inline-block mb-2" style="font-size:2.5rem;">❤️</span>
     <h1 class="fw-bold text-primary">الأمراض المزمنة</h1>
   </div>
   <div class="row mb-4 justify-content-center">

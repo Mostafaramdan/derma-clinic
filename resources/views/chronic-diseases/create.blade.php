@@ -2,7 +2,10 @@
 @section('title','إضافة مرض مزمن')
 @section('content')
 <div class="container py-4">
-  <h1 class="mb-4 fw-bold text-primary">إضافة مرض مزمن</h1>
+  <div class="text-center mb-3">
+    <span class="d-inline-block mb-2" style="font-size:2.5rem;">❤️</span>
+    <h1 class="fw-bold text-primary">إضافة مرض مزمن</h1>
+  </div>
   <div class="bg-white shadow-sm rounded-3 p-4">
     <form method="POST" action="{{ route('chronic-diseases.store') }}">
       @csrf
@@ -21,7 +24,7 @@
           <option value="0">لا</option>
         </select>
       </div>
-      <button type="submit" class="btn btn-success">إضافة</button>
+  <button type="submit" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i> إضافة</button>
       <a href="{{ route('chronic-diseases.index') }}" class="btn btn-secondary">إلغاء</a>
     </form>
   </div>

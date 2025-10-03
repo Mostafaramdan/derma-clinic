@@ -26,7 +26,7 @@ return [
 
     [
         'label' => 'الأمراض المزمنة',
-        'icon' => 'fa-solid fa-heart-pulse',
+        'icon' => '❤️',
         'route' => 'chronic-diseases.index',
         'permission' => 'view_chronic_diseases',
         'can' => 'view_chronic_diseases',
