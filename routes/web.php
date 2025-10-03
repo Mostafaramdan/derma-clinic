@@ -61,6 +61,18 @@ Route::middleware(['auth'])->group(function () {
             ->middleware([
                 'permission:chronic-diseases.view|chronic-diseases.create|chronic-diseases.update|chronic-diseases.delete'
             ]);
+
+        // إدارة الأدوية
+        Route::resource('medications', App\Http\Controllers\MedicationController::class)
+            ->middleware([
+                'permission:view_medications|create_medications|update_medications|delete_medications'
+            ]);
+
+        // إدارة الإرشادات
+        Route::resource('advices', App\Http\Controllers\AdviceController::class)
+            ->middleware([
+                'permission:view_advices|create_advices|update_advices|delete_advices'
+            ]);
         // Super Admin: Admins & Roles Management
         Route::prefix('admin')->name('admin.')->middleware(['role:super_admin'])->group(function () {
             Route::resource('admins', App\Http\Controllers\Admin\AdminController::class)->except(['show']);
@@ -86,7 +98,10 @@ Route::middleware(['auth'])->group(function () {
 
         // باقي القوائم الأساسية
     Route::get('/visits', [App\Http\Controllers\VisitController::class, 'index'])->name('visits.index')->middleware('permission:visits.view');
-        Route::get('/prescriptions',   fn () => 'Prescriptions')->name('prescriptions.index')->middleware('permission:visits.view');
+        Route::resource('prescriptions', App\Http\Controllers\PrescriptionController::class)
+            ->middleware([
+                'permission:view_prescriptions|create_prescriptions|update_prescriptions|delete_prescriptions'
+            ]);
         Route::get('/labs',            fn () => 'Labs')->name('labs.index')->middleware('permission:labs.manage');
         Route::get('/files',           fn () => 'Files')->name('files.index')->middleware('permission:files.manage');
     });

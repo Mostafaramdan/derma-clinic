@@ -14,8 +14,11 @@ class DatabaseSeeder extends Seeder
             VisitTypeSeeder::class,
             ChronicDiseaseSeeder::class,
             ServiceSeeder::class,
-            AdminUserSeeder::class,
+            AdminPermissionSeeder::class, // Ensure super_admin role/permissions exist first
             RoleSeeder::class,
+            AdminUserSeeder::class, // Now assign roles to users
+            MedicationSeeder::class,
+            AdviceSeeder::class,
         ]);
     }
 

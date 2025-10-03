@@ -3,7 +3,7 @@
 return [
     'patients.view',
     'visits.view',
-    'prescriptions.view',
+    'view_prescriptions', 'create_prescriptions', 'update_prescriptions', 'delete_prescriptions',
     'labs.manage',
     'files.manage',
     'admin.panel',
@@ -23,5 +23,7 @@ return [
     'chronic-diseases.create',
     'chronic-diseases.update',
     'chronic-diseases.delete',
+    'view_medications', 'create_medications', 'update_medications', 'delete_medications',
+    'view_advices', 'create_advices', 'update_advices', 'delete_advices',
     // أضف أي صلاحية جديدة هنا عند إضافة موديول جديد
 ];

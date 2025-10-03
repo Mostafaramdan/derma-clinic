@@ -26,7 +26,7 @@ class CreateAdminUser extends Command
             \Spatie\Permission\Models\Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
         }
 
-        // إنشاء الدور الموحد
+        // إنشاء الدورين admin و super_admin
         $roleSuper = Role::firstOrCreate(['name' => 'super_admin', 'guard_name' => 'web']);
         $roleAdmin = Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $roleSuper->syncPermissions($permissions);
@@ -34,15 +34,15 @@ class CreateAdminUser extends Command
 
         $user = \App\Models\User::where('email', $email)->first();
         if ($user) {
-            // إذا كان موجود فقط أعطه الدور والصلاحيات
+            // إذا كان موجود فقط أعطه الدورين والصلاحيات
             $user->assignRole($roleSuper);
             $user->assignRole($roleAdmin);
             $user->syncPermissions($permissions);
 
-            $this->info("User found. Super Admin role and all permissions assigned: {$email}");
+            $this->info("User found. Super Admin and Admin roles and all permissions assigned: {$email}");
             return self::SUCCESS;
         } else {
-            // إذا لم يكن موجود أنشئه ثم أعطه الدور والصلاحيات
+            // إذا لم يكن موجود أنشئه ثم أعطه الدورين والصلاحيات
             $user = \App\Models\User::create([
                 'email' => $email,
                 'name' => $name,
@@ -50,6 +50,7 @@ class CreateAdminUser extends Command
                 'locale' => $locale
             ]);
             $user->assignRole($roleSuper);
+            $user->assignRole($roleAdmin);
             $user->syncPermissions($permissions);
             $this->info("Super Admin created: {$email}");
             $this->info("Password: {$password}");

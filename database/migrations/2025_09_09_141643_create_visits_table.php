@@ -45,8 +45,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::create('visits', function (Blueprint $table) {
-                $table->id();
-                // ...
-            });    }
+    // Drop dependent tables first to avoid foreign key constraint errors
+    Schema::dropIfExists('visit_advices');
+    Schema::dropIfExists('visit_files');
+    Schema::dropIfExists('visit_labs');
+    Schema::dropIfExists('visit_medications');
+    Schema::dropIfExists('visit_services');
+    Schema::dropIfExists('visits');
+    }
 };

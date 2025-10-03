@@ -1,5 +1,4 @@
 <?php
-// config/admin_menu.php
 return [
     [
         'label' => 'Dashboard',
@@ -10,10 +9,27 @@ return [
     ],
     [
         'label' => 'الأمراض المزمنة',
-        'icon'  => '🩺',
+        'icon' => 'fa-solid fa-heart-pulse',
         'route' => 'chronic-diseases.index',
-        'can'   => 'chronic-diseases.view',
+        'permission' => 'view_chronic_diseases',
+        'can' => 'view_chronic_diseases',
         'match' => ['chronic-diseases.*'],
+    ],
+    [
+        'label' => 'الأدوية',
+        'icon' => '💊',
+        'route' => 'medications.index',
+        'permission' => 'view_medications',
+        'can' => 'view_medications',
+        'match' => ['medications.*'],
+    ],
+    [
+        'label' => 'الإرشادات',
+        'icon' => '💡',
+        'route' => 'advices.index',
+        'permission' => 'view_advices',
+        'can' => 'view_advices',
+        'match' => ['advices.*'],
     ],
     [
         'label' => 'الخدمات',
@@ -44,10 +60,11 @@ return [
         'match' => ['visits.*'],
     ],
     [
-        'label' => 'Prescriptions',
+        'label' => 'الروشتات',
         'icon'  => '💊',
         'route' => 'prescriptions.index',
-        'can'   => 'visits.view',
+        'permission' => 'view_prescriptions',
+        'can'   => 'view_prescriptions',
         'match' => ['prescriptions.*'],
     ],
     [
@@ -69,6 +86,6 @@ return [
         'icon'  => '⚙️',
         'route' => 'admin.settings',
         'can'   => 'admin.panel',
-        'match' => ['admin.settings', 'visit-types.*', 'services.*', 'chronic-diseases.*'],
+        'match' => ['admin.settings'],
     ],
 ];
