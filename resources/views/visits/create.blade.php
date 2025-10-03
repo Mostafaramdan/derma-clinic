@@ -5,8 +5,17 @@
   <div class="row justify-content-center">
     <div class="col-lg-7">
       <div class="card shadow-lg border-0 rounded-4">
-        <div class="card-header bg-primary text-white py-3 rounded-top-4">
-          <h2 class="mb-0 fw-bold">بدء زيارة جديدة</h2>
+        <div class="card-header bg-white text-center py-3 rounded-top-4 border-bottom">
+          <span class="d-inline-block mb-2" style="font-size:2.5rem;">
+            <!-- SVG أيقونة calendar -->
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+              <rect x="3" y="5" width="18" height="16" rx="4" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
+              <rect x="7" y="2" width="2" height="4" rx="1" fill="#2563eb"/>
+              <rect x="15" y="2" width="2" height="4" rx="1" fill="#2563eb"/>
+              <rect x="3" y="9" width="18" height="2" fill="#2563eb"/>
+            </svg>
+          </span>
+          <h2 class="mb-0 fw-bold text-primary">بدء زيارة جديدة</h2>
         </div>
         <div class="card-body p-4">
           <div class="mb-4">
