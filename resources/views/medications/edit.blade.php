@@ -4,17 +4,8 @@
 <div class="container pt-4 d-flex flex-column align-items-center" style="min-height:70vh;">
     <div class="w-100" style="max-width: 900px;">
         <div class="text-center mb-4">
-            <div class="mb-2 d-flex justify-content-center" style="font-size:2.5rem;">
-                <span>
-                  <!-- أيقونة حبة دواء SVG -->
-                  <svg width="56" height="56" viewBox="0 0 24 24" fill="none">
-                    <rect x="2" y="12" width="20" height="8" rx="4" fill="#4f8cff"/>
-                    <rect x="2" y="4" width="20" height="8" rx="4" fill="#ff6f61"/>
-                    <rect x="2" y="12" width="20" height="8" rx="4" fill="#fff" fill-opacity=".15"/>
-                    <rect x="2" y="4" width="20" height="8" rx="4" fill="#fff" fill-opacity=".10"/>
-                    <rect x="2" y="4" width="20" height="16" rx="8" stroke="#2563eb" stroke-width="2.2"/>
-                  </svg>
-                </span>
+                        <div class="mb-2 d-flex justify-content-center" style="font-size:2.5rem;">
+                                <span>💊</span>
             </div>
             <h2 class="fw-bold text-primary">تعديل بيانات الدواء</h2>
         </div>

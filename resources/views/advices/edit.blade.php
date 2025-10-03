@@ -4,17 +4,8 @@
 <div class="container pt-4 d-flex flex-column align-items-center" style="min-height:70vh;">
     <div class="w-100" style="max-width: 700px;">
         <div class="text-center mb-4">
-            <div class="mb-2 d-flex justify-content-center" style="font-size:2.5rem;">
-                <span>
-                  <!-- أيقونة لمبة SVG -->
-                  <svg width="56" height="56" viewBox="0 0 24 24" fill="none">
-                    <ellipse cx="12" cy="10" rx="7" ry="7" fill="#ffe066"/>
-                    <ellipse cx="12" cy="10" rx="7" ry="7" fill="#fff" fill-opacity=".10"/>
-                    <rect x="9" y="17" width="6" height="3" rx="1.5" fill="#ffd700"/>
-                    <rect x="9" y="20" width="6" height="2" rx="1" fill="#bdbdbd"/>
-                    <ellipse cx="12" cy="10" rx="7" ry="7" stroke="#ffb300" stroke-width="2.2"/>
-                  </svg>
-                </span>
+                        <div class="mb-2 d-flex justify-content-center" style="font-size:2.5rem;">
+                                <span>💡</span>
             </div>
             <h2 class="fw-bold text-primary">تعديل الإرشاد</h2>
         </div>

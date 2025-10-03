@@ -4,11 +4,7 @@
 <div class="container py-4">
     <div class="text-center mb-2">
         <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-            <!-- SVG أيقونة activity -->
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                <path d="M3 12h3.5l2.5 7 4-14 2.5 7H21" stroke="#2563eb" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="12" cy="12" r="11" stroke="#ffd600" stroke-width="2.2" fill="#fffbe6"/>
-            </svg>
+            🧬
         </span>
         <h1 class="fw-bold text-primary">إدارة الأشعة والتحاليل</h1>
     </div>

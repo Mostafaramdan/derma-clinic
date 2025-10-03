@@ -4,11 +4,7 @@
 <div class="container py-4">
     <div class="text-center mb-2">
         <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-            <!-- SVG أيقونة لمبة -->
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                <path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.5 4.5-3.5 5.5V17a1.5 1.5 0 0 1-3 0v-2.5C6.5 13.5 5 11.5 5 9a7 7 0 0 1 7-7Z" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
-                <rect x="9" y="17" width="6" height="3" rx="1.5" fill="#2563eb"/>
-            </svg>
+            💡
         </span>
         <h1 class="fw-bold text-primary">إدارة الإرشادات</h1>
     </div>

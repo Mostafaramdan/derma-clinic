@@ -4,12 +4,7 @@
 <div class="container py-4">
     <div class="text-center mb-2">
         <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-            <!-- SVG أيقونة كبسولة -->
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                <rect x="3" y="11" width="18" height="8" rx="4" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
-                <rect x="3" y="5" width="18" height="8" rx="4" fill="#fff" stroke="#2563eb" stroke-width="2.2"/>
-                <rect x="3" y="5" width="18" height="14" rx="7" stroke="#2563eb" stroke-width="2.2"/>
-            </svg>
+            💊
         </span>
         <h1 class="fw-bold text-primary">إدارة الأدوية</h1>
     </div>
