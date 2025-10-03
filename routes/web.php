@@ -56,6 +56,16 @@ Route::middleware(['auth'])->group(function () {
     |--------------------------------------------------------------------------
     */
     Route::middleware(['role:admin'])->group(function () {
+        // إدارة الأشعة والتحاليل
+        Route::resource('radiologies', App\Http\Controllers\RadiologyController::class)
+            ->middleware([
+                'permission:view_radiologies|create_radiologies|update_radiologies|delete_radiologies'
+            ]);
+        // إدارة المعامل
+        Route::resource('labs', App\Http\Controllers\LabController::class)
+            ->middleware([
+                'permission:view_labs|create_labs|update_labs|delete_labs'
+            ]);
         // إدارة الأمراض المزمنة
         Route::resource('chronic-diseases', App\Http\Controllers\ChronicDiseaseController::class)
             ->middleware([
@@ -102,7 +112,7 @@ Route::middleware(['auth'])->group(function () {
             ->middleware([
                 'permission:view_prescriptions|create_prescriptions|update_prescriptions|delete_prescriptions'
             ]);
-        Route::get('/labs',            fn () => 'Labs')->name('labs.index')->middleware('permission:labs.manage');
+    // ...existing code...
         Route::get('/files',           fn () => 'Files')->name('files.index')->middleware('permission:files.manage');
     });
 });

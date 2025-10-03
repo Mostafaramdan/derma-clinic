@@ -1,6 +1,6 @@
-<?php
-// جميع الصلاحيات المستخدمة في النظام
-return [
+    <?php
+    // جميع الصلاحيات المستخدمة في النظام
+    return [
     'patients.view',
     'visits.view',
     'view_prescriptions', 'create_prescriptions', 'update_prescriptions', 'delete_prescriptions',
@@ -25,5 +25,7 @@ return [
     'chronic-diseases.delete',
     'view_medications', 'create_medications', 'update_medications', 'delete_medications',
     'view_advices', 'create_advices', 'update_advices', 'delete_advices',
+    'view_labs', 'create_labs', 'update_labs', 'delete_labs',
+    'view_radiologies', 'create_radiologies', 'update_radiologies', 'delete_radiologies',
     // أضف أي صلاحية جديدة هنا عند إضافة موديول جديد
 ];

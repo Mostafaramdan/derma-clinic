@@ -1,5 +1,22 @@
+    // ...existing code...
 <?php
 return [
+    [
+        'label' => 'الأشعة والتحاليل',
+        'icon' => '🧬',
+        'route' => 'radiologies.index',
+        'permission' => 'view_radiologies',
+        'can' => 'view_radiologies',
+        'match' => ['radiologies.*'],
+    ],
+    [
+        'label' => 'المعامل',
+        'icon' => '🧪',
+        'route' => 'labs.index',
+        'permission' => 'view_labs',
+        'can' => 'view_labs',
+        'match' => ['labs.*'],
+    ],
     [
         'label' => 'Dashboard',
         'icon'  => '🏠',
@@ -74,13 +91,13 @@ return [
         'can'   => 'labs.manage',
         'match' => ['labs.*'],
     ],
-    [
-        'label' => 'Files',
-        'icon'  => '📎',
-        'route' => 'files.index',
-        'can'   => 'files.manage',
-        'match' => ['files.*'],
-    ],
+    // [
+    //     'label' => 'Files',
+    //     'icon'  => '📎',
+    //     'route' => 'files.index',
+    //     'can'   => 'files.manage',
+    //     'match' => ['files.*'],
+    // ],
     [
         'label' => 'Settings',
         'icon'  => '⚙️',

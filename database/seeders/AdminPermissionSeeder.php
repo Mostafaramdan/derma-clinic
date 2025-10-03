@@ -26,8 +26,12 @@ class AdminPermissionSeeder extends Seeder
             'chronic-diseases.create',
             'chronic-diseases.update',
             'chronic-diseases.delete',
-                'view_medications', 'create_medications', 'update_medications', 'delete_medications',
-                'view_advices', 'create_advices', 'update_advices', 'delete_advices',
+            'view_medications', 'create_medications', 'update_medications', 'delete_medications',
+            'view_advices', 'create_advices', 'update_advices', 'delete_advices',
+            // صلاحيات المعامل
+            'view_labs', 'create_labs', 'update_labs', 'delete_labs',
+            // صلاحيات الأشعة والتحاليل
+            'view_radiologies', 'create_radiologies', 'update_radiologies', 'delete_radiologies',
         ];
         foreach($permissions as $perm){
             Permission::firstOrCreate(['name' => $perm, 'guard_name' => 'web']);
