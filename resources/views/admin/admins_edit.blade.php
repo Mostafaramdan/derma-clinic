@@ -13,12 +13,7 @@
 <div class="container py-4 d-flex flex-column align-items-center" style="min-height:70vh;">
   <div class="w-100" style="max-width: 600px;">
     <div class="text-center mb-4">
-      <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-          <path d="M12 3l7 4v5c0 5.25-3.5 9.25-7 11-3.5-1.75-7-5.75-7-11V7l7-4z" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
-          <path d="M12 3v18" stroke="#2563eb" stroke-width="2.2"/>
-        </svg>
-      </span>
+      <span class="d-inline-block mb-2" style="font-size:2.5rem;">🔑</span>
       <h2 class="fw-bold text-primary">Edit Admin</h2>
     </div>
     <div class="bg-white shadow rounded-4 p-4 border border-2">

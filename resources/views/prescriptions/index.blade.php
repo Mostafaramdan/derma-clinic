@@ -4,13 +4,12 @@
 <div class="container py-4">
     <!-- العنوان يظهر فقط مع الأيقونة أعلاه -->
         <div class="text-center mb-2">
-            <span class="d-inline-block mb-2" style="font-size:2.5rem;">
-                <!-- SVG أيقونة وصفة/ورقة -->
+            <span class="d-inline-block mb-2" style="font-size:2.5rem; color:#2563eb;">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
-                    <rect x="4" y="3" width="16" height="18" rx="3" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
-                    <rect x="7" y="6" width="10" height="2" rx="1" fill="#2563eb"/>
-                    <rect x="7" y="10" width="7" height="2" rx="1" fill="#2563eb"/>
-                    <rect x="7" y="14" width="5" height="2" rx="1" fill="#2563eb"/>
+                  <rect x="4" y="3" width="16" height="18" rx="3" fill="#ffd600" stroke="#2563eb" stroke-width="2.2"/>
+                  <rect x="7" y="6" width="10" height="2" rx="1" fill="#2563eb"/>
+                  <rect x="7" y="10" width="7" height="2" rx="1" fill="#2563eb"/>
+                  <rect x="7" y="14" width="5" height="2" rx="1" fill="#2563eb"/>
                 </svg>
             </span>
             <h1 class="fw-bold text-primary">إدارة الروشتات</h1>

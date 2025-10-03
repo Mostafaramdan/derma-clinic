@@ -57,7 +57,7 @@ return [
     ],
     [
         'label' => 'فريق العمل',
-        'icon'  => '👥',
+        'icon'  => '🔑',
         'route' => 'admin.admins.index',
         'can'   => 'manage-admins',
         'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],

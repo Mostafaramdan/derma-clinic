@@ -94,7 +94,7 @@
   </div>
   <div class="col-md-3 col-6">
     <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#6366f1;">�</div>
+      <div class="stat-icon" style="color:#6366f1;">🔑</div>
       <div class="stat-label">{{ __('Admins') }}</div>
       <div class="stat-value">{{ $adminsCount ?? 0 }}</div>
     </div>
