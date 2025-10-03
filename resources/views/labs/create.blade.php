@@ -1,8 +1,8 @@
 @extends('layouts.admin')
 @section('title','إضافة معمل')
 @section('content')
-<div class="container py-5 d-flex flex-column align-items-center justify-content-center" style="min-height:80vh;">
-    <div class="w-100" style="max-width: 600px;">
+<div class="container pt-4 d-flex flex-column align-items-center" style="min-height:70vh;">
+    <div class="w-100" style="max-width: 900px;">
         <div class="text-center mb-4">
             <div class="mb-2" style="font-size:2.5rem;">
                 <span class="text-primary"><i class="bi bi-flask"></i></span>
