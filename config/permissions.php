@@ -20,6 +20,7 @@
     'visits.edit',
     'visits.delete',
     'chronic-diseases.view',
+    'view_chronic_diseases',
     'chronic-diseases.create',
     'chronic-diseases.update',
     'chronic-diseases.delete',

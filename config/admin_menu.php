@@ -6,14 +6,14 @@ return [
         'route' => 'admin.dashboard',
         'can'   => null, // لأي مستخدم داخل جروب الأدمن
         'match' => ['admin.dashboard'],
-    ],
     [
-        'label' => 'الأشعة والتحاليل',
-        'icon' => '🧬',
-        'route' => 'radiologies.index',
-        'permission' => 'view_radiologies',
-        'can' => 'view_radiologies',
-        'match' => ['radiologies.*'],
+        'label' => 'الروشتات',
+        'icon'  => '📄',
+        'route' => 'prescriptions.index',
+        'permission' => 'view_prescriptions',
+        'can'   => 'view_prescriptions',
+        'match' => ['prescriptions.*'],
+    ],
     ],
     [
         'label' => 'المعامل',
@@ -85,19 +85,12 @@ return [
     ],
     [
         'label' => 'الروشتات',
-        'icon'  => '💊',
+        'icon'  => '📄',
         'route' => 'prescriptions.index',
         'permission' => 'view_prescriptions',
         'can'   => 'view_prescriptions',
         'match' => ['prescriptions.*'],
     ],
-    // [
-    //     'label' => 'Files',
-    //     'icon'  => '📎',
-    //     'route' => 'files.index',
-    //     'can'   => 'files.manage',
-    //     'match' => ['files.*'],
-    // ],
     [
         'label' => 'Settings',
         'icon'  => '⚙️',
