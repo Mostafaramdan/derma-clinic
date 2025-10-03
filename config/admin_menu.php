@@ -1,13 +1,6 @@
 <?php
 return [
     [
-        'label' => 'Dashboard',
-        'icon'  => '🏠',
-        'route' => 'admin.dashboard',
-        'can'   => null, // لأي مستخدم داخل جروب الأدمن
-        'match' => ['admin.dashboard'],
-    ],
-    [
         'label' => 'الأشعة والتحاليل',
         'icon' => '🧬',
         'route' => 'radiologies.index',
@@ -23,7 +16,13 @@ return [
         'can' => 'view_labs',
         'match' => ['labs.*'],
     ],
-
+    [
+        'label' => 'Dashboard',
+        'icon'  => '🏠',
+        'route' => 'admin.dashboard',
+        'can'   => null, // لأي مستخدم داخل جروب الأدمن
+        'match' => ['admin.dashboard'],
+    ],
     [
         'label' => 'الأمراض المزمنة',
         'icon' => 'fa-solid fa-heart-pulse',
