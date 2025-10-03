@@ -1,21 +1,32 @@
-@extends('layouts.app')
+@extends('layouts.admin')
+@section('title','إضافة أشعة/تحليل')
 @section('content')
-<div class="container">
-    <h4>إضافة أشعة/تحليل جديد</h4>
-    <form action="{{ route('radiologies.store') }}" method="POST">
-        @csrf
-        <div class="mb-3">
-            <label for="name" class="form-label">الاسم</label>
-            <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
-            @error('name')<div class="text-danger">{{ $message }}</div>@enderror
+<div class="container py-4">
+    <h1 class="mb-4 fw-bold text-primary">إضافة أشعة/تحليل جديد</h1>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="bg-white shadow-sm rounded-3 p-4">
+                <form method="POST" action="{{ route('radiologies.store') }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label for="name" class="form-label">اسم الأشعة/التحليل</label>
+                        <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required autofocus>
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">ملاحظات</label>
+                        <textarea name="notes" id="notes" class="form-control @error('notes') is-invalid @enderror">{{ old('notes') }}</textarea>
+                        @error('notes')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <button type="submit" class="btn btn-primary">حفظ</button>
+                    <a href="{{ route('radiologies.index') }}" class="btn btn-secondary">إلغاء</a>
+                </form>
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="notes" class="form-label">ملاحظات</label>
-            <textarea name="notes" id="notes" class="form-control">{{ old('notes') }}</textarea>
-            @error('notes')<div class="text-danger">{{ $message }}</div>@enderror
-        </div>
-        <button type="submit" class="btn btn-success">حفظ</button>
-        <a href="{{ route('radiologies.index') }}" class="btn btn-secondary">إلغاء</a>
-    </form>
+    </div>
 </div>
 @endsection
