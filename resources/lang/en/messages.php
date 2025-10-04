@@ -246,6 +246,8 @@
         'labs_files' => 'Labs/Files',
         'photos' => 'Photos',
         'billing' => 'Billing',
+        'delete' => 'Delete',
+
     ],
     'patients' => [
         'title' => 'Patients',

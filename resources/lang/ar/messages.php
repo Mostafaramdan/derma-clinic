@@ -1,4 +1,4 @@
-    <?php
+<?php
     return [
         "permissions.patients.update" => "تحديث بيانات المريض",
         "permissions.patients.view" => "عرض المرضى",
@@ -8,7 +8,7 @@
         "permissions.visits.view" => "عرض الزيارات",
         "permissions.visits.create" => "إضافة زيارة",
         "permissions.visits.edit" => "تعديل زيارة",
-        "permissions.visits.delete" => "حذف زيارة",
+        "permissions.visits.delete" => "حذف الزيارة",
         "permissions.visits.update" => "تحديث زيارة",
         "permissions.labs.manage" => "إدارة المعامل",
         "permissions.files.manage" => "إدارة الملفات",
@@ -252,6 +252,7 @@
         'labs_files' => 'المعامل/الملفات',
         'photos' => 'الصور',
         'billing' => 'الفاتورة',
+        'delete' => 'حذف الزيارة',
     ],
     'patients' => [
         'title' => 'المرضى',

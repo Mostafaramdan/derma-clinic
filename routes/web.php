@@ -105,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/visits', [App\Http\Controllers\VisitController::class, 'store'])->name('visits.store');
     Route::get('/visits/{visit}/edit', [App\Http\Controllers\VisitController::class, 'edit'])->name('visits.edit');
     Route::put('/visits/{visit}', [App\Http\Controllers\VisitController::class, 'update'])->name('visits.update');
+    Route::delete('/visits/{visit}', [App\Http\Controllers\VisitController::class, 'destroy'])->name('visits.destroy');
 
         // باقي القوائم الأساسية
     Route::get('/visits', [App\Http\Controllers\VisitController::class, 'index'])->name('visits.index')->middleware('permission:visits.view');

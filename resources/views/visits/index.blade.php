@@ -36,6 +36,11 @@
           <td>{{ $visit->created_at->format('Y-m-d H:i') }}</td>
           <td>
             <a href="{{ route('visits.edit', $visit) }}" class="btn btn-sm btn-primary">@lang('messages.visits.show_edit')</a>
+            <form action="{{ route('visits.destroy', $visit) }}" method="POST" onsubmit="return confirm('هل أنت متأكد من حذف الزيارة؟');" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-sm">@lang('messages.visits.delete')</button>
+            </form>
           </td>
         </tr>
         @empty
