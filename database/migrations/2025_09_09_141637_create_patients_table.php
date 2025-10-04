@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('age_months')->nullable(); // 0..11
             $table->enum('gender', ['male','female','other'])->nullable();
             $table->enum('marital_status', ['single','married','other'])->nullable();
-            $table->string('occupation')->nullable();
+            $table->string('job')->nullable();
             $table->string('address')->nullable();
             $table->string('phone')->nullable()->index();
             $table->text('notes')->nullable();

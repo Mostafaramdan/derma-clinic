@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use App\Models\Visit;
 use App\Models\Patient;
 use App\Models\VisitType;
+use App\Models\ChronicDisease;
+use App\Models\Service;
+
 
 class VisitController extends Controller
 {
@@ -13,13 +16,17 @@ class VisitController extends Controller
      */
     public function update(Request $request, Visit $visit)
     {
-        dd($request->all());
         // تحويل locations إلى array إذا كانت JSON string
         if ($request->has('exam.locations') && is_string($request->input('exam.locations'))) {
             $decoded = json_decode($request->input('exam.locations'), true);
             if (is_array($decoded)) {
                 $request->merge(['exam' => array_merge($request->input('exam', []), ['locations' => $decoded])]);
             }
+        }
+
+        $ChronicDiseaseRules = [];
+        foreach (ChronicDisease::all() as $cd) {
+            $ChronicDiseaseRules['history.chronic_' . $cd->id] = 'required|boolean';
         }
         // تحقق من صحة البيانات الأساسية
         $data = $request->validate([
@@ -34,11 +41,7 @@ class VisitController extends Controller
             'patient.phone' => 'nullable|string',
             'patient.notes' => 'nullable|string',
             // التاريخ المرضي
-            'history.dm' => 'nullable|boolean',
-            'history.htn' => 'nullable|boolean',
-            'history.drug_allergy' => 'nullable|boolean',
-            'history.pregnant' => 'nullable|boolean',
-            'history.lactation' => 'nullable|boolean',
+            ...$ChronicDiseaseRules,
             'history.other_diseases' => 'nullable|string',
             'history.notes' => 'nullable|string',
             // الكشف
@@ -64,58 +67,57 @@ class VisitController extends Controller
             // الفاتورة والخدمات
             'services' => 'nullable|array',
         ]);
-
         // تحديث بيانات المريض
-        $patient = $visit->patient;
-        $patient->fill($data['patient'] ?? []);
-        $patient->history = $data['history'] ?? [];
-        $patient->save();
+       $visit->patient->update($data['patient'] ?? []);
+
+        // تحديث التاريخ المرضي
+        $visit->patient->updateChronicDiseases($data['history'] ?? []);
 
         // تحديث بيانات الكشف
-        $visit->exam = $data['exam'] ?? [];
+        // $visit->exam = $data['exam'] ?? [];
 
-        // تحديث الروشتة
-        $visit->medications = $data['rx']['meds'] ?? [];
-        $visit->advices = $data['rx']['advices'] ?? [];
+        // // تحديث الروشتة
+        // $visit->medications = $data['rx']['meds'] ?? [];
+        // $visit->advices = $data['rx']['advices'] ?? [];
 
-        // تحديث التحاليل
-        $visit->labs = $data['labs'] ?? [];
+        // // تحديث التحاليل
+        // $visit->labs = $data['labs'] ?? [];
 
-        // تحديث الملفات
-        $visit->files = $data['files'] ?? [];
+        // // تحديث الملفات
+        // $visit->files = $data['files'] ?? [];
 
-        // تحديث الصور
-        // حذف الصور القديمة إذا تم رفع صور جديدة
-        if (!empty($data['photos']['files'])) {
-            $visit->photos()->delete();
-            foreach ($data['photos']['files'] as $file) {
-                if ($file) {
-                    $path = $file->store('photos', 'public');
-                    $visit->photos()->create([
-                        'file_path' => $path,
-                        'description' => $data['photos']['note'] ?? '',
-                    ]);
-                }
-            }
-        }
+        // // تحديث الصور
+        // // حذف الصور القديمة إذا تم رفع صور جديدة
+        // if (!empty($data['photos']['files'])) {
+        //     $visit->photos()->delete();
+        //     foreach ($data['photos']['files'] as $file) {
+        //         if ($file) {
+        //             $path = $file->store('photos', 'public');
+        //             $visit->photos()->create([
+        //                 'file_path' => $path,
+        //                 'description' => $data['photos']['note'] ?? '',
+        //             ]);
+        //         }
+        //     }
+        // }
 
-        // تحديث الخدمات والفاتورة
-        $visit->services = $data['services'] ?? [];
+        // // تحديث الخدمات والفاتورة
+        // $visit->services = $data['services'] ?? [];
 
-        $visit->save();
+        // $visit->save();
 
         return redirect()->route('visits.edit', $visit)->with('success', 'تم تحديث بيانات الزيارة بنجاح');
     }
     public function index()
     {
-        $visits = \App\Models\Visit::with(['patient', 'visitType'])->orderByDesc('id')->get();
+        $visits = Visit::with(['patient', 'visitType'])->orderByDesc('id')->get();
         return view('visits.index', compact('visits'));
     }
     public function create(Request $request)
     {
     $patient = Patient::findOrFail($request->patient);
     $visitTypes = VisitType::all();
-    $services = \App\Models\Service::where('is_active', true)->orderByDesc('id')->get();
+    $services = Service::where('is_active', true)->orderByDesc('id')->get();
     return view('visits.create', compact('patient', 'visitTypes', 'services'));
     }
 
@@ -131,7 +133,7 @@ class VisitController extends Controller
             'visit_code' => $this->generateVisitCode(),
             // يمكن إضافة حقول أخرى لاحقاً
         ]);
-        return redirect()->route('visits.edit', $visit)->with('success', 'تم إنشاء الزيارة بنجاح');
+        return redirect()->route('visits.index')->with('success', 'تم إنشاء الزيارة بنجاح');
     }
 
     /**
@@ -141,7 +143,7 @@ class VisitController extends Controller
     {
         do {
             $code = str_pad(strval(random_int(0, 9999999999)), 10, '0', STR_PAD_LEFT);
-        } while (\App\Models\Visit::where('visit_code', $code)->exists());
+        } while (Visit::where('visit_code', $code)->exists());
         return $code;
     }
 
@@ -151,8 +153,13 @@ class VisitController extends Controller
     public function edit(Visit $visit)
     {
         $visit->load(['patient', 'medications', 'advices', 'labs', 'files', 'photos', 'invoice']);
-        $chronicDiseases = \App\Models\ChronicDisease::all();
-        $services = \App\Models\Service::where('is_active', true)->orderByDesc('id')->get();
+        $chronicDiseases = ChronicDisease::all();
+        $services = Service::where('is_active', true)->orderByDesc('id')->get();
         return view('visits.edit', compact('visit', 'chronicDiseases', 'services'));
+    }
+    public function destroy(Visit $visit)
+    {
+        $visit->delete();
+        return redirect()->route('visits.index')->with('success', 'تم حذف الزيارة بنجاح');
     }
 }

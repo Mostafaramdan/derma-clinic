@@ -12,7 +12,7 @@ class Patient extends Model
 
     protected $fillable = [
         'ref_code','name','age_years','age_months','gender','marital_status',
-        'occupation','address','phone','notes'
+        'job','address','phone','notes'
     ];
 
     public function visits(){ return $this->hasMany(Visit::class); }
@@ -22,5 +22,26 @@ class Patient extends Model
         return $this->belongsToMany(ChronicDisease::class, 'patient_chronic_disease')
                     ->withPivot(['since','notes'])
                     ->withTimestamps();
+    }
+
+    public function updateChronicDiseases(array $data)
+    {
+        $syncData = [];
+        foreach ($data as $field => $value) {
+            if (str_starts_with($field, 'chronic_') && is_numeric($value)) {
+                $syncData[] = [
+                    'chronic_disease_id' => (int) str_replace('chronic_', '', $field),
+                    'patient_id' => $this->id,
+                    'since' => $value ? now()->toDateString() : null
+                ];
+            }else{
+                $syncData[] = [
+                    'notes' => $data['other_diseases'] ?? null,
+                    'patient_id' => $this->id,
+                    'since' => null
+                ];
+            }
+        }
+        ChronicDisease::insert($syncData);
     }
 }

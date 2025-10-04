@@ -36,7 +36,7 @@
         @if(isset($chronicDiseases) && $chronicDiseases->count())
           @foreach($chronicDiseases->take(5) as $cd)
             <div class="field quarter">
-              <label>{{ $cd->name['ar'] ?? $cd->name['en'] ?? '—' }}</label>
+              <label>{{ $cd->localName() }}</label>
               <select name="history[chronic_{{ $cd->id }}]">
                 <option value="0" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==0)>@lang('messages.patient_basic.no')</option>
                 <option value="1" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==1)>@lang('messages.patient_basic.yes')</option>
@@ -53,7 +53,6 @@
           <div style="display:flex;flex-wrap:wrap;gap:12px;">
             @foreach($patient->chronicDiseases as $cd)
               <div class="chronic-card" style="background:#f8fafc;border-radius:10px;padding:10px 18px;box-shadow:0 2px 8px rgba(37,99,235,.04);min-width:120px;">
-                <div style="font-weight:700;font-size:16px;">{{ $cd->name['ar'] ?? $cd->name['en'] ?? '—' }}</div>
                 @if($cd->pivot->since)
                   <div style="font-size:13px;color:#555;margin-top:2px;">@lang('messages.patient_basic.since'): {{ $cd->pivot->since }}</div>
                 @endif

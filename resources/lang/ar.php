@@ -31,7 +31,7 @@ return [
   'marital_status' => 'الحالة الاجتماعية',
   'single' => 'أعزب',
   'married' => 'متزوج',
-  'occupation' => 'المهنة',
+  'job' => 'المهنة',
   'address' => 'العنوان',
   'phone' => 'الهاتف',
   'email' => 'البريد الإلكتروني',

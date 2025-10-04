@@ -46,8 +46,8 @@
           </select>
         </div>
         <div class="col-md-6">
-          <label for="occupation" class="form-label">@lang('messages.patients.occupation')</label>
-          <input type="text" name="occupation" id="occupation" class="form-control" value="{{ $patient->occupation }}">
+          <label for="job" class="form-label">@lang('messages.patients.job')</label>
+          <input type="text" name="job" id="job" class="form-control" value="{{ $patient->job }}">
         </div>
         <div class="col-md-6">
           <label for="address" class="form-label">@lang('messages.patients.address')</label>

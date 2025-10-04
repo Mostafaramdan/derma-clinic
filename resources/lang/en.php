@@ -93,7 +93,7 @@ return [
     'phone' => 'Phone',
     'email' => 'Email',
     'address' => 'Address',
-    'occupation' => 'Occupation',
+    'job' => 'Occupation',
     'marital_status' => 'Marital Status',
     'single' => 'Single',
     'married' => 'Married',

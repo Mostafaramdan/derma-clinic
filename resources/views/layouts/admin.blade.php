@@ -46,7 +46,7 @@
         @endphp
         @if($allowed)
           <li class="nav-item" @if($i==0) style="margin-top:20px;" @endif>
-            <a href="{{ route($item['route']) }}"
+            <a href="{{ isset($item['route']) ? route($item['route']) : '#' }}"
                class="nav-link {{ $active ? 'active' : 'text-white' }}">
               <span class="me-2">{{ $item['icon'] }}</span>
               <span>{{ __($item['label']) }}</span>

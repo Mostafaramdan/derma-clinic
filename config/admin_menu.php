@@ -79,7 +79,7 @@ return [
     [
         'label' => 'messages.sidebar.settings',
         'icon'  => '⚙️',
-        'route' => 'admin.settings',
+        // 'route' => 'admin.settings',
         'can'   => 'admin.panel',
         'match' => ['admin.settings'],
     ],

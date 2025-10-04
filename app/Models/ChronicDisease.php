@@ -16,4 +16,12 @@ class ChronicDisease extends Model
         'is_active' => 'boolean',
     ];
     public $timestamps = true;
+
+    public function localName(): string
+    {
+        if(isset($this->name[app()->getLocale()])) {
+            return $this->name[app()->getLocale()];
+        }
+        return $this->name['ar'] ?? $this->name['en'] ?? '—';
+    }
 }

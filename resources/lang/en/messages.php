@@ -273,7 +273,7 @@
         'married' => 'Married',
         'divorced' => 'Divorced',
         'widowed' => 'Widowed',
-        'occupation' => 'Occupation',
+        'job' => 'Job',
         'notes' => 'Notes',
         'save' => 'Save Patient',
         'update' => 'Update Data',

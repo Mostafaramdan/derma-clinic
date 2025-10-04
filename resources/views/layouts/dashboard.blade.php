@@ -81,7 +81,7 @@
       @foreach((array) $menu as $item)
         @php
           $can       = $item['can']   ?? null;
-          $routeName = $item['route'] ?? null;
+          $routeName = isset($item['route']) ? $item['route'] : null;
           $icon      = $item['icon']  ?? '';
           $label     = $item['label'] ?? '';
           $match     = (array) ($item['match'] ?? []);
