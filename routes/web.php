@@ -90,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // لوحة الأدمن
-        Route::get('/admin', fn () => view('admin.dashboard'))->name('admin.dashboard');
+    Route::get('/admin', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/admin/settings', fn () => view('admin.settings'))->name('admin.settings');
 
         // إدارة الخدمات
