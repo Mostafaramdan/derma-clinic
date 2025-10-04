@@ -41,6 +41,32 @@
     <div style="margin-top:18px;text-align:end;">
       <button type="button" id="selectTemplateConfirm" class="btn primary" disabled>إدراج القالب</button>
     </div>
+    <style>
+      #templateList .tmpl-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background 0.15s;
+      }
+      #templateList .tmpl-row.selected {
+        background: #e0e7ff;
+      }
+      #templateList .tmpl-radio {
+        accent-color: #3b82f6;
+        width: 18px;
+        height: 18px;
+        margin: 0 6px 0 0;
+      }
+      #templateList .tmpl-label {
+        font-weight: 700;
+        font-size: 1.08em;
+        color: #1e293b;
+        flex: 1;
+      }
+    </style>
   </div>
 </div>
 <script>
@@ -59,16 +85,42 @@ document.addEventListener('DOMContentLoaded', function() {
       // TODO: Load templates via AJAX or from window.prescriptionTemplates
       listDiv.innerHTML = '';
       if (window.prescriptionTemplates) {
-        window.prescriptionTemplates.forEach(function(tmpl) {
+        window.prescriptionTemplates.forEach(function(tmpl, idx) {
           const row = document.createElement('div');
-          row.textContent = tmpl.name;
-          row.style.cssText = 'padding:10px 0;cursor:pointer;border-bottom:1px solid #eee;';
+          row.className = 'tmpl-row';
           row.dataset.id = tmpl.id;
-          row.addEventListener('click', function() {
-            listDiv.querySelectorAll('div').forEach(d=>d.style.background='');
-            row.style.background = '#e0e7ff';
+          row.tabIndex = 0;
+          // Radio button
+          const radio = document.createElement('input');
+          radio.type = 'radio';
+          radio.className = 'tmpl-radio';
+          radio.name = 'templateRadio';
+          radio.value = tmpl.id;
+          radio.style.marginLeft = '4px';
+          // Label
+          const label = document.createElement('span');
+          label.className = 'tmpl-label';
+          label.textContent = tmpl.name;
+          row.appendChild(radio);
+          row.appendChild(label);
+          // Click/keyboard select
+          function selectRow() {
+            listDiv.querySelectorAll('.tmpl-row').forEach(d=>{
+              d.classList.remove('selected');
+              d.querySelector('input[type=radio]').checked = false;
+            });
+            row.classList.add('selected');
+            radio.checked = true;
             selectedTemplateId = tmpl.id;
             confirmBtn.disabled = false;
+          }
+          row.addEventListener('click', selectRow);
+          row.addEventListener('keydown', function(e){
+            if(e.key==='Enter'||e.key===' '){ selectRow(); e.preventDefault(); }
+          });
+          radio.addEventListener('click', function(e){
+            selectRow();
+            e.stopPropagation();
           });
           listDiv.appendChild(row);
         });
