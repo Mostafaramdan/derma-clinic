@@ -39,13 +39,14 @@ class Visit extends Model
 
     protected $casts = [
         'body_spots' => 'array',
-        'follow_up_on' => 'date'
+        'follow_up_on' => 'date',
+        'diagnosis' => 'array',
     ];
 
     protected $fillable = [
         'patient_id','visit_type_id','visit_code','created_by','status',
         'skin_type','chief_complaint','severity','duration_bucket','onset',
-        'course','diagnosis','diagnosis_notes','follow_up_on','body_spots',
+        'course','diagnosis','follow_up_on','body_spots',
         'clinical_picture'
     ];
 

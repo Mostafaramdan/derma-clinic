@@ -31,17 +31,20 @@
 
   // ===== Skin types selector =====
   (function(){
-    const wrap = document.getElementById('skinTypes');
-    const input = document.getElementById('skinTypeInput');
-    if(!wrap) return;
-    wrap.querySelectorAll('.skin-card').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        wrap.querySelectorAll('.skin-card').forEach(c=>c.classList.remove('active'));
-        card.classList.add('active');
-        input.value = card.dataset.value;
+      const wrap = document.getElementById('skinTypes');
+      const input = document.getElementById('skinTypeInput');
+      if(!wrap) return;
+      // عند تحميل الصفحة: فعل العنصر المختار بناءً على قيمة input
+      const selectedValue = input.value;
+      wrap.querySelectorAll('.skin-card').forEach(card=>{
+        if(card.dataset.value === selectedValue) card.classList.add('active');
+        card.addEventListener('click', ()=>{
+          wrap.querySelectorAll('.skin-card').forEach(c=>c.classList.remove('active'));
+          card.classList.add('active');
+          input.value = card.dataset.value;
+        });
       });
-    });
-  })();
+    })();
 
   // ===== BodyPicker — add-by-click default, tools above, X/Y disabled + touch =====
   (function(){
@@ -238,8 +241,13 @@
     function bindRow(tr){
       const input=tr.querySelector('.advice-input');
       const presets=tr.querySelector('.advice-presets');
-      presets.addEventListener('change',()=>{ if(presets.value) input.value=presets.value; });
-      tr.querySelector('.advice-remove').addEventListener('click',()=>{ if(body.children.length>1) tr.remove(); });
+      if (presets && input) {
+        presets.addEventListener('change',()=>{ if(presets.value) input.value=presets.value; });
+      }
+      const removeBtn = tr.querySelector('.advice-remove');
+      if (removeBtn) {
+        removeBtn.addEventListener('click',()=>{ if(body.children.length>1) tr.remove(); });
+      }
     }
     body.querySelectorAll('tr').forEach(bindRow);
 

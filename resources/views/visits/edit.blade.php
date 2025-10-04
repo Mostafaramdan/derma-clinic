@@ -91,7 +91,45 @@
   <script src="{{ asset('js/visit.js') }}"></script>
 @endpush
 
+@php
+  $prescriptionTemplatesJs = $prescriptionTemplates->map(function($tmpl) {
+    return [
+      'id' => $tmpl->id,
+      'name' => $tmpl->name,
+      'medications' => $tmpl->medications->map(function($m) {
+        return [ 'name' => $m->name ];
+      })->values(),
+      'advices' => $tmpl->advices->map(function($a) {
+        return [ 'text' => $a->name ];
+      })->values(),
+    ];
+  })->values();
+@endphp
+
+@push('scripts')
+<script>
+  window.prescriptionTemplates = {!! json_encode($prescriptionTemplatesJs, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!};
+  window.allMedicationsList = {!! json_encode($allMedications->pluck('name')->values(), JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES) !!};
+</script>
+@endpush
+
 @section('content')
+@php
+  $prescriptionTemplatesJs = $prescriptionTemplates->map(function($tmpl) {
+    return [
+      'id' => $tmpl->id,
+      'name' => $tmpl->name,
+      'medications' => $tmpl->medications->map(function($m) {
+        return [ 'name' => $m->name ];
+      })->values(),
+      'advices' => $tmpl->advices->map(function($a) {
+        return [ 'text' => $a->name ];
+      })->values(),
+    ];
+  })->values();
+@endphp
+<script>
+</script>
 <div class="container">
   <form id="visitForm" method="POST" action="{{ route('visits.update', $visit->id) }}" enctype="multipart/form-data">
   <div id="clientErrors" style="display:none;margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;"></div>
@@ -181,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function(){
     <div class="tabpanels">
   <div class="tabpanel" id="tab-basic" role="tabpanel" aria-labelledby="tab-basic-btn" aria-hidden="false">@include('visits.partials.patient-basic', ['patient' => $visit->patient, 'chronicDiseases' => $chronicDiseases, 'visit' => $visit])</div>
       <div class="tabpanel" id="tab-exam" role="tabpanel" aria-labelledby="tab-exam-btn" aria-hidden="true">@include('visits.partials.exam', ['visit' => $visit])</div>
-      <div class="tabpanel" id="tab-rx" role="tabpanel" aria-labelledby="tab-rx-btn" aria-hidden="true">@include('visits.partials.rx-advices', ['medications' => $visit->medications, 'advices' => $visit->advices])</div>
+  <div class="tabpanel" id="tab-rx" role="tabpanel" aria-labelledby="tab-rx-btn" aria-hidden="true">@include('visits.partials.rx-advices', ['medications' => $visit->medications, 'advices' => $visit->advices, 'allMedications' => $allMedications])</div>
       <div class="tabpanel" id="tab-labs" role="tabpanel" aria-labelledby="tab-labs-btn" aria-hidden="true">@include('visits.partials.labs-files', ['labs' => $visit->labs, 'files' => $visit->files])</div>
       <div class="tabpanel" id="tab-photos" role="tabpanel" aria-labelledby="tab-photos-btn" aria-hidden="true">@include('visits.partials.photos', ['photos' => $visit->photos])</div>
       <div class="tabpanel" id="tab-billing" role="tabpanel" aria-labelledby="tab-billing-btn" aria-hidden="true">@include('visits.partials.billing', ['services' => $services, 'invoice' => $visit->invoice])</div>

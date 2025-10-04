@@ -16,11 +16,11 @@ class VisitController extends Controller
      */
     public function update(Request $request, Visit $visit)
     {
-        // تحويل locations إلى array إذا كانت JSON string
-        if ($request->has('exam.locations') && is_string($request->input('exam.locations'))) {
-            $decoded = json_decode($request->input('exam.locations'), true);
+        // تحويل body_spots إلى array إذا كانت JSON string
+        if ($request->has('exam.body_spots') && is_string($request->input('exam.body_spots'))) {
+            $decoded = json_decode($request->input('exam.body_spots'), true);
             if (is_array($decoded)) {
-                $request->merge(['exam' => array_merge($request->input('exam', []), ['locations' => $decoded])]);
+                $request->merge(['exam' => array_merge($request->input('exam', []), ['body_spots' => $decoded])]);
             }
         }
 
@@ -28,6 +28,7 @@ class VisitController extends Controller
         foreach (ChronicDisease::all() as $cd) {
             $ChronicDiseaseRules['history.chronic_' . $cd->id] = 'required|boolean';
         }
+
         // تحقق من صحة البيانات الأساسية
         $data = $request->validate([
             // بيانات المريض الأساسية
@@ -50,9 +51,10 @@ class VisitController extends Controller
             'exam.severity' => 'nullable|integer',
             'exam.duration' => 'nullable|string',
             'exam.clinical_picture' => 'nullable|string',
-            'exam.locations' => 'nullable|array',
+            'exam.body_spots' => 'nullable|array',
             'exam.dx' => 'nullable|array',
             'exam.follow_up_at' => 'nullable|date',
+            'exam.diagnosis' => 'nullable|array',
             // الروشتة والإرشادات
             'rx.meds' => 'nullable|array',
             'rx.advices_enabled' => 'nullable|boolean',
@@ -70,24 +72,14 @@ class VisitController extends Controller
         // تحديث بيانات المريض
        $visit->patient->update($data['patient'] ?? []);
 
+        // تحديث التاريخ المرضي
+        $visit->patient->updateChronicDiseases($data['history'] ?? [], $visit->id);
+        // تحديث بيانات الكشف (exam)
+        $visit->update($data['exam'] ?? []);
+        // الحقول الأساسية
 
-    // تحديث التاريخ المرضي
-    $visit->patient->updateChronicDiseases($data['history'] ?? [], $visit->id);
-
-    // تحديث بيانات الكشف (exam)
-    $exam = $data['exam'] ?? [];
+        $visit->update($data['exam'] ?? []);
     // الحقول الأساسية
-    $visit->skin_type = $exam['skin_type'] ?? null;
-    $visit->chief_complaint = $exam['chief_complaint'] ?? null;
-    $visit->severity = $exam['severity'] ?? null;
-    $visit->duration_bucket = $exam['duration'] ?? null;
-    $visit->diagnosis = isset($exam['dx'][0]['name']) ? $exam['dx'][0]['name'] : null;
-    $visit->diagnosis_notes = isset($exam['dx'][0]['note']) ? $exam['dx'][0]['note'] : null;
-    $visit->follow_up_on = $exam['follow_up_at'] ?? null;
-    // Body Picker
-    $visit->body_spots = $exam['locations'] ?? [];
-    // يمكن حفظ باقي الحقول في جدول آخر أو json حسب الحاجة
-    $visit->save();
 
         // // تحديث الروشتة
         // $visit->medications = $data['rx']['meds'] ?? [];
@@ -165,11 +157,16 @@ class VisitController extends Controller
      */
     public function edit(Visit $visit)
     {
-        $visit->load(['patient', 'medications', 'advices', 'labs', 'files', 'photos', 'invoice','patientChronicDiseases']);
-        $chronicDiseases = ChronicDisease::all();
-        $services = Service::where('is_active', true)->orderByDesc('id')->get();
-        // return $visit->patientChronicDiseases;
-        return view('visits.edit', compact('visit', 'chronicDiseases', 'services'));
+    $visit->load(['patient', 'medications', 'advices', 'labs', 'files', 'photos', 'invoice','patientChronicDiseases']);
+
+    $chronicDiseases = ChronicDisease::all();
+    $services = Service::where('is_active', true)->orderByDesc('id')->get();
+    $allMedications = \App\Models\Medication::orderBy('name')->get();
+
+    // Load all prescription templates with their medications and advices
+    $prescriptionTemplates = \App\Models\Prescription::with(['medications', 'advices'])->orderBy('name')->get();
+
+    return view('visits.edit', compact('visit', 'chronicDiseases', 'services', 'allMedications', 'prescriptionTemplates'));
     }
     public function destroy(Visit $visit)
     {

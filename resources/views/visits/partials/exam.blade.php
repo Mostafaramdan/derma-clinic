@@ -6,15 +6,14 @@
   <label>@lang('messages.exam.skin_type')</label>
         <div class="skin-types" id="skinTypes">
           @foreach (['I','II','III','IV','V','VI'] as $st)
-            <div class="skin-card @if(old('exam.skin_type', $visit->exam['skin_type'] ?? '') == $st) selected @endif" data-value="{{ $st }}"><div class="skin-swatch st{{ $loop->iteration }}"></div><div>{{ $st }}</div></div>
+            <div class="skin-card" data-value="{{ $st }}"><div class="skin-swatch st{{ $loop->iteration }}"></div><div>{{ $st }}</div></div>
           @endforeach
         </div>
-        <input type="hidden" id="skinTypeInput" name="exam[skin_type]" value="{{ old('exam.skin_type', $visit->exam['skin_type'] ?? '') }}">
+        <input type="hidden" id="skinTypeInput" name="exam[skin_type]" value="{{ old('exam.skin_type', $visit->skin_type ?? '') }}">
       </div>
 
       <div class="field third"><label>@lang('messages.exam.chief_complaint')</label>
-        <input name="exam[chief_complaint]" placeholder="@lang('messages.exam.chief_complaint_placeholder')" value="{{ old('exam.chief_complaint', $visit->exam['chief_complaint'] ?? '') }}">
-
+        <input name="exam[chief_complaint]" placeholder="@lang('messages.exam.chief_complaint_placeholder')" value="{{ old('exam.chief_complaint', $visit->chief_complaint ?? '') }}">
 @if ($errors->has('exam.chief_complaint'))
   <div class="field-error">{{ $errors->first('exam.chief_complaint') }}</div>
 @endif
@@ -26,7 +25,7 @@
   <div class="field-error">{{ $errors->first('exam.severity') }}</div>
 @endif
           @foreach ([1=>__('messages.exam.mild'),2=>__('messages.exam.moderate'),3=>__('messages.exam.severe'),4=>__('messages.exam.very_severe')] as $k=>$v)
-            <option value="{{ $k }}" @selected(old('exam.severity', $visit->exam['severity'] ?? null)==$k)>@lang('messages.exam.'.($k==1?'mild':($k==2?'moderate':($k==3?'severe':'very_severe'))))</option>
+            <option value="{{ $k }}" @selected(($visit->severity ?? null)==$k)>@lang('messages.exam.'.($k==1?'mild':($k==2?'moderate':($k==3?'severe':'very_severe'))))</option>
           @endforeach
         </select>
       </div>
@@ -43,7 +42,7 @@
             '6-12m'=>__('messages.exam.six_to_twelve_months'),
             '>12m'=>__('messages.exam.more_than_year')
           ] as $k=>$v)
-            <option value="{{ $k }}" @selected(old('exam.duration', $visit->exam['duration'] ?? null)==$k)>@lang('messages.exam.'.(
+            <option value="{{ $k }}" @selected(($visit->duration_bucket ?? null)==$k)>@lang('messages.exam.'.(
               $k=='<1m'?'less_than_month':
               ($k=='1-3m'?'one_to_three_months':
               ($k=='3-6m'?'three_to_six_months':
@@ -54,7 +53,6 @@
 
       <div class="field third"><label>@lang('messages.exam.clinical_picture')</label>
         <textarea name="exam[clinical_picture]" placeholder="@lang('messages.exam.clinical_picture_placeholder')">{{ old('exam.clinical_picture', $visit->exam['clinical_picture'] ?? '') }}</textarea>
-
 @if ($errors->has('exam.clinical_picture'))
   <div class="field-error">{{ $errors->first('exam.clinical_picture') }}</div>
 @endif
@@ -71,18 +69,17 @@
     <div class="bodypicker" id="BodyPicker" aria-label="@lang('messages.exam.body_map')">
       <div class="bp-title">@lang('messages.exam.distribution')</div>
       <div class="bp-canvas" id="bpCanvas">
-        <img id="bpImage" class="bp-img" alt="Body Front" draggable="false" src="{{ $visit->bp_image_url ?? 'https://api.cefour.com/storage/image/anatomy_68bc89752e694.png' }}">
+  <img id="bpImage" class="bp-img" alt="Body Front" draggable="false"  src="{{ $visit->bp_image_url ?? 'https://api.cefour.com/storage/image/anatomy_68bc89752e694.png' }}">
         {{-- نقاط ديناميكية بالـ JS --}}
       </div>
     </div>
-    <input type="hidden" id="locationsInput" name="exam[locations]" value='@json($visit->exam['locations'] ?? [])'>
-  <input type="hidden" id="locationsInput" name="exam[locations]" value='@json(old('exam.locations', $visit->exam['locations'] ?? []))'>
-@if ($errors->has('exam.locations'))
-  <div class="field-error">{{ $errors->first('exam.locations') }}</div>
-@endif
-@if ($errors->has('exam.locations'))
-  <div class="field-error">{{ $errors->first('exam.locations') }}</div>
-@endif
+    <input type="hidden" id="locationsInput" name="exam[body_spots]" value='@json($visit->body_spots ?? [])'>
+        @if ($errors->has('exam.body_spots'))
+            <div class="field-error">{{ $errors->first('exam.body_spots') }}</div>
+        @endif
+        @if ($errors->has('exam.body_spots'))
+            <div class="field-error">{{ $errors->first('exam.body_spots') }}</div>
+        @endif
 
     {{-- جدول التشخيص --}}
     <div class="row" style="margin-top:12px; margin-bottom: 12px;">
@@ -95,20 +92,19 @@
           <table>
             <thead><tr><th>@lang('messages.exam.diagnosis')</th><th>@lang('messages.exam.diagnosis_note')</th><th>@lang('messages.exam.remove')</th></tr></thead>
             <tbody id="dxBody">
-              @php $dxList = old('exam.dx', $visit->exam['dx'] ?? [['name'=>'','note'=>'']]); @endphp
-              @foreach ($dxList as $row)
+              @php $dxList = old('exam.dx', $visit->diagnosis ?? [['name'=>'','note'=>'']]); @endphp
+              @for ($i = 0; $i < count($dxList); $i++)
                 <tr>
-                  <td><input name="exam[dx][{{ $loop->index }}][name]" value="{{ old('exam.dx.'.$loop->index.'.name', $row['name']) }}"></td>
-                  <td><input name="exam[dx][{{ $loop->index }}][note]" value="{{ old('exam.dx.'.$loop->index.'.note', $row['note']) }}"></td>
+                  <td><input name="exam[diagnosis][{{ $i }}][name]" value="{{ $dxList[$i]['name'] }}"></td>
+                  <td><input name="exam[diagnosis][{{ $i }}][note]" value="{{ $dxList[$i]['note'] }}"></td>
                   <td><button class="btn danger dx-remove" type="button">@lang('messages.exam.remove')</button></td>
                 </tr>
-              @endforeach
+              @endfor
             </tbody>
           </table>
         </div>
       </div>
   <div class="field third"><label>@lang('messages.exam.follow_up_at')</label><input type="date" name="exam[follow_up_at]" value="{{ old('exam.follow_up_at', $visit->exam['follow_up_at'] ?? '') }}"></div>
-
     </div>
   </div>
 </div>

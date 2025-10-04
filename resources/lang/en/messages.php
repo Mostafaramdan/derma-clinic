@@ -165,6 +165,9 @@
         'collect_now' => 'Collect Now',
     ],
     'exam' => [
+        'diagnosis_note' => 'Diagnosis Note',
+        'clinical_picture_placeholder' => 'Clinical picture — Grade 2',
+        'chief_complaint_placeholder' => 'Acne — Deep nodules',
         'title' => 'Exam',
         'skin_type' => 'Skin Type (Fitzpatrick)',
         'chief_complaint' => 'Chief Complaint',
