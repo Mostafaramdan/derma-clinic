@@ -58,11 +58,11 @@
 
     <hr class="border-secondary my-4">
 
-    <div class="small text-secondary mb-2">{{ __('Account') }}</div>
+    <div class="small text-secondary mb-2">{{ __('messages.sidebar.account') }}</div>
     <div class="d-grid gap-2">
-      <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-light">{{ __('My Dashboard') }}</a>
+      <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-light">{{ __('messages.sidebar.my_dashboard') }}</a>
       <form method="post" action="{{ route('logout') }}">@csrf
-        <button class="btn btn-sm btn-outline-danger w-100">{{ __('Logout') }}</button>
+        <button class="btn btn-sm btn-outline-danger w-100">{{ __('messages.sidebar.logout') }}</button>
       </form>
     </div>
   </aside>

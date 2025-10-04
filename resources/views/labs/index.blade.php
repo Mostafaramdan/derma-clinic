@@ -1,11 +1,11 @@
 @extends('layouts.admin')
-@section('title','المعامل')
+@section('title', __('messages.labs.title'))
 @section('content')
 <div class="container py-4">
-    <h1 class="mb-4 fw-bold text-primary text-center">إدارة المعامل</h1>
+    <h1 class="mb-4 fw-bold text-primary text-center">{{ __('messages.labs.manage') }}</h1>
     <div class="row mb-4 justify-content-center">
         <div class="col-md-4">
-            <a href="{{ route('labs.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> إضافة معمل جديد</a>
+            <a href="{{ route('labs.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> {{ __('messages.labs.add_new') }}</a>
         </div>
     </div>
     @if(session('success'))
@@ -16,8 +16,8 @@
             <thead class="table-primary align-middle">
                 <tr style="font-size:1.15rem;">
                     <th style="width:70px">#</th>
-                    <th>اسم المعمل</th>
-                    <th style="width:180px">إجراءات</th>
+                    <th>{{ __('messages.labs.name') }}</th>
+                    <th style="width:180px">{{ __('messages.labs.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,17 +26,17 @@
                     <td class="fw-bold">{{ $lab->id }}</td>
                     <td>{{ $lab->name }}</td>
                     <td>
-                        <a href="{{ route('labs.edit', $lab) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
+                        <a href="{{ route('labs.edit', $lab) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> {{ __('messages.labs.edit') }}</a>
                         <form action="{{ route('labs.destroy', $lab) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('تأكيد الحذف؟')"><i class="bi bi-trash me-1"></i> حذف</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('{{ __('messages.labs.confirm_delete') }}')"><i class="bi bi-trash me-1"></i> {{ __('messages.labs.delete') }}</button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="3" class="text-center">لا توجد معامل مسجلة</td>
+                    <td colspan="3" class="text-center">{{ __('messages.labs.empty') }}</td>
                 </tr>
                 @endforelse
             </tbody>
