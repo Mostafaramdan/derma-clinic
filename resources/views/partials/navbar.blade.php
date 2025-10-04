@@ -29,7 +29,6 @@
               onmouseout="this.style.background='#f4f6fa';this.style.color='#2563eb'"
             >
               {{ app()->getLocale() === 'ar' ? 'English' : 'العربية' }}
-              ({{ app()->getLocale() }})
             </button>
           </form>
           <div class="dropdown">

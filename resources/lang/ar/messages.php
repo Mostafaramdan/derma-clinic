@@ -15,4 +15,17 @@ return [
         'admins' => 'المسؤولون',
         'prescriptions' => 'الوصفات الطبية',
     ],
+    'sidebar' => [
+        'labs' => 'المعامل',
+        'chronic_diseases' => 'الأمراض المزمنة',
+        'medications' => 'الأدوية',
+        'advices' => 'الإرشادات',
+        'services' => 'الخدمات',
+        'admins' => 'فريق العمل',
+        'roles' => 'الصلاحيات',
+        'patients' => 'المرضى',
+        'visits' => 'الزيارات',
+        'prescriptions' => 'الروشتات',
+        'settings' => 'الإعدادات',
+    ],
 ];

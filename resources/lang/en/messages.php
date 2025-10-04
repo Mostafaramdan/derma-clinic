@@ -15,4 +15,17 @@ return [
         'admins' => 'Admins',
         'prescriptions' => 'Prescriptions',
     ],
+    'sidebar' => [
+        'labs' => 'Labs',
+        'chronic_diseases' => 'Chronic Diseases',
+        'medications' => 'Medications',
+        'advices' => 'Advices',
+        'services' => 'Services',
+        'admins' => 'Team',
+        'roles' => 'Roles',
+        'patients' => 'Patients',
+        'visits' => 'Visits',
+        'prescriptions' => 'Prescriptions',
+        'settings' => 'Settings',
+    ],
 ];

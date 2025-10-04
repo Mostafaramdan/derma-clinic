@@ -1,7 +1,7 @@
 <?php
 return [
     [
-        'label' => 'المعامل',
+        'label' => 'messages.sidebar.labs',
         'icon' => '🧪',
         'route' => 'labs.index',
         'permission' => 'view_labs',
@@ -10,7 +10,7 @@ return [
     ],
 
     [
-        'label' => 'الأمراض المزمنة',
+        'label' => 'messages.sidebar.chronic_diseases',
         'icon' => '❤️',
         'route' => 'chronic-diseases.index',
         'permission' => 'view_chronic_diseases',
@@ -18,7 +18,7 @@ return [
         'match' => ['chronic-diseases.*'],
     ],
     [
-        'label' => 'الأدوية',
+        'label' => 'messages.sidebar.medications',
         'icon' => '💊',
         'route' => 'medications.index',
         'permission' => 'view_medications',
@@ -26,7 +26,7 @@ return [
         'match' => ['medications.*'],
     ],
     [
-        'label' => 'الإرشادات',
+        'label' => 'messages.sidebar.advices',
         'icon' => '💡',
         'route' => 'advices.index',
         'permission' => 'view_advices',
@@ -34,42 +34,42 @@ return [
         'match' => ['advices.*'],
     ],
     [
-        'label' => 'الخدمات',
+        'label' => 'messages.sidebar.services',
         'icon'  => '🛎️',
         'route' => 'services.index',
         'can'   => 'services.view',
         'match' => ['services.*'],
     ],
     [
-        'label' => 'فريق العمل',
+        'label' => 'messages.sidebar.admins',
         'icon'  => '🔑',
         'route' => 'admin.admins.index',
         'can'   => 'manage-admins',
         'match' => ['admin.admins.index', 'admin.admins.create', 'admin.admins.edit'],
     ],
     [
-        'label' => 'الصلاحيات',
+        'label' => 'messages.sidebar.roles',
         'icon'  => '🛡️',
         'route' => 'admin.roles.index',
         'can'   => 'manage-admins',
         'match' => ['admin.roles.index', 'admin.roles.create', 'admin.roles.edit'],
     ],
     [
-        'label' => 'Patients',
+        'label' => 'messages.sidebar.patients',
         'icon'  => '👤',
         'route' => 'patients.index',
         'can'   => 'patients.view',
         'match' => ['patients.*'],
     ],
     [
-        'label' => 'Visits',
+        'label' => 'messages.sidebar.visits',
         'icon'  => '📝',
         'route' => 'visits.index',
         'can'   => 'visits.view',
         'match' => ['visits.*'],
     ],
     [
-        'label' => 'الروشتات',
+        'label' => 'messages.sidebar.prescriptions',
         'icon'  => '📄',
         'route' => 'prescriptions.index',
         'permission' => 'view_prescriptions',
@@ -77,7 +77,7 @@ return [
         'match' => ['prescriptions.*'],
     ],
     [
-        'label' => 'Settings',
+        'label' => 'messages.sidebar.settings',
         'icon'  => '⚙️',
         'route' => 'admin.settings',
         'can'   => 'admin.panel',
