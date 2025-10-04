@@ -18,37 +18,42 @@
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7em;">3</span>
           </a>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="profileDropdown"
-             role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=2563eb&color=fff&size=36"
-                 alt="avatar" class="rounded-circle border me-2" width="36" height="36">
-            <span class="fw-bold text-dark">{{ auth()->user()->name ?? '' }}</span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-            @if(Route::has('profile.edit'))
-              <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person"></i> {{ __('Profile') }}</a></li>
-              <li><hr class="dropdown-divider"></li>
-            @endif
-            <li>
-              <form method="POST" action="{{ $localeAction ?? (Route::has('locale.set') ? route('locale.set') : url('locale')) }}" class="dropdown-item p-0">
-                @csrf
-                <select name="locale" class="form-select form-select-sm border-0" onchange="this.form.submit()" style="background:transparent;">
-                  <option value="ar" {{ app()->getLocale()==='ar' ? 'selected' : '' }}>العربية</option>
-                  <option value="en" {{ app()->getLocale()==='en' ? 'selected' : '' }}>English</option>
-                </select>
-              </form>
-            </li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                @csrf
-                <button type="submit" class="dropdown-item text-danger">
-                  <i class="bi bi-box-arrow-right"></i> {{ __('Log Out') }}
-                </button>
-              </form>
-            </li>
-          </ul>
+        <li class="nav-item d-flex align-items-center gap-2">
+          <form method="POST" action="{{ route('locale.set') }}" id="lang-switch-form" class="m-0 p-0">
+            @csrf
+            <input type="hidden" name="locale" value="{{ app()->getLocale() === 'ar' ? 'en' : 'ar' }}">
+            <button type="submit"
+              class="btn btn-sm px-3 py-1 border rounded-pill fw-bold shadow-sm"
+              style="background: #f4f6fa; color: #2563eb; font-size:1em; min-width:70px; transition: background 0.2s, color 0.2s;"
+              onmouseover="this.style.background='#2563eb';this.style.color='#fff'"
+              onmouseout="this.style.background='#f4f6fa';this.style.color='#2563eb'"
+            >
+              {{ app()->getLocale() === 'ar' ? 'English' : 'العربية' }}
+              ({{ app()->getLocale() }})
+            </button>
+          </form>
+          <div class="dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" id="profileDropdown"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="https://ui-avatars.com/api/?name={{ urlencode(auth()->user()->name ?? 'User') }}&background=2563eb&color=fff&size=36"
+                   alt="avatar" class="rounded-circle border me-2" width="36" height="36">
+              <span class="fw-bold text-dark">{{ auth()->user()->name ?? '' }}</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+              @if(Route::has('profile.edit'))
+                <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person"></i> {{ __('Profile') }}</a></li>
+                <li><hr class="dropdown-divider"></li>
+              @endif
+              <li>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                  @csrf
+                  <button type="submit" class="dropdown-item text-danger">
+                    <i class="bi bi-box-arrow-right"></i> {{ __('Log Out') }}
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
         </li>
       </ul>
     </div>

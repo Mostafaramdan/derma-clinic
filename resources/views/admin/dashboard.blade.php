@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Admin Dashboard')
+@section('title', __('messages.admin_dashboard.title'))
 
 @section('content')
 <style>
@@ -38,15 +38,15 @@
   }
 </style>
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h1 class="h4 m-0">👋 {{ __('Welcome') }}, {{ auth()->user()->name }}</h1>
-  <div class="text-muted small">{{ now()->format('Y-m-d H:i') }}</div>
+  <h1 class="h4 m-0">👋 {{ __('messages.admin_dashboard.welcome') }}, {{ auth()->user()->name }}</h1>
+  <div class="text-muted small">{{ __('messages.admin_dashboard.current_time', ['time' => now()->format('Y-m-d H:i')]) }}</div>
 </div>
 <div class="row g-3">
   <div class="col-md-3 col-6">
     <a href="{{ route('patients.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#2563eb;">👤</div>
-        <div class="stat-label">{{ __('Patients') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.patients') }}</div>
         <div class="stat-value">{{ $patientsCount ?? 0 }}</div>
       </div>
     </a>
@@ -55,7 +55,7 @@
     <a href="{{ route('visits.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#0ea5e9;">📝</div>
-        <div class="stat-label">{{ __('Visits') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.visits') }}</div>
         <div class="stat-value">{{ $visitsCount ?? 0 }}</div>
       </div>
     </a>
@@ -64,7 +64,7 @@
     <a href="{{ route('medications.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#f59e42;">💊</div>
-        <div class="stat-label">{{ __('Medications') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.medications') }}</div>
         <div class="stat-value">{{ $medicationsCount ?? 0 }}</div>
       </div>
     </a>
@@ -73,7 +73,7 @@
     <a href="{{ route('radiologies.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#eab308;">🧬</div>
-        <div class="stat-label">{{ __('Radiologies') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.radiologies') }}</div>
         <div class="stat-value">{{ $radiologiesCount ?? 0 }}</div>
       </div>
     </a>
@@ -82,7 +82,7 @@
     <a href="{{ route('labs.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#a21caf;">🧪</div>
-        <div class="stat-label">{{ __('Labs') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.labs') }}</div>
         <div class="stat-value">{{ $labsCount ?? 0 }}</div>
       </div>
     </a>
@@ -91,7 +91,7 @@
     <a href="{{ route('advices.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#16a34a;">💡</div>
-        <div class="stat-label">{{ __('Advices') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.advices') }}</div>
         <div class="stat-value">{{ $advicesCount ?? 0 }}</div>
       </div>
     </a>
@@ -100,7 +100,7 @@
     <a href="{{ route('services.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#f43f5e;">🛎️</div>
-        <div class="stat-label">{{ __('Services') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.services') }}</div>
         <div class="stat-value">{{ $servicesCount ?? 0 }}</div>
       </div>
     </a>
@@ -109,7 +109,7 @@
     <a href="{{ route('chronic-diseases.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#f87171;">❤️</div>
-        <div class="stat-label">{{ __('Chronic Diseases') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.chronic_diseases') }}</div>
         <div class="stat-value">{{ $chronicDiseasesCount ?? 0 }}</div>
       </div>
     </a>
@@ -118,7 +118,7 @@
     <a href="{{ route('admin.admins.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#6366f1;">🔑</div>
-        <div class="stat-label">{{ __('Admins') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.admins') }}</div>
         <div class="stat-value">{{ $adminsCount ?? 0 }}</div>
       </div>
     </a>
@@ -127,7 +127,7 @@
     <a href="{{ route('prescriptions.index') }}" class="text-decoration-none">
       <div class="stat-card bg-white p-3 text-center">
         <div class="stat-icon" style="color:#f472b6;">📄</div>
-        <div class="stat-label">{{ __('Prescriptions') }}</div>
+  <div class="stat-label">{{ __('messages.admin_dashboard.prescriptions') }}</div>
         <div class="stat-value">{{ $prescriptionsCount ?? 0 }}</div>
       </div>
     </a>

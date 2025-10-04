@@ -40,10 +40,10 @@ Route::post('/locale', function (\Illuminate\Http\Request $r) {
 */
 Route::middleware(['auth'])->group(function () {
 
-    // Dashboard (مرة واحدة فقط)
-    Route::get('/dashboard', fn () => view('dashboard'))
-        ->middleware(['verified']) // لو مش عايز التحقق شيلها
-        ->name('dashboard');
+    // Dashboard: redirect to admin dashboard
+    Route::get('/dashboard', function() {
+        return redirect()->route('admin.dashboard');
+    })->name('dashboard');
 
     // Profile
     Route::get('/profile',   [ProfileController::class, 'edit'])->name('profile.edit');

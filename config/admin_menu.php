@@ -1,21 +1,6 @@
 <?php
 return [
     [
-        'label' => 'Dashboard',
-        'icon'  => '🏠',
-        'route' => 'admin.dashboard',
-        'can'   => null, // لأي مستخدم داخل جروب الأدمن
-        'match' => ['admin.dashboard'],
-    [
-        'label' => 'الروشتات',
-        'icon'  => '📄',
-        'route' => 'prescriptions.index',
-        'permission' => 'view_prescriptions',
-        'can'   => 'view_prescriptions',
-        'match' => ['prescriptions.*'],
-    ],
-    ],
-    [
         'label' => 'المعامل',
         'icon' => '🧪',
         'route' => 'labs.index',
