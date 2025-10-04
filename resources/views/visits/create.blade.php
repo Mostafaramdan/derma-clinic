@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','إنشاء زيارة جديدة')
+@section('title', __('messages.visits.create_title'))
 @section('content')
 <div class="container py-5">
   <div class="row justify-content-center">
@@ -15,11 +15,11 @@
               <rect x="3" y="9" width="18" height="2" fill="#2563eb"/>
             </svg>
           </span>
-          <h2 class="mb-0 fw-bold text-primary">بدء زيارة جديدة</h2>
+          <h2 class="mb-0 fw-bold text-primary">@lang('messages.visits.start_new')</h2>
         </div>
         <div class="card-body p-4">
           <div class="mb-4">
-            <span class="fw-bold text-secondary">المريض:</span>
+            <span class="fw-bold text-secondary">@lang('messages.visits.patient'):</span>
             <span class="fw-bold text-dark">{{ $patient->name }}</span>
           </div>
           @if($errors->any())
@@ -35,17 +35,17 @@
             @csrf
             <input type="hidden" name="patient_id" value="{{ $patient->id }}">
             <div class="mb-4">
-              <label for="visit_type_id" class="form-label fw-bold">نوع الزيارة</label>
+              <label for="visit_type_id" class="form-label fw-bold">@lang('messages.visits.type')</label>
               <select name="visit_type_id" id="visit_type_id" class="form-select form-select-lg" required>
-                <option value="">اختر نوع الزيارة</option>
+                <option value="">@lang('messages.visits.select_type')</option>
                 @foreach($visitTypes as $type)
                   <option value="{{ $type->id }}">{{ $type->getNameLocalized() }}</option>
                 @endforeach
               </select>
             </div>
             <div class="d-flex justify-content-end gap-2">
-              <button type="submit" class="btn btn-success btn-lg px-5">بدء الزيارة</button>
-              <a href="{{ route('patients.index') }}" class="btn btn-secondary btn-lg px-5">إلغاء</a>
+              <button type="submit" class="btn btn-success btn-lg px-5">@lang('messages.visits.start')</button>
+              <a href="{{ route('patients.index') }}" class="btn btn-secondary btn-lg px-5">@lang('messages.visits.cancel')</a>
             </div>
           </form>
         </div>

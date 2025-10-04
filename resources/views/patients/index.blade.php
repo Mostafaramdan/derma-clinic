@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','Patients')
+@section('title', __('messages.patients.title'))
 @section('content')
 <div class="container py-4">
   <div class="text-center mb-2">
@@ -10,18 +10,18 @@
         <ellipse cx="12" cy="18" rx="8" ry="5" fill="#fffbe6" stroke="#2563eb" stroke-width="2.2"/>
       </svg>
     </span>
-    <h1 class="fw-bold text-primary">بحث عن مريض</h1>
+  <h1 class="fw-bold text-primary">@lang('messages.patients.search_patient')</h1>
   </div>
   <form method="GET" action="{{ route('patients.index') }}" class="mb-4">
     <div class="row g-2">
       <div class="col-md-3">
-        <input type="text" name="q" class="form-control" placeholder="بحث بالاسم أو الهاتف أو الكود" value="{{ request('q') }}">
+  <input type="text" name="q" class="form-control" placeholder="@lang('messages.patients.search_placeholder')" value="{{ request('q') }}">
       </div>
       <div class="col-md-2">
-        <button type="submit" class="btn btn-primary w-100">بحث</button>
+  <button type="submit" class="btn btn-primary w-100">@lang('messages.patients.search')</button>
       </div>
       <div class="col-md-2">
-  <a href="{{ route('patients.create') }}" class="btn btn-success w-100"><i class="bi bi-plus-circle me-1"></i> إضافة مريض جديد</a>
+  <a href="{{ route('patients.create') }}" class="btn btn-success w-100"><i class="bi bi-plus-circle me-1"></i> @lang('messages.patients.add_new')</a>
       </div>
     </div>
   </form>
@@ -29,11 +29,11 @@
     <table class="table table-bordered align-middle">
       <thead>
         <tr>
-          <th>الكود</th>
-          <th>الاسم</th>
-          <th>الهاتف</th>
-          <th>العنوان</th>
-          <th>إجراءات</th>
+          <th>@lang('messages.patients.ref_code')</th>
+          <th>@lang('messages.patients.name')</th>
+          <th>@lang('messages.patients.phone')</th>
+          <th>@lang('messages.patients.address')</th>
+          <th>@lang('messages.patients.actions')</th>
         </tr>
       </thead>
       <tbody>
@@ -44,12 +44,12 @@
           <td>{{ $patient->phone }}</td>
           <td>{{ $patient->address }}</td>
           <td>
-            <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
-            <a href="{{ route('visits.create', ['patient' => $patient->id]) }}" class="btn btn-sm btn-primary">زيارة جديدة</a>
+            <a href="{{ route('patients.edit', $patient) }}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square me-1"></i> @lang('messages.patients.edit')</a>
+            <a href="{{ route('visits.create', ['patient' => $patient->id]) }}" class="btn btn-sm btn-primary">@lang('messages.patients.new_visit')</a>
           </td>
         </tr>
         @empty
-        <tr><td colspan="5" class="text-center">لا يوجد مرضى</td></tr>
+  <tr><td colspan="5" class="text-center">@lang('messages.patients.empty')</td></tr>
         @endforelse
       </tbody>
     </table>

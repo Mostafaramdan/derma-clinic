@@ -159,23 +159,23 @@ document.addEventListener('DOMContentLoaded', function(){
         </div>
         <div>
           <div style="font-weight:900;font-size:1.1rem;">{{ $visit->patient->name ?? '' }}</div>
-          <small style="color:var(--muted);font-size:14px;">{{ __('visit_code') }}: {{ $visit->visit_code ?? $visit->id }} • {{ $visit->created_at->format('Y-m-d H:i') ?? '' }} • د. {{ $visit->doctor->name ?? '---' }}</small>
+          <small style="color:var(--muted);font-size:14px;">@lang('messages.visits.code'): {{ $visit->visit_code ?? $visit->id }} • {{ $visit->created_at->format('Y-m-d H:i') ?? '' }} • @lang('messages.visits.doctor'): {{ $visit->doctor->name ?? '---' }}</small>
         </div>
       </div>
       <div style="display:flex;gap:10px;">
-        <button type="submit" name="save_draft" class="btn" style="font-weight:800;padding:10px 18px;border-radius:12px;background:#fff;color:#2563eb;border:1px solid #e2e8f0;box-shadow:0 6px 14px rgba(15,23,42,.06);">{{ __('save') }} {{ __('draft') ?? 'Draft' }}</button>
-  <button type="submit" class="btn primary" form="visitForm" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">{{ __('save') }}</button>
+    <button type="submit" name="save_draft" class="btn" style="font-weight:800;padding:10px 18px;border-radius:12px;background:#fff;color:#2563eb;border:1px solid #e2e8f0;box-shadow:0 6px 14px rgba(15,23,42,.06);">@lang('messages.visits.save_draft')</button>
+  <button type="submit" class="btn primary" form="visitForm" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">@lang('messages.visits.save')</button>
       </div>
     </div>
 
     <div class="tabs" id="visitTabs" role="tablist" aria-label="Visit Tabs">
-  <button type="button" class="tab-btn" role="tab" id="tab-basic-btn" aria-controls="tab-basic" aria-selected="true"><span class="tab-dot"></span>{{ __('patient_basic') }}</button>
-  <button type="button" class="tab-btn @if($errors->has('exam.locations')) tab-error @endif" role="tab" id="tab-exam-btn" aria-controls="tab-exam" aria-selected="false"><span class="tab-dot"></span>{{ __('exam') }}</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-basic-btn" aria-controls="tab-basic" aria-selected="true"><span class="tab-dot"></span>@lang('messages.visits.patient_basic')</button>
+  <button type="button" class="tab-btn @if($errors->has('exam.locations')) tab-error @endif" role="tab" id="tab-exam-btn" aria-controls="tab-exam" aria-selected="false"><span class="tab-dot"></span>@lang('messages.visits.exam')</button>
 
-  <button type="button" class="tab-btn" role="tab" id="tab-rx-btn" aria-controls="tab-rx" aria-selected="false">{{ __('rx_advices') }}</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-labs-btn" aria-controls="tab-labs" aria-selected="false">{{ __('labs_files') }}</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-photos-btn" aria-controls="tab-photos" aria-selected="false">{{ __('photos') }}</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-billing-btn" aria-controls="tab-billing" aria-selected="false">{{ __('billing') }}</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-rx-btn" aria-controls="tab-rx" aria-selected="false">@lang('messages.visits.rx_advices')</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-labs-btn" aria-controls="tab-labs" aria-selected="false">@lang('messages.visits.labs_files')</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-photos-btn" aria-controls="tab-photos" aria-selected="false">@lang('messages.visits.photos')</button>
+  <button type="button" class="tab-btn" role="tab" id="tab-billing-btn" aria-controls="tab-billing" aria-selected="false">@lang('messages.visits.billing')</button>
     </div>
 
     <div class="tabpanels">

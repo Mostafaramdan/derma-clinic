@@ -5,17 +5,17 @@
   <div class="field-error">{{ $errors->first('advices') }}</div>
 @endif
 <div class="card">
-  <div class="head"><h3>💊 الروشتة & 💡 الإرشادات</h3></div>
+  <div class="head"><h3>@lang('messages.rx_advices.title')</h3></div>
   <div class="body">
 
     {{-- جدول الأدوية --}}
     <div class="row">
       <div class="field full">
         <div class="table-head-flex">
-          <label>جدول الأدوية</label>
-          <button type="button" id="addMedRow" class="btn primary">+ إضافة دواء</button>
+          <label>@lang('messages.rx_advices.meds_table')</label>
+          <button type="button" id="addMedRow" class="btn primary">+ @lang('messages.rx_advices.add_med')</button>
         </div>
-        <div class="note">لو اخترت “كل X ساعة” بقيمة ≥ 24 (مثلاً 48)، تُفهَم كجرعة كل 48 ساعة.</div>
+  <div class="note">@lang('messages.rx_advices.freq_hint')</div>
 
         <div class="table-wrap">
           <table class="ltr">
@@ -38,18 +38,18 @@
               @endphp
               @foreach ($meds as $i=>$m)
                 <tr>
-                  <td><input name="rx[meds][{{ $i }}][name]" value="{{ $m['name'] }}" placeholder="اسم الدواء"></td>
-                  <td><input name="rx[meds][{{ $i }}][dose]" value="{{ $m['dose'] }}" placeholder="تركيز"></td>
+                  <td><input name="rx[meds][{{ $i }}][name]" value="{{ $m['name'] }}" placeholder="@lang('messages.rx_advices.med_name')"></td>
+                  <td><input name="rx[meds][{{ $i }}][dose]" value="{{ $m['dose'] }}" placeholder="@lang('messages.rx_advices.dose')"></td>
                   <td>
                     <div class="flex-gap">
-                      <select name="rx[meds][{{ $i }}][per_day]" class="per-day"></select><span>مرة/يوم</span>
-                      <select name="rx[meds][{{ $i }}][every_hours]" class="every-hours"></select><span>ساعات</span>
+                      <select name="rx[meds][{{ $i }}][per_day]" class="per-day"></select><span>@lang('messages.rx_advices.per_day')</span>
+                      <select name="rx[meds][{{ $i }}][every_hours]" class="every-hours"></select><span>@lang('messages.rx_advices.hours')</span>
                     </div>
                     <div class="note freq-hint"></div>
                   </td>
                   <td><input type="number" min="1" name="rx[meds][{{ $i }}][days]" value="{{ $m['days'] }}"></td>
-                  <td><input name="rx[meds][{{ $i }}][note]" value="{{ $m['note'] }}" placeholder="تعليمات"></td>
-                  <td><button class="btn danger med-remove" type="button">✕</button></td>
+                  <td><input name="rx[meds][{{ $i }}][note]" value="{{ $m['note'] }}" placeholder="@lang('messages.rx_advices.instructions')"></td>
+                  <td><button class="btn danger med-remove" type="button">@lang('messages.rx_advices.remove')</button></td>
                 </tr>
               @endforeach
             </tbody>
@@ -63,7 +63,7 @@
       <div class="field full">
         <label class="inline">
           <input id="adviceActivate" type="checkbox" name="rx[advices_enabled]" value="1" @checked(old('rx.advices_enabled', filled($advices ?? [])))>
-          تفعيل الإرشادات
+          @lang('messages.rx_advices.enable_advices')
         </label>
       </div>
     </div>
@@ -72,11 +72,11 @@
       <div class="row">
         <div class="field full mt-6">
           <div class="table-head-flex">
-            <label>الإرشادات</label>
-            <button type="button" id="addAdviceRow" class="btn">+ إضافة إرشاد</button>
+            <label>@lang('messages.rx_advices.advices')</label>
+            <button type="button" id="addAdviceRow" class="btn">+ @lang('messages.rx_advices.add_advice')</button>
           </div>
           <table>
-            <thead><tr><th>التعليمات</th><th>حذف</th></tr></thead>
+            <thead><tr><th>@lang('messages.rx_advices.instructions')</th><th>@lang('messages.rx_advices.remove')</th></tr></thead>
             <tbody id="adviceBody">
               @php
                 $advs = old('rx.advices', (array)($advices ?? []));
