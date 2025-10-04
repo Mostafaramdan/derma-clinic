@@ -5,7 +5,7 @@
             'profile' => 'Profile',
             'notifications' => 'Notifications',
             'english' => 'English',
-            'arabic' => 'Arabic',
+            'arabic' => 'العربية',
         ],
         'prescriptions' => [
             'title' => 'Prescriptions',
