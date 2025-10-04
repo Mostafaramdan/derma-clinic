@@ -70,11 +70,24 @@ class VisitController extends Controller
         // تحديث بيانات المريض
        $visit->patient->update($data['patient'] ?? []);
 
-        // تحديث التاريخ المرضي
-        $visit->patient->updateChronicDiseases($data['history'] ?? []);
 
-        // تحديث بيانات الكشف
-        // $visit->exam = $data['exam'] ?? [];
+    // تحديث التاريخ المرضي
+    $visit->patient->updateChronicDiseases($data['history'] ?? [], $visit->id);
+
+    // تحديث بيانات الكشف (exam)
+    $exam = $data['exam'] ?? [];
+    // الحقول الأساسية
+    $visit->skin_type = $exam['skin_type'] ?? null;
+    $visit->chief_complaint = $exam['chief_complaint'] ?? null;
+    $visit->severity = $exam['severity'] ?? null;
+    $visit->duration_bucket = $exam['duration'] ?? null;
+    $visit->diagnosis = isset($exam['dx'][0]['name']) ? $exam['dx'][0]['name'] : null;
+    $visit->diagnosis_notes = isset($exam['dx'][0]['note']) ? $exam['dx'][0]['note'] : null;
+    $visit->follow_up_on = $exam['follow_up_at'] ?? null;
+    // Body Picker
+    $visit->body_spots = $exam['locations'] ?? [];
+    // يمكن حفظ باقي الحقول في جدول آخر أو json حسب الحاجة
+    $visit->save();
 
         // // تحديث الروشتة
         // $visit->medications = $data['rx']['meds'] ?? [];
@@ -152,9 +165,10 @@ class VisitController extends Controller
      */
     public function edit(Visit $visit)
     {
-        $visit->load(['patient', 'medications', 'advices', 'labs', 'files', 'photos', 'invoice']);
+        $visit->load(['patient', 'medications', 'advices', 'labs', 'files', 'photos', 'invoice','patientChronicDiseases']);
         $chronicDiseases = ChronicDisease::all();
         $services = Service::where('is_active', true)->orderByDesc('id')->get();
+        // return $visit->patientChronicDiseases;
         return view('visits.edit', compact('visit', 'chronicDiseases', 'services'));
     }
     public function destroy(Visit $visit)

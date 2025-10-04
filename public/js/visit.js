@@ -45,9 +45,6 @@
 
   // ===== BodyPicker — add-by-click default, tools above, X/Y disabled + touch =====
   (function(){
-    const PATIENT_ID='P-10234', VISIT_ID='V-2025-09-06-1430';
-    const STORAGE_KEY=`derma_spots:${PATIENT_ID}:${VISIT_ID}`;
-
     const canvas  = document.getElementById('bpCanvas');
     const img     = document.getElementById('bpImage');
     const hidden  = document.getElementById('locationsInput');
@@ -61,8 +58,9 @@
     const coordName= document.getElementById('coordName');
     const updateBtn= document.getElementById('updateSpot');
 
+    // جلب النقاط من قاعدة البيانات (input hidden)
     let spots=[];
-    try{ spots = JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); }catch{ spots=[]; }
+    try{ spots = JSON.parse(hidden.value||'[]'); }catch{ spots=[]; }
     if(!Array.isArray(spots)) spots=[];
     let selected=null;
     let addByClick=true;
@@ -70,7 +68,6 @@
 
     function persist(){
       hidden.value = JSON.stringify(spots);
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(spots));
     }
     function clamp(n,min,max){return Math.max(min,Math.min(max,n))}
     function uid(){return 's_'+Math.random().toString(36).slice(2,9)}

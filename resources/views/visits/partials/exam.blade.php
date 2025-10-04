@@ -6,7 +6,7 @@
   <label>@lang('messages.exam.skin_type')</label>
         <div class="skin-types" id="skinTypes">
           @foreach (['I','II','III','IV','V','VI'] as $st)
-            <div class="skin-card" data-value="{{ $st }}"><div class="skin-swatch st{{ $loop->iteration }}"></div><div>{{ $st }}</div></div>
+            <div class="skin-card @if(old('exam.skin_type', $visit->exam['skin_type'] ?? '') == $st) selected @endif" data-value="{{ $st }}"><div class="skin-swatch st{{ $loop->iteration }}"></div><div>{{ $st }}</div></div>
           @endforeach
         </div>
         <input type="hidden" id="skinTypeInput" name="exam[skin_type]" value="{{ old('exam.skin_type', $visit->exam['skin_type'] ?? '') }}">
@@ -14,6 +14,7 @@
 
       <div class="field third"><label>@lang('messages.exam.chief_complaint')</label>
         <input name="exam[chief_complaint]" placeholder="@lang('messages.exam.chief_complaint_placeholder')" value="{{ old('exam.chief_complaint', $visit->exam['chief_complaint'] ?? '') }}">
+
 @if ($errors->has('exam.chief_complaint'))
   <div class="field-error">{{ $errors->first('exam.chief_complaint') }}</div>
 @endif
@@ -25,7 +26,7 @@
   <div class="field-error">{{ $errors->first('exam.severity') }}</div>
 @endif
           @foreach ([1=>__('messages.exam.mild'),2=>__('messages.exam.moderate'),3=>__('messages.exam.severe'),4=>__('messages.exam.very_severe')] as $k=>$v)
-            <option value="{{ $k }}" @selected(($visit->exam['severity'] ?? null)==$k)>@lang('messages.exam.'.($k==1?'mild':($k==2?'moderate':($k==3?'severe':'very_severe'))))</option>
+            <option value="{{ $k }}" @selected(old('exam.severity', $visit->exam['severity'] ?? null)==$k)>@lang('messages.exam.'.($k==1?'mild':($k==2?'moderate':($k==3?'severe':'very_severe'))))</option>
           @endforeach
         </select>
       </div>
@@ -42,7 +43,7 @@
             '6-12m'=>__('messages.exam.six_to_twelve_months'),
             '>12m'=>__('messages.exam.more_than_year')
           ] as $k=>$v)
-            <option value="{{ $k }}" @selected(($visit->exam['duration'] ?? null)==$k)>@lang('messages.exam.'.(
+            <option value="{{ $k }}" @selected(old('exam.duration', $visit->exam['duration'] ?? null)==$k)>@lang('messages.exam.'.(
               $k=='<1m'?'less_than_month':
               ($k=='1-3m'?'one_to_three_months':
               ($k=='3-6m'?'three_to_six_months':
@@ -53,6 +54,7 @@
 
       <div class="field third"><label>@lang('messages.exam.clinical_picture')</label>
         <textarea name="exam[clinical_picture]" placeholder="@lang('messages.exam.clinical_picture_placeholder')">{{ old('exam.clinical_picture', $visit->exam['clinical_picture'] ?? '') }}</textarea>
+
 @if ($errors->has('exam.clinical_picture'))
   <div class="field-error">{{ $errors->first('exam.clinical_picture') }}</div>
 @endif
@@ -74,6 +76,7 @@
       </div>
     </div>
     <input type="hidden" id="locationsInput" name="exam[locations]" value='@json($visit->exam['locations'] ?? [])'>
+  <input type="hidden" id="locationsInput" name="exam[locations]" value='@json(old('exam.locations', $visit->exam['locations'] ?? []))'>
 @if ($errors->has('exam.locations'))
   <div class="field-error">{{ $errors->first('exam.locations') }}</div>
 @endif
@@ -95,8 +98,8 @@
               @php $dxList = old('exam.dx', $visit->exam['dx'] ?? [['name'=>'','note'=>'']]); @endphp
               @foreach ($dxList as $row)
                 <tr>
-                  <td><input name="exam[dx][{{ $loop->index }}][name]" value="{{ $row['name'] }}"></td>
-                  <td><input name="exam[dx][{{ $loop->index }}][note]" value="{{ $row['note'] }}"></td>
+                  <td><input name="exam[dx][{{ $loop->index }}][name]" value="{{ old('exam.dx.'.$loop->index.'.name', $row['name']) }}"></td>
+                  <td><input name="exam[dx][{{ $loop->index }}][note]" value="{{ old('exam.dx.'.$loop->index.'.note', $row['note']) }}"></td>
                   <td><button class="btn danger dx-remove" type="button">@lang('messages.exam.remove')</button></td>
                 </tr>
               @endforeach
@@ -105,6 +108,7 @@
         </div>
       </div>
   <div class="field third"><label>@lang('messages.exam.follow_up_at')</label><input type="date" name="exam[follow_up_at]" value="{{ old('exam.follow_up_at', $visit->exam['follow_up_at'] ?? '') }}"></div>
+
     </div>
   </div>
 </div>

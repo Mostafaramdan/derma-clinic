@@ -7,6 +7,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Visit extends Model
+
+    // Accessor: unified exam data for the form
+    public function getExamAttribute()
+    {
+        // اجمع كل الحقول من الأعمدة + exam_data (لو موجود)
+        $exam = [
+            'skin_type'        => $this->skin_type,
+            'chief_complaint'  => $this->chief_complaint,
+            'severity'         => $this->severity,
+            'duration'         => $this->duration_bucket,
+            'clinical_picture' => null,
+            'locations'        => $this->body_spots,
+            'dx'               => null,
+            'follow_up_at'     => $this->follow_up_on ? $this->follow_up_on->format('Y-m-d') : null,
+        ];
+        // لو عندك عمود exam_data (json)
+        if (isset($this->exam_data) && is_array($this->exam_data)) {
+            $exam = array_merge($exam, $this->exam_data);
+        } elseif (isset($this->exam_data) && is_string($this->exam_data)) {
+            $decoded = json_decode($this->exam_data, true);
+            if (is_array($decoded)) {
+                $exam = array_merge($exam, $decoded);
+            }
+        }
+        return $exam;
+    }
 {
     use HasFactory, SoftDeletes;
 
@@ -33,5 +59,10 @@ class Visit extends Model
     public function invoice(){ return $this->hasOne(Invoice::class); }
 
     public function photos(){ return $this->hasMany(VisitPhoto::class); }
+
+    public function patientChronicDiseases()
+    {
+        return $this->hasMany(PatientChronicDisease::class, 'visit_id');
+    }
 }
 

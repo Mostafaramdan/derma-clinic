@@ -38,32 +38,23 @@
             <div class="field quarter">
               <label>{{ $cd->localName() }}</label>
               <select name="history[chronic_{{ $cd->id }}]">
-                <option value="0" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==0)>@lang('messages.patient_basic.no')</option>
-                <option value="1" @selected(($patient->history['chronic_' . $cd->id] ?? 0)==1)>@lang('messages.patient_basic.yes')</option>
+                <option value="0" @selected($visit->patientChronicDiseases->where('chronic_disease_id', $cd->id)?->first() ? false : true)>@lang('messages.patient_basic.no')</option>
+                <option value="1" @selected($visit->patientChronicDiseases->where('chronic_disease_id', $cd->id)?->first() ? true : false)>@lang('messages.patient_basic.yes')</option>
               </select>
             </div>
           @endforeach
         @endif
-  <div class="field full"><label>@lang('messages.patient_basic.other_diseases')</label><input name="history[other_diseases]" placeholder="@lang('messages.patient_basic.other_diseases_placeholder')" value="{{ old('history.other_diseases', $patient->history['other_diseases'] ?? '') }}"></div>
-  <div class="field full"><label>@lang('messages.patient_basic.notes')</label><input name="history[notes]" placeholder="@lang('messages.patient_basic.notes_placeholder')" value="{{ old('history.notes', $patient->history['notes'] ?? '') }}"></div>
+        <div class="field full">
+          <label>@lang('messages.patient_basic.other_diseases')</label>
+          <input name="history[other_diseases]" placeholder="@lang('messages.patient_basic.other_diseases_placeholder')"
+            value="{{ old('history.other_diseases', $visit->patientChronicDiseases->where('note_type', 'other_diseases')?->first()?->notes ?? '') }}">
         </div>
-        @if($patient->chronicDiseases && $patient->chronicDiseases->count())
-        <div class="chronic-diseases-list" style="margin-top:22px;">
-          <label style="font-weight:700;font-size:15px;margin-bottom:8px;display:block;">@lang('messages.patient_basic.chronic_diseases_title')</label>
-          <div style="display:flex;flex-wrap:wrap;gap:12px;">
-            @foreach($patient->chronicDiseases as $cd)
-              <div class="chronic-card" style="background:#f8fafc;border-radius:10px;padding:10px 18px;box-shadow:0 2px 8px rgba(37,99,235,.04);min-width:120px;">
-                @if($cd->pivot->since)
-                  <div style="font-size:13px;color:#555;margin-top:2px;">@lang('messages.patient_basic.since'): {{ $cd->pivot->since }}</div>
-                @endif
-                @if($cd->pivot->notes)
-                  <div style="font-size:13px;color:#888;margin-top:2px;">@lang('messages.patient_basic.notes'): {{ $cd->pivot->notes }}</div>
-                @endif
-              </div>
-            @endforeach
-          </div>
+        <div class="field full">
+          <label>@lang('messages.patient_basic.notes')</label>
+          <input name="history[notes]" placeholder="@lang('messages.patient_basic.notes_placeholder')"
+            value="{{ old('history.notes', $visit->patientChronicDiseases->where('note_type', 'notes')?->first()?->notes ?? '') }}">
         </div>
-        @endif
+        </div>
       </div>
     </div>
   </aside>
