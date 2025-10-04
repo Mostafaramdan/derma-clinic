@@ -15,7 +15,8 @@ class VisitTypeSeeder extends Seeder
     {
         //
         $types = [
-            ['ar' => 'كشف',       'en' => 'Consultation'],
+            ['ar' => 'كشف',       'en' => 'check-up'],
+            ['ar' => 'استشارة',   'en' => 'Consultation'],
             ['ar' => 'متابعة',    'en' => 'Follow-up'],
             ['ar' => 'جلسة ليزر', 'en' => 'Laser Session'],
         ];
