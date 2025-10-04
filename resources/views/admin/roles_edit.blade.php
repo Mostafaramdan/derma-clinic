@@ -1,18 +1,18 @@
 @extends('layouts.admin')
-@section('title','Edit Role')
+@section('title', __('messages.roles.edit_title'))
 @section('content')
 <div class="container py-4">
-  <h1 class="mb-4 fw-bold text-primary">Edit Role</h1>
+  <h1 class="mb-4 fw-bold text-primary">{{ __('messages.roles.edit_title') }}</h1>
   <div class="bg-white shadow-sm rounded-3 p-4">
     <form method="POST" action="{{ route('admin.roles.update', $role) }}">
       @csrf
       @method('PUT')
       <div class="mb-3">
-        <label for="name" class="form-label">Role Name</label>
+  <label for="name" class="form-label">{{ __('messages.roles.name') }}</label>
         <input type="text" name="name" id="name" class="form-control" value="{{ $role->name }}" required>
       </div>
       <div class="mb-3">
-        <label class="form-label">Permissions</label>
+  <label class="form-label">{{ __('messages.roles.permissions') }}</label>
         <div class="row">
           @foreach($permissions as $perm)
             <div class="col-md-4 mb-2">
@@ -24,7 +24,7 @@
           @endforeach
         </div>
       </div>
-      <button type="submit" class="btn btn-primary">Update Role</button>
+  <button type="submit" class="btn btn-primary">{{ __('messages.roles.update') }}</button>
     </form>
   </div>
 </div>

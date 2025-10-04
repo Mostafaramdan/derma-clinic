@@ -41,8 +41,8 @@ class ServiceController extends Controller
 
     public function edit(Service $service)
     {
-    $name = json_decode((string) $service->getAttribute('name'), true);
-    return view('services.edit', compact('service','name'));
+        $name = $service->name; // Already array due to casts
+        return view('services.edit', compact('service','name'));
     }
 
     public function update(Request $request, Service $service)

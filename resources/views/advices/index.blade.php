@@ -1,16 +1,16 @@
 @extends('layouts.admin')
-@section('title','الإرشادات')
+@section('title', __('messages.advices.title'))
 @section('content')
 <div class="container py-4">
     <div class="text-center mb-2">
         <span class="d-inline-block mb-2" style="font-size:2.5rem;">
             💡
         </span>
-        <h1 class="fw-bold text-primary">إدارة الإرشادات</h1>
+    <h1 class="fw-bold text-primary">{{ __('messages.advices.manage') }}</h1>
     </div>
     <div class="row mb-4 justify-content-center">
         <div class="col-md-4">
-            <a href="{{ route('advices.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> إضافة إرشاد جديد</a>
+            <a href="{{ route('advices.create') }}" class="btn btn-success w-100 fw-bold py-2"><i class="bi bi-plus-circle me-1"></i> {{ __('messages.advices.add_new') }}</a>
         </div>
     </div>
     @if(session('success'))
@@ -21,8 +21,8 @@
             <thead class="table-primary align-middle">
                 <tr style="font-size:1.15rem;">
                     <th style="width:70px">#</th>
-                    <th>اسم الإرشاد</th>
-                    <th style="width:180px">إجراءات</th>
+                    <th>{{ __('messages.advices.name') }}</th>
+                    <th style="width:180px">{{ __('messages.advices.actions') }}</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,17 +31,17 @@
                     <td class="fw-bold">{{ $advice->id }}</td>
                     <td>{{ $advice->name }}</td>
                     <td>
-                        <a href="{{ route('advices.edit', $advice) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> تعديل</a>
+                        <a href="{{ route('advices.edit', $advice) }}" class="btn btn-sm btn-warning px-3 fw-bold"><i class="bi bi-pencil-square me-1"></i> {{ __('messages.advices.edit') }}</a>
                         <form action="{{ route('advices.destroy', $advice) }}" method="POST" style="display:inline-block;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('تأكيد الحذف؟')"><i class="bi bi-trash me-1"></i> حذف</button>
+                            <button type="submit" class="btn btn-sm btn-danger px-3 fw-bold" onclick="return confirm('{{ __('messages.advices.confirm_delete') }}')"><i class="bi bi-trash me-1"></i> {{ __('messages.advices.delete') }}</button>
                         </form>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="3" class="text-center">لا توجد إرشادات مسجلة</td>
+                    <td colspan="3" class="text-center">{{ __('messages.advices.empty') }}</td>
                 </tr>
                 @endforelse
             </tbody>
