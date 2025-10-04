@@ -71,7 +71,6 @@ class VisitController extends Controller
        $visit->patient->update($data['patient'] ?? []);
 
         // تحديث التاريخ المرضي
-        dd( $data['history'] ?? []);
         $visit->patient->updateChronicDiseases($data['history'] ?? []);
 
         // تحديث بيانات الكشف

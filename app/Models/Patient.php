@@ -29,25 +29,25 @@ class Patient extends Model
         $syncData = [];
         foreach ($data as $field => $value) {
             if (str_starts_with($field, 'chronic_') && is_numeric($value)) {
-                $syncData[] = [
-                    'chronic_disease_id' => (int) str_replace('chronic_', '', $field),
-                    'patient_id' => $this->id,
-                    'since' => $value ? now()->toDateString() : null
-                ];
-                PatientChronicDisease::updateOrCreate([
-                    'chronic_disease_id' => (int) str_replace('chronic_', '', $field),
-                    'visit_id' => $this->id,
-                ], [
-                    'since' => $value ? now()->toDateString() : null
-                ]);
+                $syncData[] = ['chronic_disease_id' => (int) str_replace('chronic_', '', $field)];
             }
         }
-        $syncData[] = [
-            'notes' => $data['other_diseases'] ?? null,
-            'patient_id' => $this->id,
-            'since' => null
-        ];
-        // dd($syncData);
-        PatientChronicDisease::insert($syncData);
+        if(isset($data['other_diseases']) && is_string($data['other_diseases']) && trim($data['other_diseases']) !== '') {
+            $syncData[] = ['notes' => $data['other_diseases'] ?? null,'patient_id' => $this->id];
+        }
+        if(isset($data['notes']) && is_string($data['notes']) && trim($data['notes']) !== '') {
+            $syncData[] = ['notes' => $data['notes'] ?? null,'patient_id' => $this->id];
+        }
+        foreach($syncData as $record) {
+            PatientChronicDisease::updateOrCreate([
+                'chronic_disease_id' => $record['chronic_disease_id'] ?? null,
+                'notes' => $record['notes'] ?? null,
+                'visit_id' => $this->id,
+            ], [
+                'patient_id' => $this->id,
+                'since' => $record['since'] ?? null,
+            ]);
+
+        }
     }
 }
