@@ -28,7 +28,7 @@
               onmouseover="this.style.background='#2563eb';this.style.color='#fff'"
               onmouseout="this.style.background='#f4f6fa';this.style.color='#2563eb'"
             >
-              {{ app()->getLocale() === 'ar' ? 'English' : 'العربية' }}
+                {{ app()->getLocale() === 'ar' ? __('messages.navbar.english') : __('messages.navbar.arabic') }}
             </button>
           </form>
           <div class="dropdown">
@@ -40,14 +40,14 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
               @if(Route::has('profile.edit'))
-                <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person"></i> {{ __('Profile') }}</a></li>
+                  <li><a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="bi bi-person"></i> {{ __('messages.navbar.profile') }}</a></li>
                 <li><hr class="dropdown-divider"></li>
               @endif
               <li>
                 <form method="POST" action="{{ route('logout') }}" class="d-inline">
                   @csrf
                   <button type="submit" class="dropdown-item text-danger">
-                    <i class="bi bi-box-arrow-right"></i> {{ __('Log Out') }}
+                      <i class="bi bi-box-arrow-right"></i> {{ __('messages.navbar.logout') }}
                   </button>
                 </form>
               </li>

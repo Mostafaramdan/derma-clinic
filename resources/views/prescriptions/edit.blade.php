@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','تعديل روشتة')
+@section('title', __('messages.prescriptions.edit_title'))
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
@@ -25,21 +25,21 @@
                   <rect x="7" y="14" width="5" height="2" rx="1" fill="#2563eb"/>
                 </svg>
             </span>
-            <h2 class="fw-bold text-primary">تعديل الروشتة</h2>
+            <h2 class="fw-bold text-primary">@lang('messages.prescriptions.edit_title')</h2>
         </div>
         <div class="bg-white shadow rounded-4 p-4 border border-2">
             <form method="POST" action="{{ route('prescriptions.update', $prescription) }}">
                 @csrf
                 @method('PUT')
                 <div class="mb-3">
-                    <label for="name" class="form-label fw-bold">اسم الروشتة</label>
+                    <label for="name" class="form-label fw-bold">@lang('messages.prescriptions.name')</label>
                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name', $prescription->name) }}" required autofocus>
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="medications" class="form-label fw-bold">الأدوية</label>
+                    <label for="medications" class="form-label fw-bold">@lang('messages.prescriptions.medications')</label>
                     <select name="medications[]" id="medications" class="form-select" multiple>
                         @foreach($medications as $med)
                             <option value="{{ $med->id }}" {{ in_array($med->id, old('medications', $selectedMedications)) ? 'selected' : '' }}>{{ $med->name }}</option>
@@ -47,7 +47,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="advices" class="form-label fw-bold">الإرشادات</label>
+                    <label for="advices" class="form-label fw-bold">@lang('messages.prescriptions.advices')</label>
                     <select name="advices[]" id="advices" class="form-select" multiple>
                         @foreach($advices as $advice)
                             <option value="{{ $advice->id }}" {{ in_array($advice->id, old('advices', $selectedAdvices)) ? 'selected' : '' }}>{{ $advice->name }}</option>
@@ -55,8 +55,8 @@
                     </select>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4">
-                    <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="bi bi-check-circle me-1"></i> تحديث</button>
-                    <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary px-4 fw-bold"><i class="bi bi-x-circle me-1"></i> إلغاء</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="bi bi-check-circle me-1"></i> @lang('messages.prescriptions.update')</button>
+                    <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary px-4 fw-bold"><i class="bi bi-x-circle me-1"></i> @lang('messages.prescriptions.cancel')</a>
                 </div>
             </form>
         </div>
@@ -78,16 +78,16 @@
     }
     $(function() {
         $('#medications, #advices').select2({
-            placeholder: 'ابحث أو اختر من القائمة...',
+            placeholder: "{{ __('messages.prescriptions.select_placeholder') }}",
             closeOnSelect: false,
             templateResult: formatOption,
             templateSelection: function(option) { return option.text; },
             width: '100%',
             dir: 'rtl',
             language: {
-                noResults: function() { return 'لا توجد نتائج'; },
-                searching: function() { return 'جاري البحث...'; },
-                inputTooShort: function() { return 'اكتب للبحث...'; }
+                noResults: function() { return "{{ __('messages.prescriptions.no_results') }}"; },
+                searching: function() { return "{{ __('messages.prescriptions.searching') }}"; },
+                inputTooShort: function() { return "{{ __('messages.prescriptions.input_too_short') }}"; }
             },
             minimumResultsForSearch: 0 // always show search box
         }).on('select2:select select2:unselect', function (e) {

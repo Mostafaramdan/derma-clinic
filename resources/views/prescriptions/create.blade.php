@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title','إضافة روشتة')
+@section('title', __('messages.prescriptions.create_title'))
 @section('content')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
@@ -25,20 +25,20 @@
                   <rect x="7" y="14" width="5" height="2" rx="1" fill="#2563eb"/>
                 </svg>
             </span>
-            <h2 class="fw-bold text-primary">إضافة روشتة جديدة</h2>
+            <h2 class="fw-bold text-primary">@lang('messages.prescriptions.create_title')</h2>
         </div>
         <div class="bg-white shadow rounded-4 p-4 border border-2">
             <form method="POST" action="{{ route('prescriptions.store') }}">
                 @csrf
                 <div class="mb-3">
-                    <label for="name" class="form-label fw-bold">اسم الروشتة</label>
+                    <label for="name" class="form-label fw-bold">@lang('messages.prescriptions.name')</label>
                     <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required autofocus>
                     @error('name')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label for="medications" class="form-label fw-bold">الأدوية</label>
+                    <label for="medications" class="form-label fw-bold">@lang('messages.prescriptions.medications')</label>
                     <select name="medications[]" id="medications" class="form-select" multiple>
                         @foreach($medications as $med)
                             <option value="{{ $med->id }}" {{ (collect(old('medications'))->contains($med->id)) ? 'selected' : '' }}>{{ $med->name }}</option>
@@ -46,7 +46,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="advices" class="form-label fw-bold">الإرشادات</label>
+                    <label for="advices" class="form-label fw-bold">@lang('messages.prescriptions.advices')</label>
                     <select name="advices[]" id="advices" class="form-select" multiple>
                         @foreach($advices as $advice)
                             <option value="{{ $advice->id }}" {{ (collect(old('advices'))->contains($advice->id)) ? 'selected' : '' }}>{{ $advice->name }}</option>
@@ -54,8 +54,8 @@
                     </select>
                 </div>
                 <div class="d-flex gap-2 justify-content-center mt-4">
-                    <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="bi bi-check-circle me-1"></i> حفظ</button>
-                    <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary px-4 fw-bold"><i class="bi bi-x-circle me-1"></i> إلغاء</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold"><i class="bi bi-check-circle me-1"></i> @lang('messages.prescriptions.save')</button>
+                    <a href="{{ route('prescriptions.index') }}" class="btn btn-secondary px-4 fw-bold"><i class="bi bi-x-circle me-1"></i> @lang('messages.prescriptions.cancel')</a>
                 </div>
             </form>
         </div>
@@ -64,10 +64,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
+    var selectPlaceholder = "{{ __('messages.prescriptions.select_placeholder') }}";
+    var selectNoResults = "{{ __('messages.prescriptions.no_results') }}";
     function formatOption (option) {
         if (!option.id) return option.text;
         var checked = option.selected ? 'checked' : '';
-        var checkmark = option.selected ? '<span style="color: #198754; font-size: 1.2em; margin-left:6px;">✔️</span>' : '';
+        var checkmark = option.selected ? '<span style=\"color: #198754; font-size: 1.2em; margin-left:6px;\">\u2714\ufe0f</span>' : '';
         var html = '<span>' +
             '<input type="checkbox" style="pointer-events:none;" ' + checked + '/> ' +
             option.text +
@@ -77,14 +79,14 @@
     }
     $(function() {
         $('#medications, #advices').select2({
-            placeholder: 'اختر من القائمة...',
+            placeholder: selectPlaceholder,
             closeOnSelect: false,
             templateResult: formatOption,
             templateSelection: function(option) { return option.text; },
             width: '100%',
             dir: 'rtl',
             language: {
-                noResults: function() { return 'لا توجد نتائج'; }
+                noResults: function() { return selectNoResults; }
             }
         }).on('select2:select select2:unselect', function (e) {
             var select = $(this);

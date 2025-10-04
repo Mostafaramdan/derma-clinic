@@ -1,5 +1,36 @@
-<?php
-return [
+    <?php
+    return [
+        'navbar' => [
+            'logout' => 'تسجيل الخروج',
+            'profile' => 'الملف الشخصي',
+            'notifications' => 'الإشعارات',
+            'english' => 'English',
+            'arabic' => 'العربية',
+        ],
+        'prescriptions' => [
+            'title' => 'الروشتات',
+            'manage' => 'إدارة الروشتات',
+            'add_new' => 'إضافة روشتة جديدة',
+            'name' => 'اسم الروشتة',
+            'medications_count' => 'عدد الأدوية',
+            'advices_count' => 'عدد الإرشادات',
+            'actions' => 'إجراءات',
+            'edit' => 'تعديل',
+            'delete' => 'حذف',
+            'confirm_delete' => 'تأكيد الحذف؟',
+            'empty' => 'لا توجد روشتات مسجلة',
+            'create_title' => 'إضافة روشتة جديدة',
+            'edit_title' => 'تعديل الروشتة',
+            'medications' => 'الأدوية',
+            'advices' => 'الإرشادات',
+            'save' => 'حفظ',
+            'update' => 'تحديث',
+            'cancel' => 'إلغاء',
+            'select_placeholder' => 'اختر من القائمة...',
+            'no_results' => 'لا توجد نتائج',
+            'searching' => 'جاري البحث...',
+            'input_too_short' => 'اكتب للبحث...',
+        ],
     'rx_advices' => [
         'title' => 'الوصفة والإرشادات',
         'meds_table' => 'جدول الأدوية',

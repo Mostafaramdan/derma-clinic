@@ -1,5 +1,36 @@
-<?php
-return [
+    <?php
+    return [
+        'navbar' => [
+            'logout' => 'Log Out',
+            'profile' => 'Profile',
+            'notifications' => 'Notifications',
+            'english' => 'English',
+            'arabic' => 'Arabic',
+        ],
+        'prescriptions' => [
+            'title' => 'Prescriptions',
+            'manage' => 'Manage Prescriptions',
+            'add_new' => 'Add New Prescription',
+            'name' => 'Prescription Name',
+            'medications_count' => 'Medications Count',
+            'advices_count' => 'Advices Count',
+            'actions' => 'Actions',
+            'edit' => 'Edit',
+            'delete' => 'Delete',
+            'confirm_delete' => 'Are you sure to delete?',
+            'empty' => 'No prescriptions found',
+            'create_title' => 'Add New Prescription',
+            'edit_title' => 'Edit Prescription',
+            'medications' => 'Medications',
+            'advices' => 'Advices',
+            'save' => 'Save',
+            'update' => 'Update',
+            'cancel' => 'Cancel',
+            'select_placeholder' => 'Select from the list...',
+            'no_results' => 'No results found',
+            'searching' => 'Searching...',
+            'input_too_short' => 'Type to search...',
+        ],
     'rx_advices' => [
         'title' => 'Prescription & Advices',
         'meds_table' => 'Medications Table',
