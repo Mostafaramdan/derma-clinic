@@ -7,12 +7,18 @@
     border-radius: 1.2rem;
     box-shadow: 0 6px 32px 0 rgba(37,99,235,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.04);
     border: 2px solid #e0e7ff;
-    transition: transform 0.12s;
+    transition: transform 0.12s, background 0.18s, color 0.18s;
     min-height: 140px;
+    background: #fff;
+    cursor: pointer;
   }
   .stat-card:hover {
     transform: translateY(-4px) scale(1.025);
     box-shadow: 0 10px 40px 0 rgba(37,99,235,0.16), 0 2px 8px 0 rgba(0,0,0,0.06);
+    background: linear-gradient(120deg, #e0e7ff 60%, #c7d2fe 100%);
+  }
+  .stat-card:hover .stat-label, .stat-card:hover .stat-value {
+    color: #1e293b;
   }
   .stat-icon {
     font-size: 2.2rem;
@@ -37,74 +43,94 @@
 </div>
 <div class="row g-3">
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#2563eb;">👤</div>
-      <div class="stat-label">{{ __('Patients') }}</div>
-      <div class="stat-value">{{ $patientsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('patients.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#2563eb;">👤</div>
+        <div class="stat-label">{{ __('Patients') }}</div>
+        <div class="stat-value">{{ $patientsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#0ea5e9;">📝</div>
-      <div class="stat-label">{{ __('Visits') }}</div>
-      <div class="stat-value">{{ $visitsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('visits.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#0ea5e9;">📝</div>
+        <div class="stat-label">{{ __('Visits') }}</div>
+        <div class="stat-value">{{ $visitsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#f59e42;">💊</div>
-      <div class="stat-label">{{ __('Medications') }}</div>
-      <div class="stat-value">{{ $medicationsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('medications.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#f59e42;">💊</div>
+        <div class="stat-label">{{ __('Medications') }}</div>
+        <div class="stat-value">{{ $medicationsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#eab308;">🧬</div>
-      <div class="stat-label">{{ __('Radiologies') }}</div>
-      <div class="stat-value">{{ $radiologiesCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('radiologies.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#eab308;">🧬</div>
+        <div class="stat-label">{{ __('Radiologies') }}</div>
+        <div class="stat-value">{{ $radiologiesCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#a21caf;">🧪</div>
-      <div class="stat-label">{{ __('Labs') }}</div>
-      <div class="stat-value">{{ $labsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('labs.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#a21caf;">🧪</div>
+        <div class="stat-label">{{ __('Labs') }}</div>
+        <div class="stat-value">{{ $labsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#16a34a;">💡</div>
-      <div class="stat-label">{{ __('Advices') }}</div>
-      <div class="stat-value">{{ $advicesCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('advices.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#16a34a;">💡</div>
+        <div class="stat-label">{{ __('Advices') }}</div>
+        <div class="stat-value">{{ $advicesCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#f43f5e;">🛎️</div>
-      <div class="stat-label">{{ __('Services') }}</div>
-      <div class="stat-value">{{ $servicesCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('services.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#f43f5e;">🛎️</div>
+        <div class="stat-label">{{ __('Services') }}</div>
+        <div class="stat-value">{{ $servicesCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#f87171;">❤️</div>
-      <div class="stat-label">{{ __('Chronic Diseases') }}</div>
-      <div class="stat-value">{{ $chronicDiseasesCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('chronic-diseases.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#f87171;">❤️</div>
+        <div class="stat-label">{{ __('Chronic Diseases') }}</div>
+        <div class="stat-value">{{ $chronicDiseasesCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#6366f1;">🔑</div>
-      <div class="stat-label">{{ __('Admins') }}</div>
-      <div class="stat-value">{{ $adminsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('admin.admins.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#6366f1;">🔑</div>
+        <div class="stat-label">{{ __('Admins') }}</div>
+        <div class="stat-value">{{ $adminsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
   <div class="col-md-3 col-6">
-    <div class="stat-card bg-white p-3 text-center">
-      <div class="stat-icon" style="color:#f472b6;">📄</div>
-      <div class="stat-label">{{ __('Prescriptions') }}</div>
-      <div class="stat-value">{{ $prescriptionsCount ?? 0 }}</div>
-    </div>
+    <a href="{{ route('prescriptions.index') }}" class="text-decoration-none">
+      <div class="stat-card bg-white p-3 text-center">
+        <div class="stat-icon" style="color:#f472b6;">📄</div>
+        <div class="stat-label">{{ __('Prescriptions') }}</div>
+        <div class="stat-value">{{ $prescriptionsCount ?? 0 }}</div>
+      </div>
+    </a>
   </div>
 </div>
 @endsection
