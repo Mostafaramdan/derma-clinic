@@ -21,12 +21,12 @@
           <table class="ltr">
             <thead>
             <tr>
-              <th>الدواء</th>
-              <th>التركيز</th>
-              <th>التكرار</th>
-              <th>المدّة (أيام)</th>
-              <th>تعليمات</th>
-              <th>حذف</th>
+              <th>@lang('messages.rx_advices.med_name')</th>
+              <th>@lang('messages.rx_advices.dose')</th>
+              <th>@lang('messages.rx_advices.frequency')</th>
+              <th>@lang('messages.rx_advices.days')</th>
+              <th>@lang('messages.rx_advices.instructions')</th>
+              <th>@lang('messages.rx_advices.remove')</th>
             </tr>
             </thead>
             <tbody id="medsBody">
@@ -86,10 +86,17 @@
                 <tr>
                   <td>
                     <div class="flex-gap">
-                      <input class="advice-input" name="rx[advices][{{ $i }}][text]" value="{{ $a['text'] ?? '' }}" placeholder="تعليمات">
+                      <input class="advice-input" name="rx[advices][{{ $i }}][text]" value="{{ $a['text'] ?? '' }}" placeholder="@lang('messages.rx_advices.instructions')">
                       <select class="advice-presets">
-                        <option value="">— من القوالب —</option>
-                        @foreach (['ابتعد عن الشمس','SPF 50+ يوميًا','مرطّب صباحًا ومساءً','غسول لطيف','اختبار حساسية موضعي أولًا','تجنّب محيط العين'] as $preset)
+                        <option value="">@lang('messages.rx_advices.presets_placeholder')</option>
+                        @foreach ([
+                          __('messages.rx_advices.preset_avoid_sun'),
+                          __('messages.rx_advices.preset_spf'),
+                          __('messages.rx_advices.preset_moisturizer'),
+                          __('messages.rx_advices.preset_gentle_cleanser'),
+                          __('messages.rx_advices.preset_patch_test'),
+                          __('messages.rx_advices.preset_avoid_eye')
+                        ] as $preset)
                           <option>{{ $preset }}</option>
                         @endforeach
                       </select>

@@ -18,7 +18,7 @@
         @foreach ($labsList as $i=>$lab)
           <div class="lab-item">
             <div class="row">
-              <div class="field third"><label>@lang('messages.labs_files.lab_name')</label><input name="labs[{{ $i }}][name]" value="{{ $lab['name'] ?? '' }}" placeholder="CBC / LFTs / …"></div>
+              <div class="field third"><label>@lang('messages.labs_files.lab_name')</label><input name="labs[{{ $i }}][name]" value="{{ $lab['name'] ?? '' }}" placeholder="@lang('messages.labs_files.lab_name_placeholder')"></div>
               <div class="field third"><label>@lang('messages.labs_files.note')</label><input name="labs[{{ $i }}][note]" value="{{ $lab['note'] ?? '' }}" placeholder="@lang('messages.labs_files.note_placeholder')"></div>
               <div class="field third"><label>@lang('messages.labs_files.upload_result')</label><input type="file" name="labs[{{ $i }}][file]"></div>
               <div class="field third"><label>@lang('messages.labs_files.provider')</label><input name="labs[{{ $i }}][provider]" value="{{ $lab['provider'] ?? '' }}" placeholder="@lang('messages.labs_files.provider_placeholder')"></div>
@@ -42,7 +42,7 @@
             <tr>
               <td>{{ $f->name }}</td>
               <td>{{ strtoupper($f->type) }}</td>
-              <td>{{ optional($f->created_at)->format('d-m-Y') }}</td>
+              <td>{{ optional($f->created_at)->format(__('messages.labs_files.date_format')) }}</td>
               <td><a class="btn" href="{{ $f->url }}" target="_blank">@lang('messages.labs_files.show')</a></td>
             </tr>
           @empty
