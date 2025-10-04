@@ -45,8 +45,8 @@
           </select>
         </div>
         <div class="col-md-6">
-          <label for="jop" class="form-label">@lang('messages.patients.jop')</label>
-          <input type="text" name="jop" id="jop" class="form-control">
+          <label for="job" class="form-label">@lang('messages.patients.job')</label>
+          <input type="text" name="job" id="job" class="form-control">
         </div>
         <div class="col-md-6">
           <label for="address" class="form-label">@lang('messages.patients.address')</label>

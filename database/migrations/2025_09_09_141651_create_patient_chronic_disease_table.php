@@ -12,11 +12,12 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id')->constrained()->cascadeOnDelete();
             $table->foreignId('chronic_disease_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignId('visit_id')->nullable()->constrained()->cascadeOnDelete();
             $table->date('since')->nullable();
             $table->string('notes')->nullable();
             $table->timestamps();
 
-            $table->unique(['patient_id','chronic_disease_id']);
+            $table->unique(['visit_id','chronic_disease_id']);
         });
     }
 

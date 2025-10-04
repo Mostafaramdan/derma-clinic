@@ -34,14 +34,20 @@ class Patient extends Model
                     'patient_id' => $this->id,
                     'since' => $value ? now()->toDateString() : null
                 ];
-            }else{
-                $syncData[] = [
-                    'notes' => $data['other_diseases'] ?? null,
-                    'patient_id' => $this->id,
-                    'since' => null
-                ];
+                PatientChronicDisease::updateOrCreate([
+                    'chronic_disease_id' => (int) str_replace('chronic_', '', $field),
+                    'visit_id' => $this->id,
+                ], [
+                    'since' => $value ? now()->toDateString() : null
+                ]);
             }
         }
-        ChronicDisease::insert($syncData);
+        $syncData[] = [
+            'notes' => $data['other_diseases'] ?? null,
+            'patient_id' => $this->id,
+            'since' => null
+        ];
+        // dd($syncData);
+        PatientChronicDisease::insert($syncData);
     }
 }
