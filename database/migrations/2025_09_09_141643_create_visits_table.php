@@ -28,6 +28,7 @@ return new class extends Migration
             $table->string('onset')->nullable();
             $table->enum('course', ['continuous','relapsing','improving','worsening'])->nullable();
             $table->string('diagnosis')->nullable();
+            $table->string('clinical_picture')->nullable();
             $table->string('diagnosis_notes')->nullable();
             $table->date('follow_up_on')->nullable();
 

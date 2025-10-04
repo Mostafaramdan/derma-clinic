@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Visit extends Model
+{
+    use HasFactory, SoftDeletes;
 
     // Accessor: unified exam data for the form
     public function getExamAttribute()
@@ -20,7 +22,7 @@ class Visit extends Model
             'clinical_picture' => null,
             'locations'        => $this->body_spots,
             'dx'               => null,
-            'follow_up_at'     => $this->follow_up_on ? $this->follow_up_on->format('Y-m-d') : null,
+            'follow_up_at'     => $this->follow_up_on ? ($this->follow_up_on instanceof \Carbon\Carbon ? $this->follow_up_on->format('Y-m-d') : $this->follow_up_on) : null,
         ];
         // لو عندك عمود exam_data (json)
         if (isset($this->exam_data) && is_array($this->exam_data)) {
@@ -33,7 +35,6 @@ class Visit extends Model
         }
         return $exam;
     }
-{
     use HasFactory, SoftDeletes;
 
     protected $casts = [
@@ -44,7 +45,8 @@ class Visit extends Model
     protected $fillable = [
         'patient_id','visit_type_id','visit_code','created_by','status',
         'skin_type','chief_complaint','severity','duration_bucket','onset',
-        'course','diagnosis','diagnosis_notes','follow_up_on','body_spots'
+        'course','diagnosis','diagnosis_notes','follow_up_on','body_spots',
+        'clinical_picture'
     ];
 
     public function patient(){ return $this->belongsTo(Patient::class); }
