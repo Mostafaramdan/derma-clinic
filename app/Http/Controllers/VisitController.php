@@ -76,40 +76,33 @@ class VisitController extends Controller
         $visit->patient->updateChronicDiseases($data['history'] ?? [], $visit->id);
         // تحديث بيانات الكشف (exam)
         $visit->update($data['exam'] ?? []);
-        // الحقول الأساسية
 
-        $visit->update($data['exam'] ?? []);
-    // الحقول الأساسية
-
-        // // تحديث الروشتة
-        // $visit->medications = $data['rx']['meds'] ?? [];
-        // $visit->advices = $data['rx']['advices'] ?? [];
-
-        // // تحديث التحاليل
-        // $visit->labs = $data['labs'] ?? [];
-
-        // // تحديث الملفات
-        // $visit->files = $data['files'] ?? [];
-
-        // // تحديث الصور
-        // // حذف الصور القديمة إذا تم رفع صور جديدة
-        // if (!empty($data['photos']['files'])) {
-        //     $visit->photos()->delete();
-        //     foreach ($data['photos']['files'] as $file) {
-        //         if ($file) {
-        //             $path = $file->store('photos', 'public');
-        //             $visit->photos()->create([
-        //                 'file_path' => $path,
-        //                 'description' => $data['photos']['note'] ?? '',
-        //             ]);
-        //         }
-        //     }
-        // }
-
-        // // تحديث الخدمات والفاتورة
-        // $visit->services = $data['services'] ?? [];
-
-        // $visit->save();
+        // تحديث التحاليل (VisitLab)
+        $visit->labs()->delete();
+        if (!empty($data['labs'])) {
+            foreach ($data['labs'] as $i => $lab) {
+                $fileId = null;
+                // معالجة رفع الملف إذا كان موجودًا
+                if ($request->hasFile("labs.$i.file")) {
+                    $file = $request->file("labs.$i.file");
+                    $path = $file->store('labs', 'public');
+                    // أنشئ VisitFile جديد للنتيجة
+                    $visitFile = $visit->files()->create([
+                        'type' => 'lab',
+                        'path' => $path,
+                        'mime' => $file->getClientMimeType(),
+                        'size' => $file->getSize(),
+                    ]);
+                    $fileId = $visitFile->id;
+                }
+                $visit->labs()->create([
+                    'test_name' => $lab['name'] ?? '',
+                    'notes' => $lab['note'] ?? '',
+                    'lab_info' => $lab['provider'] ?? '',
+                    'result_file_id' => $fileId,
+                ]);
+            }
+        }
 
         return redirect()->route('visits.edit', $visit)->with('success', 'تم تحديث بيانات الزيارة بنجاح');
     }
