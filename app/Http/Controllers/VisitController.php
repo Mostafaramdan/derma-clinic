@@ -104,6 +104,39 @@ class VisitController extends Controller
             }
         }
 
+        // تحديث الصور (VisitPhoto)
+        if ($request->hasFile('photos.files')) {
+            foreach ($request->file('photos.files') as $photoFile) {
+                if ($photoFile) {
+                    $path = $photoFile->store('visit_photos', 'public');
+                    $visit->photos()->create([
+                        'file_path' => $path,
+                        'type' => 'other',
+                        'description' => $data['photos.note'] ?? null,
+                    ]);
+                }
+            }
+        }
+
+        // تحديث الخدمات (VisitService)
+        $visit->services()->delete();
+        if (!empty($data['services'])) {
+            foreach ($data['services'] as $svc) {
+                $serviceId = $svc['service_id'] ?? null;
+                $serviceName = $svc['service_name'] ?? null;
+                $price = $svc['price'] ?? 0;
+                $qty = $svc['qty'] ?? 1;
+                $lineTotal = $svc['line_total'] ?? ($price * $qty);
+                $visit->services()->create([
+                    'service_id' => $serviceId,
+                    'service_name' => $serviceName,
+                    'price' => $price,
+                    'qty' => $qty,
+                    'line_total' => $lineTotal,
+                ]);
+            }
+        }
+
         return redirect()->route('visits.edit', $visit)->with('success', 'تم تحديث بيانات الزيارة بنجاح');
     }
     public function index()

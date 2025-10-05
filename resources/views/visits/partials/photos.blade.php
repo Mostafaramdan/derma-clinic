@@ -32,12 +32,28 @@
           </div>
         </div>
 
-        @if(!empty($photos['existing']))
+        @php
+          // استخدم $photos إذا كان معرفاً (من old أو من الكنترولر)، وإلا استخدم $visit->photos إذا كان متاحاً
+          $existingPhotos = [];
+          if (!empty($photos['existing'])) {
+            $existingPhotos = $photos['existing'];
+          } elseif (isset($photos) && $photos instanceof \Illuminate\Database\Eloquent\Collection) {
+            $existingPhotos = $photos;
+          } elseif (isset($visit) && $visit->photos) {
+            $existingPhotos = $visit->photos;
+          }
+        @endphp
+        @if(!empty($existingPhotos) && count($existingPhotos))
           <div class="gallery mt-10">
-            @foreach ($photos['existing'] as $img)
-              <a href="{{ $img['url'] }}" target="_blank">
-                <img src="{{ $img['url'] }}" alt="photo">
-              </a>
+            @foreach ($existingPhotos as $img)
+              @php
+                $url = is_array($img) ? ($img['url'] ?? null) : (isset($img->file_path) ? Storage::url($img->file_path) : null);
+              @endphp
+              @if($url)
+                <a href="{{ $url }}" target="_blank">
+                  <img src="{{ $url }}" alt="photo">
+                </a>
+              @endif
             @endforeach
           </div>
         @endif

@@ -71,9 +71,21 @@
           <tbody>
             @foreach ($visit->labs()->get() as $i=>$lab)
               <tr>
-                <td>{{ __("messages.{$lab->resultFile->type}") }}</td>
+                <td>
+                  @if($lab->resultFile)
+                    {{ __("messages.{$lab->resultFile->type}") }}
+                  @else
+                    ---
+                  @endif
+                </td>
                 <td>{{ optional($lab['created_at'])->format(__('messages.labs_files.date_format')) }}</td>
-                <td><a class="btn" href="{{ url("storage/" . $lab->resultFile->path) }}" target="_blank">@lang('messages.labs_files.show')</a></td>
+                <td>
+                  @if($lab->resultFile)
+                    <a class="btn" href="{{ url("storage/" . $lab->resultFile->path) }}" target="_blank">@lang('messages.labs_files.show')</a>
+                  @else
+                    ---
+                  @endif
+                </td>
               </tr>
             @endforeach
           </tbody>

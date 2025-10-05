@@ -15,44 +15,96 @@
       <div class="body">
         <div class="hint">@lang('messages.billing.price_hint')</div>
 
+
         <div id="svcRepeater">
-          <div class="svc-item" style="border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;background:#fff">
-            <div class="row">
-              <div class="field third">
-                <label>@lang('messages.billing.service')</label>
-                <select class="svc-select">
-                  <option value="consult" data-price="300">@lang('messages.billing.consult')</option>
-                  <option value="laser_small" data-price="500">@lang('messages.billing.laser_small')</option>
-                  <option value="peel_light" data-price="400">@lang('messages.billing.peel_light')</option>
-                  <option value="dermapen" data-price="600">@lang('messages.billing.dermapen')</option>
-                  <option value="other" data-price="0">@lang('messages.billing.other')</option>
-                </select>
-              </div>
-
-              <div class="field quarter">
-                <label>@lang('messages.billing.price_egp')</label>
-                <input class="svc-price" type="number" value="300" min="0" step="1">
-              </div>
-
-              <div class="field quarter">
-                <label>@lang('messages.billing.qty')</label>
-                <input class="svc-qty" type="number" value="1" min="1" step="1">
-              </div>
-
-              <div class="field quarter">
-                <label>@lang('messages.billing.line_total')</label>
-                <div class="hint"><strong class="line-total">EGP 300.00</strong></div>
-              </div>
-
-              <div class="field quarter">
-                <label>&nbsp;</label>
-                <button class="btn svc-remove" style="width:100%">@lang('messages.billing.remove')</button>
+          @php
+            $oldServices = old('services', isset($visit) ? $visit->services : []);
+          @endphp
+          @foreach ($oldServices as $i => $svc)
+            <div class="svc-item" style="border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;background:#fff">
+              <div class="row">
+                <div class="field third">
+                  <label>@lang('messages.billing.service')</label>
+                  <input type="hidden" name="services[{{ $i }}][service_id]" value="{{ $svc->service_id ?? '' }}">
+                  <input type="text" name="services[{{ $i }}][service_name]" value="{{ $svc->service_name ?? '' }}" class="svc-name" placeholder="@lang('messages.billing.service')">
+                </div>
+                <div class="field quarter">
+                  <label>@lang('messages.billing.price_egp')</label>
+                  <input class="svc-price" name="services[{{ $i }}][price]" type="number" value="{{ $svc->price ?? 0 }}" min="0" step="1">
+                </div>
+                <div class="field quarter">
+                  <label>@lang('messages.billing.qty')</label>
+                  <input class="svc-qty" name="services[{{ $i }}][qty]" type="number" value="{{ $svc->qty ?? 1 }}" min="1" step="1">
+                </div>
+                <div class="field quarter">
+                  <label>@lang('messages.billing.line_total')</label>
+                  <input class="svc-line-total" name="services[{{ $i }}][line_total]" type="number" value="{{ $svc->line_total ?? 0 }}" readonly>
+                </div>
+                <div class="field quarter">
+                  <label>&nbsp;</label>
+                  <button class="btn svc-remove" type="button" style="width:100%">@lang('messages.billing.remove')</button>
+                </div>
               </div>
             </div>
-          </div>
+          @endforeach
         </div>
 
         <button id="addSvc" class="btn mt-8" type="button">+ @lang('messages.billing.add_service')</button>
+
+        <script>
+        // ديناميكية إضافة/حذف الخدمات وضبط name تلقائياً
+        document.addEventListener('DOMContentLoaded', function() {
+          const repeater = document.getElementById('svcRepeater');
+          const addBtn = document.getElementById('addSvc');
+          function updateNames() {
+            const items = repeater.querySelectorAll('.svc-item');
+            items.forEach((item, idx) => {
+              item.querySelectorAll('input,select').forEach(input => {
+                if (input.classList.contains('svc-name')) input.name = `services[${idx}][service_name]`;
+                if (input.classList.contains('svc-price')) input.name = `services[${idx}][price]`;
+                if (input.classList.contains('svc-qty')) input.name = `services[${idx}][qty]`;
+                if (input.classList.contains('svc-line-total')) input.name = `services[${idx}][line_total]`;
+              });
+            });
+          }
+          addBtn.addEventListener('click', function() {
+            const idx = repeater.querySelectorAll('.svc-item').length;
+            const html = `<div class="svc-item" style="border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;background:#fff">
+              <div class=\"row\">
+                <div class=\"field third\">
+                  <label>الخدمة</label>
+                  <input type=\"hidden\" name=\"services[${idx}][service_id]\">
+                  <input type=\"text\" class=\"svc-name\" name=\"services[${idx}][service_name]\" placeholder=\"الخدمة\">
+                </div>
+                <div class=\"field quarter\">
+                  <label>السعر</label>
+                  <input class=\"svc-price\" name=\"services[${idx}][price]\" type=\"number\" value=\"0\" min=\"0\" step=\"1\">
+                </div>
+                <div class=\"field quarter\">
+                  <label>الكمية</label>
+                  <input class=\"svc-qty\" name=\"services[${idx}][qty]\" type=\"number\" value=\"1\" min=\"1\" step=\"1\">
+                </div>
+                <div class=\"field quarter\">
+                  <label>الإجمالي</label>
+                  <input class=\"svc-line-total\" name=\"services[${idx}][line_total]\" type=\"number\" value=\"0\" readonly>
+                </div>
+                <div class=\"field quarter\">
+                  <label>&nbsp;</label>
+                  <button class=\"btn svc-remove\" type=\"button\" style=\"width:100%\">حذف</button>
+                </div>
+              </div>
+            </div>`;
+            repeater.insertAdjacentHTML('beforeend', html);
+            updateNames();
+          });
+          repeater.addEventListener('click', function(e) {
+            if (e.target.classList.contains('svc-remove')) {
+              e.target.closest('.svc-item').remove();
+              updateNames();
+            }
+          });
+        });
+        </script>
       </div>
     </div>
 
