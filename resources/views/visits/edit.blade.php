@@ -1,4 +1,3 @@
-
 @extends('layouts.dashboard')
 
 @push('styles')
@@ -128,11 +127,12 @@
     ];
   })->values();
 @endphp
-<script>
-</script>
+<script></script>
+
 <div class="container">
   <form id="visitForm" method="POST" action="{{ route('visits.update', $visit->id) }}" enctype="multipart/form-data">
   <div id="clientErrors" style="display:none;margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;"></div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function(){
   const form = document.getElementById('visitForm');
@@ -159,13 +159,9 @@ document.addEventListener('DOMContentLoaded', function(){
         }
       } catch { errors.push('أماكن الإصابة يجب أن تكون قائمة (array)'); }
     }
-    // يمكنك إضافة المزيد من الفحوصات هنا حسب الحاجة
-    // إزالة جميع النقاط الحمراء عند بداية submit
-    function clearTabErrors() {
-      const tabBtns = document.querySelectorAll('.tab-btn');
-      tabBtns.forEach(btn => btn.classList.remove('tab-error'));
-    }
-    clearTabErrors();
+    // إزالة النقاط الحمراء عند بداية submit
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('tab-error'));
+
     if(errors.length){
       e.preventDefault();
       clientErrors.innerHTML = '<div style="margin-bottom:8px;">حدثت أخطاء في البيانات المدخلة:</div><ul style="margin:0;padding:0 0 0 18px;">'+errors.map(e=>'<li>'+e+'</li>').join('')+'</ul>';
@@ -177,53 +173,85 @@ document.addEventListener('DOMContentLoaded', function(){
   });
 });
 </script>
-    @if ($errors->any())
-      <div class="alert alert-danger" style="margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;">
-        <div style="margin-bottom:8px;">حدثت أخطاء في البيانات المدخلة:</div>
-        <ul style="margin:0;padding:0 0 0 18px;">
-          @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-    @csrf
-    @method('PUT')
-    <!-- شريط معلومات أفقي جميل أسفل النافبار -->
-    <div class="visit-info-bar" style="margin-bottom:18px;background:linear-gradient(90deg,#f8fafc,#f1f5f9);border-radius:16px;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 18px rgba(37,99,235,.08);border:1px solid #e2e8f0;">
-      <div style="display:flex;align-items:center;gap:18px;">
-        <div class="avatar" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.5rem;box-shadow:0 4px 10px rgba(37,99,235,.18);">
-          {{ mb_substr($visit->patient->name ?? 'م',0,1) }}
-        </div>
-        <div>
-          <div style="font-weight:900;font-size:1.1rem;">{{ $visit->patient->name ?? '' }}</div>
-          <small style="color:var(--muted);font-size:14px;">@lang('messages.visits.code'): {{ $visit->visit_code ?? $visit->id }} • {{ $visit->created_at->format('Y-m-d H:i') ?? '' }} • @lang('messages.visits.doctor'): {{ $visit->doctor->name ?? '---' }}</small>
-        </div>
-      </div>
-      <div style="display:flex;gap:10px;">
+
+@if ($errors->any())
+  <div class="alert alert-danger" style="margin-bottom:18px;border-radius:12px;padding:16px 24px;background:#fee2e2;color:#991b1b;font-weight:700;border:1px solid #fecaca;">
+    <div style="margin-bottom:8px;">حدثت أخطاء في البيانات المدخلة:</div>
+    <ul style="margin:0;padding:0 0 0 18px;">
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
+
+@csrf
+@method('PUT')
+
+<!-- شريط معلومات أفقي -->
+<div class="visit-info-bar" style="margin-bottom:18px;background:linear-gradient(90deg,#f8fafc,#f1f5f9);border-radius:16px;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 18px rgba(37,99,235,.08);border:1px solid #e2e8f0;">
+  <div style="display:flex;align-items:center;gap:18px;">
+    <div class="avatar" style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.5rem;box-shadow:0 4px 10px rgba(37,99,235,.18);">
+      {{ mb_substr($visit->patient->name ?? 'م',0,1) }}
+    </div>
+    <div>
+      <div style="font-weight:900;font-size:1.1rem;">{{ $visit->patient->name ?? '' }}</div>
+      <small style="color:var(--muted);font-size:14px;">@lang('messages.visits.code'): {{ $visit->visit_code ?? $visit->id }} • {{ $visit->created_at->format('Y-m-d H:i') ?? '' }} • @lang('messages.visits.doctor'): {{ $visit->doctor->name ?? '---' }}</small>
+    </div>
+  </div>
+  <div style="display:flex;gap:10px;">
     <button type="submit" name="save_draft" class="btn" style="font-weight:800;padding:10px 18px;border-radius:12px;background:#fff;color:#2563eb;border:1px solid #e2e8f0;box-shadow:0 6px 14px rgba(15,23,42,.06);">@lang('messages.visits.save_draft')</button>
-  <button type="submit" class="btn primary" form="visitForm" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">@lang('messages.visits.save')</button>
-      </div>
-    </div>
+    <button type="submit" class="btn primary" form="visitForm" style="font-weight:800;padding:10px 18px;border-radius:12px;background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;border:0;box-shadow:0 8px 18px rgba(37,99,235,.18);">@lang('messages.visits.save')</button>
+  </div>
+</div>
 
-    <div class="tabs" id="visitTabs" role="tablist" aria-label="Visit Tabs">
-  <button type="button" class="tab-btn" role="tab" id="tab-basic-btn" aria-controls="tab-basic" aria-selected="true"><span class="tab-dot"></span>@lang('messages.visits.patient_basic')</button>
-  <button type="button" class="tab-btn @if($errors->has('exam.locations')) tab-error @endif" role="tab" id="tab-exam-btn" aria-controls="tab-exam" aria-selected="false"><span class="tab-dot"></span>@lang('messages.visits.exam')</button>
+<div class="tabs" id="visitTabs" role="tablist" aria-label="Visit Tabs">
+  <button type="button" class="tab-btn" id="tab-basic-btn" data-panel="tab-basic" aria-controls="tab-basic" aria-selected="true"><span class="tab-dot"></span>@lang('messages.visits.patient_basic')</button>
+  <button type="button" class="tab-btn @if($errors->has('exam.locations')) tab-error @endif" id="tab-exam-btn" data-panel="tab-exam" aria-controls="tab-exam" aria-selected="false"><span class="tab-dot"></span>@lang('messages.visits.exam')</button>
+  <button type="button" class="tab-btn" id="tab-rx-btn" data-panel="tab-rx" aria-controls="tab-rx" aria-selected="false">@lang('messages.visits.rx_advices')</button>
+  <button type="button" class="tab-btn" id="tab-labs-btn" data-panel="tab-labs" aria-controls="tab-labs" aria-selected="false">@lang('messages.visits.labs_files')</button>
+  <button type="button" class="tab-btn" id="tab-photos-btn" data-panel="tab-photos" aria-controls="tab-photos" aria-selected="false">@lang('messages.visits.photos')</button>
+  <button type="button" class="tab-btn" id="tab-billing-btn" data-panel="tab-billing" aria-controls="tab-billing" aria-selected="false">@lang('messages.visits.billing')</button>
+</div>
 
-  <button type="button" class="tab-btn" role="tab" id="tab-rx-btn" aria-controls="tab-rx" aria-selected="false">@lang('messages.visits.rx_advices')</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-labs-btn" aria-controls="tab-labs" aria-selected="false">@lang('messages.visits.labs_files')</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-photos-btn" aria-controls="tab-photos" aria-selected="false">@lang('messages.visits.photos')</button>
-  <button type="button" class="tab-btn" role="tab" id="tab-billing-btn" aria-controls="tab-billing" aria-selected="false">@lang('messages.visits.billing')</button>
-    </div>
+<div class="tabpanels">
+  <div class="tabpanel" id="tab-basic" aria-labelledby="tab-basic-btn" aria-hidden="false">@include('visits.partials.patient-basic', ['patient'=>$visit->patient,'chronicDiseases'=>$chronicDiseases,'visit'=>$visit])</div>
+  <div class="tabpanel" id="tab-exam" aria-labelledby="tab-exam-btn" aria-hidden="true">@include('visits.partials.exam', ['visit'=>$visit])</div>
+  <div class="tabpanel" id="tab-rx" aria-labelledby="tab-rx-btn" aria-hidden="true">@include('visits.partials.rx-advices', ['medications'=>$visit->medications,'advices'=>$visit->advices,'allMedications'=>$allMedications])</div>
+  <div class="tabpanel" id="tab-labs" aria-labelledby="tab-labs-btn" aria-hidden="true">@include('visits.partials.labs-files', ['labs'=>$visit->labs,'files'=>$visit->files])</div>
+  <div class="tabpanel" id="tab-photos" aria-labelledby="tab-photos-btn" aria-hidden="true">@include('visits.partials.photos', ['photos'=>$visit->photos])</div>
+  <div class="tabpanel" id="tab-billing" aria-labelledby="tab-billing-btn" aria-hidden="true">@include('visits.partials.billing', ['services'=>$services,'invoice'=>$visit->invoice])</div>
+</div>
 
-    <div class="tabpanels">
-  <div class="tabpanel" id="tab-basic" role="tabpanel" aria-labelledby="tab-basic-btn" aria-hidden="false">@include('visits.partials.patient-basic', ['patient' => $visit->patient, 'chronicDiseases' => $chronicDiseases, 'visit' => $visit])</div>
-      <div class="tabpanel" id="tab-exam" role="tabpanel" aria-labelledby="tab-exam-btn" aria-hidden="true">@include('visits.partials.exam', ['visit' => $visit])</div>
-  <div class="tabpanel" id="tab-rx" role="tabpanel" aria-labelledby="tab-rx-btn" aria-hidden="true">@include('visits.partials.rx-advices', ['medications' => $visit->medications, 'advices' => $visit->advices, 'allMedications' => $allMedications])</div>
-      <div class="tabpanel" id="tab-labs" role="tabpanel" aria-labelledby="tab-labs-btn" aria-hidden="true">@include('visits.partials.labs-files', ['labs' => $visit->labs, 'files' => $visit->files])</div>
-      <div class="tabpanel" id="tab-photos" role="tabpanel" aria-labelledby="tab-photos-btn" aria-hidden="true">@include('visits.partials.photos', ['photos' => $visit->photos])</div>
-      <div class="tabpanel" id="tab-billing" role="tabpanel" aria-labelledby="tab-billing-btn" aria-hidden="true">@include('visits.partials.billing', ['services' => $services, 'invoice' => $visit->invoice])</div>
-    </div>
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tabpanel');
+
+  function activateTabById(panelId) {
+        console.log('Switching to:', panelId);
+        tabPanels.forEach((panel) => {
+            const show = panel.id === panelId;
+            panel.setAttribute('aria-hidden', show ? 'false' : 'true');
+            console.log(panel.id, '→', show ? 'VISIBLE' : 'HIDDEN');
+        });
+    }
+
+  tabBtns.forEach((btn) => {
+    btn.addEventListener('click', function() {
+      console.log('Switching to:', btn.dataset.panel);
+      activateTabById(btn.dataset.panel);
+    });
+  });
+
+  // Default
+  activateTabById('tab-basic');
+});
+</script>
+
+@endpush
+
   </form>
 </div>
 @endsection
