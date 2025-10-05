@@ -6,156 +6,84 @@
 @endif
 
 <div class="tab-content-wrapper">
-  <div class="grid">
+  <div class="grid-two">
+    {{-- جدول الخدمات --}}
     <div class="card">
-      <div class="head">
-        <h3>@lang('messages.billing.services_title')</h3>
-      </div>
-
+      <div class="head"><h3>@lang('messages.billing.services_title')</h3></div>
       <div class="body">
-        <div class="hint">@lang('messages.billing.price_hint')</div>
 
+        <div class="hint mb-8">@lang('messages.billing.price_hint')</div>
 
-        <div id="svcRepeater">
-          @php
-            $oldServices = old('services', isset($visit) ? $visit->services : []);
-          @endphp
-          @foreach ($oldServices as $i => $svc)
-            <div class="svc-item" style="border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;background:#fff">
-              <div class="row">
-                <div class="field third">
-                  <label>@lang('messages.billing.service')</label>
-                  <input type="hidden" name="services[{{ $i }}][service_id]" value="{{ $svc->service_id ?? '' }}">
-                  <input type="text" name="services[{{ $i }}][service_name]" value="{{ $svc->service_name ?? '' }}" class="svc-name" placeholder="@lang('messages.billing.service')">
-                </div>
-                <div class="field quarter">
-                  <label>@lang('messages.billing.price_egp')</label>
-                  <input class="svc-price" name="services[{{ $i }}][price]" type="number" value="{{ $svc->price ?? 0 }}" min="0" step="1">
-                </div>
-                <div class="field quarter">
-                  <label>@lang('messages.billing.qty')</label>
-                  <input class="svc-qty" name="services[{{ $i }}][qty]" type="number" value="{{ $svc->qty ?? 1 }}" min="1" step="1">
-                </div>
-                <div class="field quarter">
-                  <label>@lang('messages.billing.line_total')</label>
-                  <input class="svc-line-total" name="services[{{ $i }}][line_total]" type="number" value="{{ $svc->line_total ?? 0 }}" readonly>
-                </div>
-                <div class="field quarter">
-                  <label>&nbsp;</label>
-                  <button class="btn svc-remove" type="button" style="width:100%">@lang('messages.billing.remove')</button>
-                </div>
-              </div>
-            </div>
-          @endforeach
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>@lang('messages.billing.service')</th>
+                <th>@lang('messages.billing.price_egp')</th>
+                <th>@lang('messages.billing.qty')</th>
+                <th>@lang('messages.billing.line_total')</th>
+                <th>@lang('messages.billing.remove')</th>
+              </tr>
+            </thead>
+            <tbody id="svcBody">
+              @php
+                $servicesList = old('services', (array)($services ?? [['service_id'=>'','custom_name'=>'','price'=>0,'qty'=>1]]));
+              @endphp
+              @foreach ($servicesList as $i => $svc)
+                <tr>
+                  <td>
+                    <select name="services[{{ $i }}][service_id]" class="svc-select">
+                      <option value="">— اختر —</option>
+                      @foreach ($services as $srv)
+                        <option value="{{ $srv->id }}" data-price="{{ $srv->default_price }}" @selected(($svc['service_id'] ?? '') == $srv->id)>
+                          {{ $srv->label() }}
+                        </option>
+                      @endforeach
+                      <option value="__new__" @selected(($svc['service_id'] ?? '') == '__new__')>+ خدمة جديدة</option>
+                    </select>
+                    <input type="text" name="services[{{ $i }}][custom_name]" value="{{ $svc['custom_name'] ?? '' }}" class="svc-custom mt-2" placeholder="اسم الخدمة الجديدة" style="@if(($svc['service_id'] ?? '') == '__new__') display:block; @else display:none; @endif">
+                  </td>
+                  <td><input name="services[{{ $i }}][price]" class="svc-price" type="number" min="0" step="1" value="{{ $svc['price'] ?? 0 }}"></td>
+                  <td><input name="services[{{ $i }}][qty]" class="svc-qty" type="number" min="1" step="1" value="{{ $svc['qty'] ?? 1 }}"></td>
+                  <td><strong class="line-total">EGP {{ number_format(($svc['price'] ?? 0) * ($svc['qty'] ?? 1), 2) }}</strong></td>
+                  <td><button class="btn danger svc-remove" type="button">@lang('messages.billing.remove')</button></td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
         </div>
 
         <button id="addSvc" class="btn mt-8" type="button">+ @lang('messages.billing.add_service')</button>
 
-        <script>
-        // ديناميكية إضافة/حذف الخدمات وضبط name تلقائياً
-        document.addEventListener('DOMContentLoaded', function() {
-          const repeater = document.getElementById('svcRepeater');
-          const addBtn = document.getElementById('addSvc');
-          function updateNames() {
-            const items = repeater.querySelectorAll('.svc-item');
-            items.forEach((item, idx) => {
-              item.querySelectorAll('input,select').forEach(input => {
-                if (input.classList.contains('svc-name')) input.name = `services[${idx}][service_name]`;
-                if (input.classList.contains('svc-price')) input.name = `services[${idx}][price]`;
-                if (input.classList.contains('svc-qty')) input.name = `services[${idx}][qty]`;
-                if (input.classList.contains('svc-line-total')) input.name = `services[${idx}][line_total]`;
-              });
-            });
-          }
-          addBtn.addEventListener('click', function() {
-            const idx = repeater.querySelectorAll('.svc-item').length;
-            const html = `<div class="svc-item" style="border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:8px;background:#fff">
-              <div class=\"row\">
-                <div class=\"field third\">
-                  <label>الخدمة</label>
-                  <input type=\"hidden\" name=\"services[${idx}][service_id]\">
-                  <input type=\"text\" class=\"svc-name\" name=\"services[${idx}][service_name]\" placeholder=\"الخدمة\">
-                </div>
-                <div class=\"field quarter\">
-                  <label>السعر</label>
-                  <input class=\"svc-price\" name=\"services[${idx}][price]\" type=\"number\" value=\"0\" min=\"0\" step=\"1\">
-                </div>
-                <div class=\"field quarter\">
-                  <label>الكمية</label>
-                  <input class=\"svc-qty\" name=\"services[${idx}][qty]\" type=\"number\" value=\"1\" min=\"1\" step=\"1\">
-                </div>
-                <div class=\"field quarter\">
-                  <label>الإجمالي</label>
-                  <input class=\"svc-line-total\" name=\"services[${idx}][line_total]\" type=\"number\" value=\"0\" readonly>
-                </div>
-                <div class=\"field quarter\">
-                  <label>&nbsp;</label>
-                  <button class=\"btn svc-remove\" type=\"button\" style=\"width:100%\">حذف</button>
-                </div>
-              </div>
-            </div>`;
-            repeater.insertAdjacentHTML('beforeend', html);
-            updateNames();
-          });
-          repeater.addEventListener('click', function(e) {
-            if (e.target.classList.contains('svc-remove')) {
-              e.target.closest('.svc-item').remove();
-              updateNames();
-            }
-          });
-        });
-        </script>
       </div>
     </div>
 
+    {{-- ملخص الفاتورة --}}
     <aside class="card">
-      <div class="head">
-        <h3>@lang('messages.billing.summary_title')</h3>
-      </div>
-
+      <div class="head"><h3>@lang('messages.billing.summary_title')</h3></div>
       <div class="body">
         <div class="row">
           <div class="field third">
             <label>@lang('messages.billing.payment_method')</label>
-            <select>
-              <option>@lang('messages.billing.cash')</option>
-              <option>@lang('messages.billing.transfer')</option>
+            <select name="invoice[payment_method]">
+              <option value="cash" @selected(old('invoice.payment_method', $invoice['payment_method'] ?? '') == 'cash')>@lang('messages.billing.cash')</option>
+              <option value="transfer" @selected(old('invoice.payment_method', $invoice['payment_method'] ?? '') == 'transfer')>@lang('messages.billing.transfer')</option>
             </select>
           </div>
-
           <div class="field third">
             <label>@lang('messages.billing.discount_reason')</label>
-            <input id="discReason" placeholder="@lang('messages.billing.discount_placeholder')">
+            <input name="invoice[discount_reason]" value="{{ old('invoice.discount_reason', $invoice['discount_reason'] ?? '') }}" placeholder="@lang('messages.billing.discount_placeholder')">
           </div>
-
           <div class="field third">
             <label>@lang('messages.billing.discount_value')</label>
-            <input id="discInput" type="number" value="0" min="0" step="1">
+            <input name="invoice[discount_value]" id="discInput" type="number" min="0" step="1" value="{{ old('invoice.discount_value', $invoice['discount_value'] ?? 0) }}">
           </div>
         </div>
 
-        <div class="totals">
-          <div class="line">
-            <span>@lang('messages.billing.subtotal')</span>
-            <strong id="subtotalVal">EGP 0.00</strong>
-          </div>
-          <div class="line">
-            <span>@lang('messages.billing.discount')</span>
-            <strong id="discountVal">EGP 0.00</strong>
-          </div>
-          <div class="line grand">
-            <span>@lang('messages.billing.total')</span>
-            <span id="totalVal">EGP 0.00</span>
-          </div>
-        </div>
-
-        <div class="row" style="margin-top:12px">
-          <div class="field third">
-            <button class="btn d-none">@lang('messages.billing.issue_invoice')</button>
-          </div>
-          <div class="field third">
-            <button class="btn primary d-none">@lang('messages.billing.collect_now')</button>
-          </div>
+        <div class="totals mt-4">
+          <div class="line"><span>@lang('messages.billing.subtotal')</span><strong id="subtotalVal">EGP 0.00</strong></div>
+          <div class="line"><span>@lang('messages.billing.discount')</span><strong id="discountVal">EGP 0.00</strong></div>
+          <div class="line grand"><span>@lang('messages.billing.total')</span><strong id="totalVal">EGP 0.00</strong></div>
         </div>
       </div>
     </aside>
@@ -163,56 +91,88 @@
 </div>
 
 <style>
-  /* نفس التصميم العام لباقي التابات */
-  .tab-content-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 16px;
-  }
-
-  .tab-content-wrapper .grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 16px;
-  }
-
-  .tab-content-wrapper .card {
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px #0000000d;
-  }
-
-  .tab-content-wrapper .card .head {
-    border-bottom: 1px solid #e2e8f0;
-    padding: 12px 18px;
-  }
-
-  .tab-content-wrapper .card .body {
-    padding: 18px;
-  }
-
-  .totals {
-    margin-top: 18px;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 12px;
-  }
-
-  .totals .line {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
-    color: #475569;
-  }
-
-  .totals .grand {
-    font-weight: bold;
-    color: #111827;
-    font-size: 1.1em;
-  }
-
-  @media (max-width: 900px) {
-    .tab-content-wrapper .grid {
-      grid-template-columns: 1fr;
-    }
-  }
+  .tab-content-wrapper { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+  .grid-two { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+  .card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0000000d; }
+  .card .head { border-bottom: 1px solid #e2e8f0; padding: 12px 18px; }
+  .card .body { padding: 18px; }
+  .table-wrap table { width: 100%; border-collapse: collapse; }
+  .table-wrap th, .table-wrap td { border-bottom: 1px solid #eee; padding: 8px; vertical-align: middle; }
+  .totals { margin-top: 18px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
+  .totals .line { display: flex; justify-content: space-between; margin-bottom: 6px; color: #475569; }
+  .totals .grand { font-weight: bold; color: #111827; font-size: 1.1em; }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const svcBody = document.getElementById('svcBody');
+  const addBtn = document.getElementById('addSvc');
+
+  function updateTotals() {
+    let subtotal = 0;
+    svcBody.querySelectorAll('tr').forEach(tr => {
+      const price = parseFloat(tr.querySelector('.svc-price')?.value || 0);
+      const qty = parseFloat(tr.querySelector('.svc-qty')?.value || 1);
+      const lineTotal = price * qty;
+      tr.querySelector('.line-total').innerText = 'EGP ' + lineTotal.toFixed(2);
+      subtotal += lineTotal;
+    });
+    document.getElementById('subtotalVal').innerText = 'EGP ' + subtotal.toFixed(2);
+    const discount = parseFloat(document.querySelector('[name="invoice[discount_value]"]').value || 0);
+    document.getElementById('discountVal').innerText = 'EGP ' + discount.toFixed(2);
+    document.getElementById('totalVal').innerText = 'EGP ' + (subtotal - discount).toFixed(2);
+  }
+
+  addBtn.addEventListener('click', function() {
+    const rows = svcBody.querySelectorAll('tr');
+    const newIndex = rows.length;
+    const newRow = rows[0].cloneNode(true);
+    newRow.querySelectorAll('input, select').forEach(el => {
+      const name = el.name.replace(/\[\d+\]/, `[${newIndex}]`);
+      el.name = name;
+      if (el.tagName === 'SELECT') el.selectedIndex = 0;
+      if (el.classList.contains('svc-custom')) el.style.display = 'none';
+      else el.value = (el.classList.contains('svc-qty') ? 1 : '');
+    });
+    newRow.querySelector('.line-total').innerText = 'EGP 0.00';
+    svcBody.appendChild(newRow);
+  });
+
+  svcBody.addEventListener('click', function(e) {
+    if (e.target.classList.contains('svc-remove')) {
+      if (svcBody.querySelectorAll('tr').length > 1) {
+        e.target.closest('tr').remove();
+        updateTotals();
+      }
+    }
+  });
+
+  svcBody.addEventListener('change', function(e) {
+    if (e.target.classList.contains('svc-select')) {
+      const tr = e.target.closest('tr');
+      const priceInput = tr.querySelector('.svc-price');
+      const customInput = tr.querySelector('.svc-custom');
+      const selected = e.target.selectedOptions[0];
+      if (e.target.value === '__new__') {
+        customInput.style.display = 'block';
+        priceInput.value = 0;
+      } else {
+        customInput.style.display = 'none';
+        priceInput.value = selected.dataset.price || 0;
+      }
+      updateTotals();
+    }
+  });
+
+  svcBody.addEventListener('input', e => {
+    if (e.target.classList.contains('svc-price') || e.target.classList.contains('svc-qty')) {
+      updateTotals();
+    }
+  });
+
+  const discInput = document.querySelector('[name="invoice[discount_value]"]');
+  discInput.addEventListener('input', updateTotals);
+
+  updateTotals();
+});
+</script>

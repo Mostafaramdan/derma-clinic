@@ -255,3 +255,13 @@ document.addEventListener('DOMContentLoaded', function() {
   </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.querySelectorAll('.service-row').forEach(function(row, idx) {
+  row.querySelectorAll('input, select').forEach(function(input) {
+    input.name = input.name.replace(/services\[\d+\]/, 'services['+idx+']');
+  });
+});
+</script>
+@endpush

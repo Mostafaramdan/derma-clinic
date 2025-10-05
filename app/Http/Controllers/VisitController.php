@@ -16,6 +16,8 @@ class VisitController extends Controller
      */
     public function update(Request $request, Visit $visit)
     {
+
+        return $request->all();
         // تحويل body_spots إلى array إذا كانت JSON string
         if ($request->has('exam.body_spots') && is_string($request->input('exam.body_spots'))) {
             $decoded = json_decode($request->input('exam.body_spots'), true);
@@ -117,7 +119,6 @@ class VisitController extends Controller
                 }
             }
         }
-
         // تحديث الخدمات (VisitService)
         $visit->services()->delete();
         if (!empty($data['services'])) {
@@ -127,6 +128,31 @@ class VisitController extends Controller
                 $price = $svc['price'] ?? 0;
                 $qty = $svc['qty'] ?? 1;
                 $lineTotal = $svc['line_total'] ?? ($price * $qty);
+
+                // Handle custom service
+                if ($serviceId === 'other' && !empty($svc['custom_name'])) {
+                    // Check if a service with this name exists (in any language)
+                    $existing = Service::where('name->ar', $svc['custom_name'])->orWhere('name->en', $svc['custom_name'])->first();
+                    if ($existing) {
+                        $serviceId = $existing->id;
+                        $serviceName = $existing->label();
+                    } else {
+                        $newService = Service::create([
+                            'name' => ['ar' => $svc['custom_name'], 'en' => $svc['custom_name']],
+                            'default_price' => $price,
+                            'is_active' => true,
+                        ]);
+                        $serviceId = $newService->id;
+                        $serviceName = $newService->label();
+                    }
+                } else if ($serviceId) {
+                    // Get the service name from DB for consistency
+                    $service = Service::find($serviceId);
+                    if ($service) {
+                        $serviceName = $service->label();
+                    }
+                }
+
                 $visit->services()->create([
                     'service_id' => $serviceId,
                     'service_name' => $serviceName,

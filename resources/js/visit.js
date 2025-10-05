@@ -66,14 +66,17 @@
 
 // ====== Services Repeater + Totals ======
 (function(){
+
   const wrap = document.getElementById('svcRepeater');
-  const addBtn = document.getElementById('addSvcRow');
+  const addBtn = document.getElementById('addSvc'); // Fix: match Blade id
   const subtotalEl = document.getElementById('subtotalVal');
   const discountEl = document.getElementById('discountVal');
   const totalEl = document.getElementById('totalVal');
-  const discInput = document.getElementById('discInput');
+  // Try to get by id, fallback to name selector
+  let discInput = document.getElementById('discInput');
+  if (!discInput) discInput = document.querySelector('[name="invoice[discount_value]"]');
 
-  if(!wrap || !addBtn) return;
+  if(!wrap || !addBtn || !subtotalEl || !discountEl || !totalEl) return;
 
   const fmt = (n)=> `EGP ${ (isFinite(n) ? Number(n).toFixed(2) : '0.00') }`;
 
