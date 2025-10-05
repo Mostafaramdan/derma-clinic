@@ -88,7 +88,7 @@ class VisitController extends Controller
                     $path = $file->store('labs', 'public');
                     // أنشئ VisitFile جديد للنتيجة
                     $visitFile = $visit->files()->create([
-                        'type' => 'lab',
+                        'type' => 'lab_result',
                         'path' => $path,
                         'mime' => $file->getClientMimeType(),
                         'size' => $file->getSize(),

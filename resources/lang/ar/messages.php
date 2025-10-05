@@ -1,5 +1,6 @@
 <?php
     return [
+        "lab_result" => "نتيجة المختبر",
         "permissions.patients.update" => "تحديث بيانات المريض",
         "permissions.patients.view" => "عرض المرضى",
         "permissions.patients.create" => "إضافة مريض",

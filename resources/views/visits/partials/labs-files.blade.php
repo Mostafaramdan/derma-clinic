@@ -15,28 +15,30 @@
         <div class="hint">@lang('messages.labs_files.upload_hint')</div>
 
         <div id="labRepeater" class="mt-10">
-          @php
-            $labsList = old('labs', (array)($labs ?? []));
-            if (!$labsList) $labsList = [['name'=>'','note'=>'','provider'=>'','file'=>null]];
-          @endphp
-          @foreach ($labsList as $i=>$lab)
+
+          @foreach ($visit->labs()->get() as $i=>$lab)
             <div class="lab-item">
               <div class="row">
                 <div class="field third">
                   <label>@lang('messages.labs_files.lab_name')</label>
-                  <input name="labs[{{ $i }}][name]" value="{{ $lab['name'] ?? '' }}" placeholder="@lang('messages.labs_files.lab_name_placeholder')">
+                  <input name="labs[{{ $i }}][name]" value="{{ $lab['test_name'] ?? '' }}" placeholder="@lang('messages.labs_files.lab_name_placeholder')">
                 </div>
                 <div class="field third">
                   <label>@lang('messages.labs_files.note')</label>
-                  <input name="labs[{{ $i }}][note]" value="{{ $lab['note'] ?? '' }}" placeholder="@lang('messages.labs_files.note_placeholder')">
+                  <input name="labs[{{ $i }}][note]" value="{{ $lab['notes'] ?? '' }}" placeholder="@lang('messages.labs_files.note_placeholder')">
                 </div>
                 <div class="field third">
                   <label>@lang('messages.labs_files.upload_result')</label>
                   <input type="file" name="labs[{{ $i }}][file]">
+                  @if (!empty($lab['file_url']))
+                    <div class="mt-2">
+                      <a href="{{ $lab->resultFile->file_url }}" target="_blank" class="btn btn-sm">عرض النتيجة</a>
+                    </div>
+                  @endif
                 </div>
                 <div class="field third">
                   <label>@lang('messages.labs_files.provider')</label>
-                  <input name="labs[{{ $i }}][provider]" value="{{ $lab['provider'] ?? '' }}" placeholder="@lang('messages.labs_files.provider_placeholder')">
+                  <input name="labs[{{ $i }}][provider]" value="{{ $lab['lab_info'] ?? '' }}" placeholder="@lang('messages.labs_files.provider_placeholder')">
                 </div>
                 <div class="field quarter">
                   <label>&nbsp;</label>
@@ -61,23 +63,19 @@
         <table>
           <thead>
             <tr>
-              <th>@lang('messages.labs_files.file')</th>
               <th>@lang('messages.labs_files.type')</th>
               <th>@lang('messages.labs_files.date')</th>
               <th>@lang('messages.labs_files.action')</th>
             </tr>
           </thead>
           <tbody>
-            @forelse(($files ?? []) as $f)
+            @foreach ($visit->labs()->get() as $i=>$lab)
               <tr>
-                <td>{{ $f->name }}</td>
-                <td>{{ strtoupper($f->type) }}</td>
-                <td>{{ optional($f->created_at)->format(__('messages.labs_files.date_format')) }}</td>
-                <td><a class="btn" href="{{ $f->url }}" target="_blank">@lang('messages.labs_files.show')</a></td>
+                <td>{{ __("messages.{$lab->resultFile->type}") }}</td>
+                <td>{{ optional($lab['created_at'])->format(__('messages.labs_files.date_format')) }}</td>
+                <td><a class="btn" href="{{ url("storage/" . $lab->resultFile->path) }}" target="_blank">@lang('messages.labs_files.show')</a></td>
               </tr>
-            @empty
-              <tr><td colspan="4" class="hint">@lang('messages.labs_files.empty')</td></tr>
-            @endforelse
+            @endforeach
           </tbody>
         </table>
       </div>

@@ -15,4 +15,13 @@ class VisitLab extends Model
         'result_file_id',
     ];
     public $timestamps = true;
+
+    public function visit()
+    {
+        return $this->belongsTo(Visit::class);
+    }
+    public function resultFile()
+    {
+        return $this->belongsTo(VisitFile::class, 'result_file_id');
+    }
 }

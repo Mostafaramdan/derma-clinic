@@ -1,5 +1,6 @@
 <?php
     return [
+        "lab_result" => "Lab Result",
         "permissions.patients.update" => "Update Patient Data",
         "permissions.patients.view" => "View Patients",
         "permissions.patients.create" => "Create Patient",
