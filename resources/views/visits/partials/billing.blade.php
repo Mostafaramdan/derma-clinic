@@ -1,3 +1,4 @@
+{{-- billing_services.blade.php --}}
 @if ($errors->has('services'))
   <div class="field-error">{{ $errors->first('services') }}</div>
 @endif
@@ -7,7 +8,7 @@
 
 <div class="tab-content-wrapper">
   <div class="grid-two">
-    {{-- جدول الخدمات --}}
+    {{-- 🧾 جدول الخدمات --}}
     <div class="card">
       <div class="head"><h3>@lang('messages.billing.services_title')</h3></div>
       <div class="body">
@@ -27,28 +28,34 @@
             </thead>
             <tbody id="svcBody">
               @php
-                $servicesList = old('services', (array)($services ?? [['service_id'=>'','custom_name'=>'','price'=>0,'qty'=>1]]));
+                $servicesList = old('services', (array)($servicesList ?? [['service_id'=>'','custom_name'=>'','price'=>0,'qty'=>1]]));
               @endphp
-              @foreach ($servicesList as $i => $svc)
+              @for ($i = 0; $i < count($servicesList); $i++)
+                @php $svc = $servicesList[$i]; @endphp
                 <tr>
                   <td>
                     <select name="services[{{ $i }}][service_id]" class="svc-select">
                       <option value="">— اختر —</option>
                       @foreach ($services as $srv)
-                        <option value="{{ $srv->id }}" data-price="{{ $srv->default_price }}" @selected(($svc['service_id'] ?? '') == $srv->id)>
+                        <option value="{{ $srv->id }}" data-price="{{ $srv->default_price }}"
+                          @selected(($svc['service_id'] ?? '') == $srv->id)>
                           {{ $srv->label() }}
                         </option>
                       @endforeach
                       <option value="__new__" @selected(($svc['service_id'] ?? '') == '__new__')>+ خدمة جديدة</option>
                     </select>
-                    <input type="text" name="services[{{ $i }}][custom_name]" value="{{ $svc['custom_name'] ?? '' }}" class="svc-custom mt-2" placeholder="اسم الخدمة الجديدة" style="@if(($svc['service_id'] ?? '') == '__new__') display:block; @else display:none; @endif">
+                    <input type="text" name="services[{{ $i }}][custom_name]"
+                      class="svc-custom mt-2"
+                      value="{{ $svc['custom_name'] ?? '' }}"
+                      placeholder="اسم الخدمة الجديدة"
+                      style="{{ ($svc['service_id'] ?? '') == '__new__' ? '' : 'display:none;' }}">
                   </td>
                   <td><input name="services[{{ $i }}][price]" class="svc-price" type="number" min="0" step="1" value="{{ $svc['price'] ?? 0 }}"></td>
                   <td><input name="services[{{ $i }}][qty]" class="svc-qty" type="number" min="1" step="1" value="{{ $svc['qty'] ?? 1 }}"></td>
                   <td><strong class="line-total">EGP {{ number_format(($svc['price'] ?? 0) * ($svc['qty'] ?? 1), 2) }}</strong></td>
-                  <td><button class="btn danger svc-remove" type="button">@lang('messages.billing.remove')</button></td>
+                  <td><button class="btn danger svc-remove" type="button">إزالة</button></td>
                 </tr>
-              @endforeach
+              @endfor
             </tbody>
           </table>
         </div>
@@ -58,7 +65,7 @@
       </div>
     </div>
 
-    {{-- ملخص الفاتورة --}}
+    {{-- 💰 ملخص الفاتورة --}}
     <aside class="card">
       <div class="head"><h3>@lang('messages.billing.summary_title')</h3></div>
       <div class="body">
@@ -96,11 +103,15 @@
   .card { background: #fff; border-radius: 10px; box-shadow: 0 2px 8px #0000000d; }
   .card .head { border-bottom: 1px solid #e2e8f0; padding: 12px 18px; }
   .card .body { padding: 18px; }
-  .table-wrap table { width: 100%; border-collapse: collapse; }
-  .table-wrap th, .table-wrap td { border-bottom: 1px solid #eee; padding: 8px; vertical-align: middle; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 8px; border-bottom: 1px solid #f1f5f9; }
+  .svc-custom { width: 100%; margin-top: 6px; }
+  .btn.danger { background: #fee2e2; color: #b91c1c; }
+  .btn.mt-8 { margin-top: 8px; }
   .totals { margin-top: 18px; border-top: 1px solid #e2e8f0; padding-top: 12px; }
   .totals .line { display: flex; justify-content: space-between; margin-bottom: 6px; color: #475569; }
   .totals .grand { font-weight: bold; color: #111827; font-size: 1.1em; }
+  @media (max-width:900px){ .grid-two{ grid-template-columns:1fr; } }
 </style>
 
 <script>
@@ -128,11 +139,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const newIndex = rows.length;
     const newRow = rows[0].cloneNode(true);
     newRow.querySelectorAll('input, select').forEach(el => {
-      const name = el.name.replace(/\[\d+\]/, `[${newIndex}]`);
-      el.name = name;
+      el.name = el.name.replace(/\[\d+\]/, `[${newIndex}]`);
       if (el.tagName === 'SELECT') el.selectedIndex = 0;
       if (el.classList.contains('svc-custom')) el.style.display = 'none';
-      else el.value = (el.classList.contains('svc-qty') ? 1 : '');
+      el.value = (el.classList.contains('svc-qty') ? 1 : '');
     });
     newRow.querySelector('.line-total').innerText = 'EGP 0.00';
     svcBody.appendChild(newRow);

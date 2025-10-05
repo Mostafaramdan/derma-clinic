@@ -1,23 +1,26 @@
   // ===== Tabs =====
     // ===== Diagnosis table =====
-  (function(){
-    const dxBody=document.getElementById('dxBody');
-    const addBtn=document.getElementById('addDxRow');
+ (function(){
+  const dxBody=document.getElementById('dxBody');
+  const addBtn=document.getElementById('addDxRow');
+  if(!dxBody || !addBtn) return; // ✅ يحمي الكود لو العنصر مش موجود
 
-    function bindRow(tr){
-      tr.querySelector('.dx-remove').addEventListener('click',()=>{
-        if(dxBody.children.length>1) tr.remove();
-      });
-    }
-    dxBody.querySelectorAll('tr').forEach(bindRow);
-
-    addBtn.addEventListener('click',()=>{
-      const tr=dxBody.querySelector('tr').cloneNode(true);
-      tr.querySelector('input').value='';
-      bindRow(tr);
-      dxBody.appendChild(tr);
+  function bindRow(tr){
+    tr.querySelector('.dx-remove').addEventListener('click',()=>{
+      if(dxBody.children.length>1) tr.remove();
     });
-  })();
+  }
+
+  dxBody.querySelectorAll('tr').forEach(bindRow);
+
+  addBtn.addEventListener('click',()=>{
+    const tr=dxBody.querySelector('tr').cloneNode(true);
+    tr.querySelectorAll('input').forEach(i=>i.value='');
+    bindRow(tr);
+    dxBody.appendChild(tr);
+  });
+})();
+
 
   const tabs = document.querySelectorAll('[role="tab"]');
   const panels = document.querySelectorAll('[role="tabpanel"]');
@@ -288,60 +291,65 @@
   })();
 
   // ===== Services repeater + totals (billing) =====
-  (function(){
-    const wrap = document.getElementById('svcRepeater');
-    const addBtn = document.getElementById('addSvc');
-    const subtotalEl = document.getElementById('subtotalVal');
-    const discountEl = document.getElementById('discountVal');
-    const totalEl = document.getElementById('totalVal');
-    const discInput = document.getElementById('discInput');
-    const fmt = n => 'EGP ' + (isFinite(n)? Number(n).toFixed(2) : '0.00');
+(function(){
+  const wrap = document.getElementById('svcRepeater');
+  const addBtn = document.getElementById('addSvc');
+  const subtotalEl = document.getElementById('subtotalVal');
+  const discountEl = document.getElementById('discountVal');
+  const totalEl = document.getElementById('totalVal');
+  const discInput = document.getElementById('discInput');
+  if(!wrap || !addBtn) return; // ✅ الحماية هنا
 
-    function recalc(){
-      let subtotal = 0;
-      wrap.querySelectorAll('.svc-item').forEach(it=>{
-        const price = parseFloat(it.querySelector('.svc-price')?.value||0);
-        const qty   = parseInt(it.querySelector('.svc-qty')?.value||1);
-        const line  = (isFinite(price)&&isFinite(qty)) ? price*qty : 0;
-        subtotal += line;
-        const lineEl = it.querySelector('.line-total');
-        if(lineEl) lineEl.textContent = fmt(line);
-      });
-      const discount = parseFloat(discInput?.value||0);
-      subtotalEl.textContent = fmt(subtotal);
-      discountEl.textContent = fmt(discount);
-      totalEl.textContent    = fmt(subtotal - discount);
-    }
-    function bindItem(it){
-      const sel  = it.querySelector('.svc-select');
-      const priceInput = it.querySelector('.svc-price');
-      const qtyInput   = it.querySelector('.svc-qty');
-      sel.addEventListener('change', ()=>{
-        const p = parseFloat(sel.selectedOptions[0].dataset.price||0);
-        if(priceInput) priceInput.value = isFinite(p)? p : 0;
-        recalc();
-      });
-      priceInput?.addEventListener('input', recalc);
-      qtyInput?.addEventListener('input', recalc);
-      it.querySelector('.svc-remove')?.addEventListener('click', ()=>{
-        const items = wrap.querySelectorAll('.svc-item');
-        if(items.length>1){ it.remove(); recalc(); }
-      });
-    }
-    wrap.querySelectorAll('.svc-item').forEach(bindItem);
+  const fmt = n => 'EGP ' + (isFinite(n)? Number(n).toFixed(2) : '0.00');
 
-    addBtn.addEventListener('click', ()=>{
-      const first = wrap.querySelector('.svc-item');
-      const item  = first.cloneNode(true);
-      const sel   = item.querySelector('.svc-select');
-      sel.selectedIndex = 0;
-      item.querySelector('.svc-price').value = sel.selectedOptions[0].dataset.price || 300;
-      item.querySelector('.svc-qty').value   = 1;
-      wrap.appendChild(item);
-      bindItem(item);
+  function recalc(){
+    let subtotal = 0;
+    wrap.querySelectorAll('.svc-item').forEach(it=>{
+      const price = parseFloat(it.querySelector('.svc-price')?.value||0);
+      const qty   = parseInt(it.querySelector('.svc-qty')?.value||1);
+      const line  = (isFinite(price)&&isFinite(qty)) ? price*qty : 0;
+      subtotal += line;
+      const lineEl = it.querySelector('.line-total');
+      if(lineEl) lineEl.textContent = fmt(line);
+    });
+    const discount = parseFloat(discInput?.value||0);
+    subtotalEl.textContent = fmt(subtotal);
+    discountEl.textContent = fmt(discount);
+    totalEl.textContent    = fmt(subtotal - discount);
+  }
+
+  function bindItem(it){
+    const sel  = it.querySelector('.svc-select');
+    const priceInput = it.querySelector('.svc-price');
+    const qtyInput   = it.querySelector('.svc-qty');
+    sel.addEventListener('change', ()=>{
+      const p = parseFloat(sel.selectedOptions[0].dataset.price||0);
+      if(priceInput) priceInput.value = isFinite(p)? p : 0;
       recalc();
     });
+    priceInput?.addEventListener('input', recalc);
+    qtyInput?.addEventListener('input', recalc);
+    it.querySelector('.svc-remove')?.addEventListener('click', ()=>{
+      const items = wrap.querySelectorAll('.svc-item');
+      if(items.length>1){ it.remove(); recalc(); }
+    });
+  }
 
-    discInput?.addEventListener('input', recalc);
+  wrap.querySelectorAll('.svc-item').forEach(bindItem);
+
+  addBtn.addEventListener('click', ()=>{
+    const first = wrap.querySelector('.svc-item');
+    const item  = first.cloneNode(true);
+    const sel   = item.querySelector('.svc-select');
+    sel.selectedIndex = 0;
+    item.querySelector('.svc-price').value = sel.selectedOptions[0].dataset.price || 300;
+    item.querySelector('.svc-qty').value   = 1;
+    wrap.appendChild(item);
+    bindItem(item);
     recalc();
-  })();
+  });
+
+  discInput?.addEventListener('input', recalc);
+  recalc();
+})();
+
